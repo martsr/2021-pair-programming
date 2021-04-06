@@ -6,6 +6,6 @@ Class {
 
 { #category : #tests }
 DummyTest >> testDummy [
-	"Un comentario dummy"
+	"Un comentario super dummy"
 	self assert: Dummy new isDummy
 ]
