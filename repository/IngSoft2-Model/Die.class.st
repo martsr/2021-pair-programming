@@ -10,28 +10,26 @@ Class {
 { #category : #'instance creation' }
 Die class >> validateLessThanFourFaces: numberOfFaces [
 	numberOfFaces < 4
-		ifTrue: [ Error signal: 'Die faces cannot be less than 4' ]
+		ifTrue: [ Error signal: 'Die faces cannot be less than 4' ].
 ]
 
 { #category : #'instance creation' }
 Die class >> with: numberOfFaces [
 	self validateLessThanFourFaces: numberOfFaces.
-	^ self new intializeWith: numberOfFaces
+	^ self new intializeWith: numberOfFaces.
 ]
 
 { #category : #asYetUnclassified }
 Die >> amountOfFaces [
-	^dieFaces.
+	^ dieFaces
 ]
 
 { #category : #initialization }
-Die >> intializeWith: numberOfFaces [ 
-	dieFaces := numberOfFaces.
+Die >> intializeWith: numberOfFaces [
+	dieFaces := numberOfFaces
 ]
 
 { #category : #'as yet unclassified' }
 Die >> roll [
-	^ self amountOfFaces atRandom.	
-
-
+	^ self amountOfFaces atRandom.
 ]
