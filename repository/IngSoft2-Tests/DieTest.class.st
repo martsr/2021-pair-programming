@@ -66,16 +66,16 @@ DieTest >> testDiceCupsContainsANumberOfDice [
 ]
 
 { #category : #tests }
-DieTest >> testDiceCupsMustContainAtLeastTwoDice [
+DieTest >> testDiceCupsMustContainAtLeastOneDie [
 	
-	| aDie dice |
-	aDie := Die with: 6.
-	dice := { aDie }.
+	| dice |
+	
+	dice := { }.
 	
 	self
 		should: [ DiceCup contains: dice ]
 		raise: Error
-		withMessage: 'Dice cups must contain at least two dice'.
+		withMessage: 'Dice cups must contain at least a die'.
 ]
 
 { #category : #tests }

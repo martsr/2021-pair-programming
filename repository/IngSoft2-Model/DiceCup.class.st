@@ -15,8 +15,8 @@ DiceCup class >> contains: dice [
 
 { #category : #'instance creation' }
 DiceCup class >> validateAmountOfDice: dice [
-	dice size < 2
-		ifTrue: [ Error signal: 'Dice cups must contain at least two dice' ].
+	dice size < 1
+		ifTrue: [ Error signal: 'Dice cups must contain at least a die' ].
 ]
 
 { #category : #'as yet unclassified' }
