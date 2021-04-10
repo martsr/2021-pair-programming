@@ -19,17 +19,12 @@ Die class >> with: numberOfFaces [
 	^ self new intializeWith: numberOfFaces.
 ]
 
-{ #category : #asYetUnclassified }
-Die >> amountOfFaces [
-	^ dieFaces
-]
-
 { #category : #initialization }
 Die >> intializeWith: numberOfFaces [
 	dieFaces := numberOfFaces
 ]
 
 { #category : #'as yet unclassified' }
-Die >> roll [
-	^ self amountOfFaces atRandom.
+Die >> throw [
+	^ dieFaces atRandom.
 ]

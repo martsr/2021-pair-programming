@@ -14,6 +14,11 @@ DiceCup class >> contains: dice [
 ]
 
 { #category : #'instance creation' }
+DiceCup class >> containsSingle: aDie [ 
+	^self new initializeWith: {aDie}.
+]
+
+{ #category : #'instance creation' }
 DiceCup class >> validateAmountOfDice: dice [
 	dice size < 1
 		ifTrue: [ Error signal: 'Dice cups must contain at least a die' ].
@@ -30,6 +35,6 @@ DiceCup >> initializeWith: diceSet [
 ]
 
 { #category : #'as yet unclassified' }
-DiceCup >> roll [
-	^ dice sum: [ :die | die roll ].
+DiceCup >> throw [
+	^ dice sum: [ :die | die throw ].
 ]
