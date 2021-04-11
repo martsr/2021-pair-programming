@@ -2,7 +2,8 @@ Class {
 	#name : #BoardSquare,
 	#superclass : #Object,
 	#instVars : [
-		'squareBoardNumber'
+		'squareBoardNumber',
+		'occupants'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,9 +21,25 @@ BoardSquare class >> validatesSquareBoardNumberGreaterThanZero: aSquareBoardNumb
 				signal: 'A board square must be assigned a value greater than zero' ]
 ]
 
+{ #category : #'as yet unclassified' }
+BoardSquare >> contains: aPlayer [ 
+	^occupants includes: aPlayer.
+]
+
 { #category : #initialization }
 BoardSquare >> initializeWith: aSquareBoardNumber [
+	occupants:= OrderedCollection new.
 	squareBoardNumber := aSquareBoardNumber.
+]
+
+{ #category : #'as yet unclassified' }
+BoardSquare >> place: player [  
+	occupants add: player. 
+]
+
+{ #category : #'as yet unclassified' }
+BoardSquare >> removeFromPosition: aPlayer [ 
+	occupants remove: aPlayer.
 ]
 
 { #category : #'as yet unclassified' }

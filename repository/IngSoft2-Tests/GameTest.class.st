@@ -113,7 +113,7 @@ GameTest >> test09ABoardMustContainAtLeast1SquareBoard [
 	self
 		should: [ Board containing: 0 ]
 		raise: Error
-		withMessage: 'A board must contain at least 1 square board'.
+		withMessage: 'A board must contain at least 2 square board'.
 ]
 
 { #category : #tests }
@@ -175,5 +175,49 @@ GameTest >> test15APlayerThrowsADeterministicDieCupWithTwoSixFacedDiceAndTheResu
 	aDetDie := DeterministicDie with: 6.
 	aSecondDetDie := DeterministicDie with: 6.
 	aDiceCup := DiceCup contains: {aDetDie.aSecondDetDie}.
-	self assert: (player rollsWith: aDiceCup) equals: 6
+	self assert: (player throwsWith: aDiceCup) equals: 6
+]
+
+{ #category : #tests }
+GameTest >> test16AtTheStartOfTheGameAllPlayersArePlacedOnTheFirstBoardSquare [
+| aDetDie aSecondDetDie players aBoard aGame aDiceCup|
+aDetDie:= DeterministicDie with: 6.
+aSecondDetDie := DeterministicDie with: 6.
+players := Player number: 1.
+aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie }.
+aBoard := Board containing: 20. 
+aGame:= Game withBoard: aBoard withPlayers: {players} withDice: aDiceCup. 
+
+self assert: (aBoard whereIsPlayer: players) equals: 1. 
+
+]
+
+{ #category : #tests }
+GameTest >> test17APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceAndLandsOnSquare7 [
+
+| aDetDie aSecondDetDie players aDiceCup aBoard aGame |
+aDetDie:= DeterministicDie with: 6.
+aSecondDetDie := DeterministicDie with: 6.
+players := Player number: 1.
+aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie }.
+aBoard := Board containing: 20. 
+aGame:= Game withBoard: aBoard withPlayers: {players} withDice: aDiceCup. 
+aGame nextPlayerThrows.
+
+self assert: (aBoard whereIsPlayer: players) equals: 7.
+]
+
+{ #category : #tests }
+GameTest >> test18APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceTwiceAndLandsOnSquare13 [
+
+| aDetDie aSecondDetDie players aDiceCup aBoard aGame |
+aDetDie:= DeterministicDie with: 6.
+aSecondDetDie := DeterministicDie with: 6.
+players := Player number: 1.
+aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie }.
+aBoard := Board containing: 20. 
+aGame:= Game withBoard: aBoard withPlayers: {players} withDice: aDiceCup. 
+aGame nextPlayerThrows.
+aGame nextPlayerThrows.
+self assert: (aBoard whereIsPlayer: players) equals: 13.
 ]

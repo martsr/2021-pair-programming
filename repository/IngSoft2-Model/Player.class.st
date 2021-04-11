@@ -25,6 +25,6 @@ Player >> initializeWith: aPlayerNumber [
 ]
 
 { #category : #'as yet unclassified' }
-Player >> rollsWith: aDiceCup [ 
+Player >> throwsWith: aDiceCup [ 
 	^ aDiceCup throw.
 ]
