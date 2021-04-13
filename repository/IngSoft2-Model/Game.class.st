@@ -69,8 +69,3 @@ Game >> verifyGameStillInProgress [
 		ifTrue: [ Error
 				signal: 'There is no winner yet, the game is still in progress' ]
 ]
-
-{ #category : #'as yet unclassified' }
-Game >> withAmountOfPlayers [
-	^gamePlayers size .
-]

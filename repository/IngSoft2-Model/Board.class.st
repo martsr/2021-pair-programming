@@ -36,17 +36,6 @@ Board >> initializeWith: aNumberofSquareBoards [
 ]
 
 { #category : #'as yet unclassified' }
-Board >> move: player  squares: amountPlaces [ 
-	| playerPosition newPlayerPosition |
-	playerPosition:= self whereIsPlayer: player. 
-	(squareBoards at: playerPosition )removeFromPosition: player.
-	newPlayerPosition:= playerPosition + amountPlaces .
-	(newPlayerPosition >= squareBoards size) ifTrue: [ newPlayerPosition := squareBoards size ].
-	(squareBoards at: newPlayerPosition) place: player.
-	
-]
-
-{ #category : #'as yet unclassified' }
 Board >> move: player  squares: amountPlaces inGame: aGame [ 
 	
 	| playerPosition newPlayerPosition |
