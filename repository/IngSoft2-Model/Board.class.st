@@ -24,6 +24,11 @@ Board >> boardSquares [
 	^squareBoards size.
 ]
 
+{ #category : #'as yet unclassified' }
+Board >> finalPositionsOf: players [
+	^players collect: [ :player | self whereIsPlayer: player ].
+]
+
 { #category : #initialization }
 Board >> initializeWith: aNumberofSquareBoards [
 	squareBoards := OrderedCollection new.
@@ -36,9 +41,27 @@ Board >> move: player  squares: amountPlaces [
 	playerPosition:= self whereIsPlayer: player. 
 	(squareBoards at: playerPosition )removeFromPosition: player.
 	newPlayerPosition:= playerPosition + amountPlaces .
-	"Aca hay que preguntar si la suma es mayor que squareBoard sixe y si es asi hay que colocar al jugador en ese lugar "
+	(newPlayerPosition >= squareBoards size) ifTrue: [ newPlayerPosition := squareBoards size ].
 	(squareBoards at: newPlayerPosition) place: player.
 	
+]
+
+{ #category : #'as yet unclassified' }
+Board >> move: player  squares: amountPlaces inGame: aGame [ 
+	
+	| playerPosition newPlayerPosition |
+	
+	playerPosition:= self whereIsPlayer: player. 
+	(squareBoards at: playerPosition )removeFromPosition: player.
+	newPlayerPosition:= playerPosition + amountPlaces .
+	(newPlayerPosition >= squareBoards size) ifTrue: [ newPlayerPosition := squareBoards size ].
+	(squareBoards at: newPlayerPosition) place: player.
+	(newPlayerPosition = 20) ifTrue: [ aGame isNotifiedPlayerInLastSquare ]
+]
+
+{ #category : #'as yet unclassified' }
+Board >> playerAtFinalSquare [
+	^squareBoards last occupyingPlayer.
 ]
 
 { #category : #'as yet unclassified' }

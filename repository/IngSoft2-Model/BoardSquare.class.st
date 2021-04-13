@@ -33,6 +33,11 @@ BoardSquare >> initializeWith: aSquareBoardNumber [
 ]
 
 { #category : #'as yet unclassified' }
+BoardSquare >> occupyingPlayer [
+	^occupants first.
+]
+
+{ #category : #'as yet unclassified' }
 BoardSquare >> place: player [  
 	occupants add: player. 
 ]
