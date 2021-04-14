@@ -5,7 +5,8 @@ Class {
 		'gamePlayers',
 		'gameBoard',
 		'gameDiceCup',
-		'gameInProgress'
+		'gameInProgress',
+		'gameTurn'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -34,6 +35,7 @@ Game >> intializeWithBoard: aBoard withPlayers: players withDice: aDiceCup [
 	gamePlayers:= players. 
 	gameDiceCup:= aDiceCup.
 	gameInProgress := true.
+	gameTurn:= 1.
 	gameBoard setUpWith: gamePlayers.
 ]
 
@@ -46,10 +48,11 @@ Game >> isNotifiedPlayerInLastSquare [
 Game >> nextPlayerThrows [
 	| resultOfThrow player |
 	self verifyGameHasFinished.
-	resultOfThrow := gamePlayers first throwsWith: gameDiceCup.
-	player := gamePlayers first.
+	player := gamePlayers at: gameTurn.
+	resultOfThrow := player throwsWith: gameDiceCup.
 	gameBoard move: player squares: resultOfThrow inGame: self.
-	"Aca tengo que chequear si esta en la casilla final"
+	self verifyNextPlayerNeedsToThrow.
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -68,4 +71,10 @@ Game >> verifyGameStillInProgress [
 	gameInProgress
 		ifTrue: [ Error
 				signal: 'There is no winner yet, the game is still in progress' ]
+]
+
+{ #category : #'as yet unclassified' }
+Game >> verifyNextPlayerNeedsToThrow [
+	gameInProgress
+		ifTrue: [ gameTurn := (gameTurn rem: (gamePlayers size )) + 1 ]
 ]
