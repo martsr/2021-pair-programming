@@ -56,7 +56,7 @@ Game >> nextPlayerThrows [
 ]
 
 { #category : #'as yet unclassified' }
-Game >> playerFinalPositions [
+Game >> playerPositions [
 	^gameBoard finalPositionsOf: gamePlayers.
 ]
 
@@ -70,7 +70,7 @@ Game >> verifyGameHasFinished [
 Game >> verifyGameStillInProgress [
 	gameInProgress
 		ifTrue: [ Error
-				signal: 'There is no winner yet, the game is still in progress' ]
+				signal: 'A winner cannot be determined, the game is still in progress' ]
 ]
 
 { #category : #'as yet unclassified' }

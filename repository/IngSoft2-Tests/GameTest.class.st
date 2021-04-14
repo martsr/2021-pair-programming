@@ -255,7 +255,7 @@ GameTest >> test20APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceOneTime
 	self
 		should: [ aGame gameWinner ]
 		raise: Error
-		withMessage: 'There is no winner yet, the game is still in progress'. 
+		withMessage: 'A winner cannot be determined, the game is still in progress'. 
 ]
 
 { #category : #tests }
@@ -271,7 +271,7 @@ GameTest >> test21APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTim
 	aGame := Game withBoard: aBoard withPlayers: {player} withDice: aDiceCup.
 	4 timesRepeat: [aGame nextPlayerThrows].
 	self assert: (aBoard whereIsPlayer: player) equals: 20.
-	self assertCollection: (aGame playerFinalPositions) equals: #(20). 
+	self assertCollection: (aGame playerPositions) equals: #(20). 
 ]
 
 { #category : #tests }
@@ -287,12 +287,10 @@ GameTest >> test22ThreePlayersThrowTheDiceCupOfTheGameAndAllLandOnSquareSeven [
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: players withDice: aDiceCup.
 	3 timesRepeat: [ aGame nextPlayerThrows ].
-	self assert: (aBoard whereIsPlayer: playerOne) equals: 7.
-	self assert: (aBoard whereIsPlayer: playerTwo) equals: 7.
-	self assert: (aBoard whereIsPlayer: playerThree) equals: 7
+	self assertCollection: (aGame playerPositions ) equals: #(7 7 7).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 GameTest >> test23ThreePlayersPlayTheGameAndPlayerOneWins [
 	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame |
 	aDetDie := DeterministicDie with: 6.
@@ -323,5 +321,47 @@ GameTest >> test24AGameIsPlayedByThreePlayersAndTheFirstPlayerFinishesOnTheLastS
 	aGame := Game withBoard: aBoard withPlayers: players withDice: aDiceCup.
 	10 timesRepeat: [ aGame nextPlayerThrows ].
 	self assert: aGame gameWinner equals: playerOne.
-	self assertCollection: aGame playerFinalPositions equals: #(20 19 19).
+	self assertCollection: aGame playerPositions equals: #(20 19 19).
+]
+
+{ #category : #tests }
+GameTest >> test25AGameIsPlayedAndTheDiceCupCannotBeThrownAfterTheGameHasFinished [
+	
+	| aDetDie aSecondDetDie players aDiceCup aBoard aGame playerOne playerTwo playerThree |
+	
+	aDetDie := DeterministicDie with: 6.
+	aSecondDetDie := DeterministicDie with: 6.
+	playerOne := Player number: 1.
+	playerTwo := Player number: 2.
+	playerThree := Player number: 3.
+	players := { playerOne . playerTwo . playerThree }.
+	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
+	aBoard := Board containing: 20.
+	aGame := Game withBoard: aBoard withPlayers: players withDice: aDiceCup.
+	10 timesRepeat: [ aGame nextPlayerThrows ].
+	self
+		should: [ aGame nextPlayerThrows  ]
+		raise: Error
+		withMessage: 'The game has finished, dice cannot be rolled anymore'. 
+]
+
+{ #category : #tests }
+GameTest >> test26AGameIsInProgressAndTheWinnerCannotBeDeterminedBecauseTheGameIsStillInProgress [
+	
+	| aDetDie aSecondDetDie players aDiceCup aBoard aGame playerOne playerTwo playerThree |
+	
+	aDetDie := DeterministicDie with: 6.
+	aSecondDetDie := DeterministicDie with: 6.
+	playerOne := Player number: 1.
+	playerTwo := Player number: 2.
+	playerThree := Player number: 3.
+	players := { playerOne . playerTwo . playerThree }.
+	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
+	aBoard := Board containing: 20.
+	aGame := Game withBoard: aBoard withPlayers: players withDice: aDiceCup.
+	9 timesRepeat: [ aGame nextPlayerThrows ].
+	self
+		should: [ aGame gameWinner ]
+		raise: Error
+		withMessage: 'A winner cannot be determined, the game is still in progress'. 
 ]
