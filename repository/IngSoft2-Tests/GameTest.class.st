@@ -308,3 +308,20 @@ GameTest >> test23ThreePlayersPlayTheGameAndPlayerOneWins [
 	self assert: (aGame gameWinner) equals: playerOne. 
 
 ]
+
+{ #category : #tests }
+GameTest >> test24AGameIsPlayedByThreePlayersAndTheFirstPlayerFinishesOnTheLastSquareAndTheRemainingOnesInOneSquareBehind [
+	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame |
+	aDetDie := DeterministicDie with: 6.
+	aSecondDetDie := DeterministicDie with: 6.
+	playerOne := Player number: 1.
+	playerTwo := Player number: 2.
+	playerThree := Player number: 3.
+	players := {playerOne. playerTwo.playerThree}.
+	aDiceCup := DiceCup contains:{aDetDie.aSecondDetDie}.
+	aBoard := Board containing: 20.
+	aGame := Game withBoard: aBoard withPlayers: players withDice: aDiceCup.
+	10 timesRepeat: [ aGame nextPlayerThrows ].
+	self assert: aGame gameWinner equals: playerOne.
+	self assertCollection: aGame playerFinalPositions equals: #(20 19 19).
+]
