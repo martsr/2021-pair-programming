@@ -166,7 +166,7 @@ GameTest >> test14APlayerThrowsADeterministicDieCupWithTwoSixFacedDiceAndTheResu
 { #category : #tests }
 GameTest >> test15AtTheStartOfTheGameAllPlayersArePlacedOnTheFirstBoardSquare [
 	
-	| aDetDie aSecondDetDie player aBoard aGame aDiceCup playerPositions |
+	| aDetDie aSecondDetDie player aBoard aGame aDiceCup playerPositions player2 |
 	
 	aDetDie := DeterministicDie with: 6.
 	aSecondDetDie := DeterministicDie with: 6.
@@ -382,6 +382,27 @@ GameTest >> test26AGameIsInProgressAndTheWinnerCannotBeDeterminedBecauseTheGameI
 		should: [ aGame gameWinner ]
 		raise: Error
 		withMessage: 'A winner cannot be determined, the game is still in progress'. 
+]
+
+{ #category : #tests }
+GameTest >> test27AGameCannotBeCreatedIfAnyPlayerHasARepeatedName [
+	
+	| aDetDie aSecondDetDie players aDiceCup aBoard playerOne playerTwo playerThree playerFour playerFive |
+	
+	aDetDie := DeterministicDie with: 6.
+	aSecondDetDie := DeterministicDie with: 6.
+	playerOne := Player named: 'Fran'.
+	playerTwo := Player named: 'Mango'.
+	playerThree := Player named: 'Maia'.
+	playerFour := Player named: 'Martu'.
+	playerFive := Player named: 'Martu'.
+	players := { playerOne . playerTwo . playerThree . playerFour . playerFive }.
+	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
+	aBoard := Board containing: 20.
+	self
+		should: [ Game withBoard: aBoard withPlayers: players withDice: aDiceCup ]
+		raise: Error
+		withMessage: 'A game cannot be created with any players having repeated names'. 
 ]
 
 { #category : #iteration }

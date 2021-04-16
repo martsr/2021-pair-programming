@@ -12,6 +12,14 @@ Class {
 }
 
 { #category : #'instance creation' }
+Game class >> validatesAGameDoesntHavePlayersWithSameName: players [
+	| playerNames |
+	playerNames := players collect: [ :player | player name ].
+	playerNames := playerNames asSet.
+	(players size) > (playerNames size) ifTrue: [ Error signal: 'A game cannot be created with any players having repeated names' ].
+]
+
+{ #category : #'instance creation' }
 Game class >> validatesAGameMustHaveAtLeastOnePlayer: aPlayer [
 	aPlayer size < 1
 		ifTrue: [ Error signal: 'A game must have at least 1 player' ]
@@ -20,6 +28,7 @@ Game class >> validatesAGameMustHaveAtLeastOnePlayer: aPlayer [
 { #category : #'instance creation' }
 Game class >> withBoard: aBoard withPlayers: players withDice: aDiceCup [
 	self validatesAGameMustHaveAtLeastOnePlayer: players.
+	self validatesAGameDoesntHavePlayersWithSameName: players.
 	^ self new intializeWithBoard: aBoard withPlayers: players withDice: aDiceCup
 ]
 
