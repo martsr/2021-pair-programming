@@ -166,7 +166,7 @@ GameTest >> test14APlayerThrowsADeterministicDieCupWithTwoSixFacedDiceAndTheResu
 { #category : #tests }
 GameTest >> test15AtTheStartOfTheGameAllPlayersArePlacedOnTheFirstBoardSquare [
 	
-	| aDetDie aSecondDetDie player aBoard aGame aDiceCup |
+	| aDetDie aSecondDetDie player aBoard aGame aDiceCup playerPositions |
 	
 	aDetDie := DeterministicDie with: 6.
 	aSecondDetDie := DeterministicDie with: 6.
@@ -174,13 +174,14 @@ GameTest >> test15AtTheStartOfTheGameAllPlayersArePlacedOnTheFirstBoardSquare [
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: {player} withDice: aDiceCup.
-	self assert: (aGame playerPositions) equals: #(1)
+	playerPositions := Dictionary newFrom: {'Fran' -> 1}.
+	self assert: (aGame playerPositions) equals: playerPositions.
 ]
 
 { #category : #tests }
 GameTest >> test16APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceAndLandsOnSquare7 [
 	
-	| aDetDie aSecondDetDie player aDiceCup aBoard aGame |
+	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
 	aDetDie := DeterministicDie with: 6.
 	aSecondDetDie := DeterministicDie with: 6.
@@ -189,13 +190,14 @@ GameTest >> test16APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceAndLand
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: {player} withDice: aDiceCup.
 	self throwDiceCupTimes: 1 inGame: aGame.
-	self assert: (aGame playerPositions) equals: #(7)
+	playerPositions := Dictionary newFrom: {'Fran' -> 7}.
+	self assert: (aGame playerPositions) equals: playerPositions.
 ]
 
 { #category : #tests }
 GameTest >> test17APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTimesExceedsTheBoardSizeButIsPlacedOnTheLastSquare [
 	
-	| aDetDie aSecondDetDie player aDiceCup aBoard aGame |
+	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
 	aDetDie := DeterministicDie with: 6.
 	aSecondDetDie := DeterministicDie with: 6.
@@ -204,7 +206,8 @@ GameTest >> test17APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTim
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: {player} withDice: aDiceCup.
 	self throwDiceCupTimes: 4 inGame: aGame.
-	self assert: (aGame playerPositions) equals: #(20).
+	playerPositions := Dictionary newFrom: {'Fran' -> 20}.
+	self assert: (aGame playerPositions) equals: playerPositions.
 	self
 		should: [ aGame nextPlayerThrows ]
 		raise: Error
@@ -230,7 +233,7 @@ GameTest >> test18AGameWithABoardAndADiceCupShouldHaveAtLeastOnePayer [
 { #category : #tests }
 GameTest >> test19APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTimesWinningTheGameAndNowTheGameCanInformThatPlayerIsTheWinner [
 	
-	| aDetDie aSecondDetDie player aDiceCup aBoard aGame |
+	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
 	aDetDie := DeterministicDie with: 6.
 	aSecondDetDie := DeterministicDie with: 6.
@@ -239,14 +242,15 @@ GameTest >> test19APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTim
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: {player} withDice: aDiceCup.
 	self throwDiceCupTimes: 4 inGame: aGame.
-	self assert: (aGame playerPositions) equals: #(20).
+	playerPositions := Dictionary newFrom: {'Fran' -> 20}.
+	self assert: (aGame playerPositions) equals: playerPositions.
 	self assert: (aGame gameWinner) equals: player. 
 ]
 
 { #category : #tests }
 GameTest >> test20APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceOneTimeButTheGameCannotDetermineTheWinnerBecauseTheGameIsInProgress [
 	
-	| aDetDie aSecondDetDie player aDiceCup aBoard aGame |
+	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
 	aDetDie := DeterministicDie with: 6.
 	aSecondDetDie := DeterministicDie with: 6.
@@ -255,7 +259,8 @@ GameTest >> test20APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceOneTime
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: {player} withDice: aDiceCup.
 	self throwDiceCupTimes: 1 inGame: aGame.
-	self assert: (aGame playerPositions) equals: #(7).
+	playerPositions := Dictionary newFrom: {'Fran' -> 7}.
+	self assert: (aGame playerPositions) equals: playerPositions.
 	self
 		should: [ aGame gameWinner ]
 		raise: Error
@@ -265,7 +270,7 @@ GameTest >> test20APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceOneTime
 { #category : #tests }
 GameTest >> test21APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTimesWinningTheGameAndNowTheGameCanInformThePlayerFinalPosition [
 	
-	| aDetDie aSecondDetDie player aDiceCup aBoard aGame |
+	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
 	aDetDie := DeterministicDie with: 6.
 	aSecondDetDie := DeterministicDie with: 6.
@@ -274,14 +279,15 @@ GameTest >> test21APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTim
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: {player} withDice: aDiceCup.
 	self throwDiceCupTimes: 4 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 20}.
 	self assert: (aBoard whereIsPlayer: player) equals: 20.
-	self assertCollection: (aGame playerPositions) equals: #(20). 
+	self assert: (aGame playerPositions) equals: playerPositions. 
 ]
 
 { #category : #tests }
 GameTest >> test22ThreePlayersThrowTheDiceCupOfTheGameAndAllLandOnSquareSeven [
 
-	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame |
+	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame playerPositions |
 	
 	aDetDie := DeterministicDie with: 6.
 	aSecondDetDie := DeterministicDie with: 6.
@@ -293,7 +299,8 @@ GameTest >> test22ThreePlayersThrowTheDiceCupOfTheGameAndAllLandOnSquareSeven [
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: players withDice: aDiceCup.
 	self throwDiceCupTimes: 3 inGame: aGame.
-	self assertCollection: (aGame playerPositions ) equals: #(7 7 7).
+	playerPositions := Dictionary newFrom: {'Fran' -> 7 . 'Martu' -> 7 . 'Maia' -> 7}.
+	self assert: (aGame playerPositions ) equals: playerPositions .
 ]
 
 { #category : #tests }
@@ -318,7 +325,7 @@ GameTest >> test23ThreePlayersPlayTheGameAndPlayerOneWins [
 { #category : #tests }
 GameTest >> test24AGameIsPlayedByThreePlayersAndTheFirstPlayerFinishesOnTheLastSquareAndTheRemainingOnesInOneSquareBehind [
 
-	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame |
+	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame playerPositions |
 	
 	aDetDie := DeterministicDie with: 6.
 	aSecondDetDie := DeterministicDie with: 6.
@@ -330,8 +337,9 @@ GameTest >> test24AGameIsPlayedByThreePlayersAndTheFirstPlayerFinishesOnTheLastS
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: players withDice: aDiceCup.
 	self throwDiceCupTimes: 10 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 20 . 'Mango' -> 19 . 'Maia' -> 19}.
 	self assert: aGame gameWinner equals: playerOne.
-	self assertCollection: aGame playerPositions equals: #(20 19 19).
+	self assert: aGame playerPositions equals: playerPositions.
 ]
 
 { #category : #tests }

@@ -24,6 +24,11 @@ Player >> initializeWith: aPlayerName [
 	playerName := aPlayerName.
 ]
 
+{ #category : #accessing }
+Player >> name [ 
+	^playerName.
+]
+
 { #category : #'as yet unclassified' }
 Player >> throwsWith: aDiceCup [ 
 	^ aDiceCup throw.

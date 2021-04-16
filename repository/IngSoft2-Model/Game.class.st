@@ -57,7 +57,11 @@ Game >> nextPlayerThrows [
 
 { #category : #'as yet unclassified' }
 Game >> playerPositions [
-	^gameBoard finalPositionsOf: gamePlayers.
+	| numberPositions playerPositions |
+	numberPositions := gameBoard finalPositionsOf: gamePlayers.
+	playerPositions := Dictionary new.
+	(1 to: numberPositions size) do: [ :index | playerPositions at: ((gamePlayers at: index) name) put: (numberPositions at: index) ].
+	^playerPositions.
 ]
 
 { #category : #'as yet unclassified' }
