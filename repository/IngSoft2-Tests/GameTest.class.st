@@ -23,7 +23,7 @@ GameTest >> test01ADieWithTwentyFacesRollsANumberBetweenOneAndTwenty [
 	
 	| aDie |
 	
-	aDie := Die with: 20.
+	aDie := RegularDie withAmountOfFaces: 20.
 	self assert: (aDie throw between: 1 and: 20)
 ]
 
@@ -31,7 +31,7 @@ GameTest >> test01ADieWithTwentyFacesRollsANumberBetweenOneAndTwenty [
 GameTest >> test02ADieCannotHaveLessThanFourFaces [
 
 	self
-		should: [ Die with: 3 ]
+		should: [ RegularDie withAmountOfFaces: 3 ]
 		raise: Error
 		withMessage: 'Die faces cannot be less than 4'
 ]
@@ -41,8 +41,8 @@ GameTest >> test03DiceCupsContainsANumberOfDice [
 	
 	| aDie aSecondDie dice aDiceCup |
 	
-	aDie := Die with: 5.
-	aSecondDie := Die with: 14.
+	aDie := RegularDie withAmountOfFaces: 5.
+	aSecondDie := RegularDie withAmountOfFaces: 14.
 	dice := {aDie . aSecondDie}.
 	aDiceCup := DiceCup contains: dice.
 	self assert: aDiceCup amountOfDice equals: 2.
@@ -53,8 +53,8 @@ GameTest >> test04DiceCupWithATwentyFaceDieaAndASixFaceDieRollsANumberBetweenTwo
 	
 	| aDie aSecondDie dice aDiceCup |
 	
-	aDie := Die with: 6.
-	aSecondDie := Die with: 20.
+	aDie := RegularDie withAmountOfFaces: 6.
+	aSecondDie := RegularDie withAmountOfFaces: 20.
 	dice := {aDie . aSecondDie}.
 	aDiceCup := DiceCup contains: dice.
 	self assert: (aDiceCup throw between: 2 and: 26).
@@ -65,7 +65,7 @@ GameTest >> test05DiceCupWithASingleSixFacedDieRollsANumberBetween1and6 [
 	
 	| aDie   aDiceCup |
 	
-	aDie := Die with: 6.
+	aDie := RegularDie withAmountOfFaces: 6.
 	aDiceCup := DiceCup containsSingle: aDie.
 	self assert: (aDiceCup throw between: 1 and: 6).
 ]
@@ -134,9 +134,9 @@ GameTest >> test12ANFacedDeterministicDieAlwaysLandsOnNOver2IfTheFacesNumIsEvenO
 	
 	| aDetDie aSecondDetDie aThirdDetDie |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 12.
-	aThirdDetDie := DeterministicDie with: 5.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 12.
+	aThirdDetDie := DeterministicDie withAmountOfFaces: 5.
 	self assert: aDetDie throw equals: 3.
 	self assert: aSecondDetDie throw equals: 6.
 	self assert: aThirdDetDie throw equals: 2
@@ -146,7 +146,7 @@ GameTest >> test12ANFacedDeterministicDieAlwaysLandsOnNOver2IfTheFacesNumIsEvenO
 GameTest >> test13ADeterministicDieCannotHaveLessThanFourFaces [
 
 	self
-		should: [ DeterministicDie  with: 3 ]
+		should: [ DeterministicDie  withAmountOfFaces: 3 ]
 		raise: Error
 		withMessage: 'A Deterministic Die  cannot have less than 4 faces'
 ]
@@ -157,8 +157,8 @@ GameTest >> test14APlayerThrowsADeterministicDieCupWithTwoSixFacedDiceAndTheResu
 	| player aDetDie aSecondDetDie aDiceCup |
 	
 	player := Player named: 'Fran'.
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	aDiceCup := DiceCup contains: {aDetDie.aSecondDetDie}.
 	self assert: (player throwsWith: aDiceCup) equals: 6
 ]
@@ -168,8 +168,8 @@ GameTest >> test15AtTheStartOfTheGameAllPlayersArePlacedOnTheFirstBoardSquare [
 	
 	| aDetDie aSecondDetDie player aBoard aGame aDiceCup playerPositions player2 |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	player := Player named: 'Fran'.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
@@ -183,8 +183,8 @@ GameTest >> test16APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceAndLand
 	
 	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	player := Player named: 'Fran'.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
@@ -199,8 +199,8 @@ GameTest >> test17APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTim
 	
 	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	player := Player named: 'Fran'.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
@@ -219,8 +219,8 @@ GameTest >> test18AGameWithABoardAndADiceCupShouldHaveAtLeastOnePayer [
 	
 	| aDetDie aSecondDetDie aDiceCup aBoard player |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
 	player := {}.	
@@ -235,8 +235,8 @@ GameTest >> test19APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTim
 	
 	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	player := Player named: 'Fran'.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
@@ -252,8 +252,8 @@ GameTest >> test20APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceOneTime
 	
 	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	player := Player named: 'Fran'.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
@@ -272,8 +272,8 @@ GameTest >> test21APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTim
 	
 	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	player := Player named: 'Fran'.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
@@ -289,8 +289,8 @@ GameTest >> test22ThreePlayersThrowTheDiceCupOfTheGameAndAllLandOnSquareSeven [
 
 	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame playerPositions |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	playerOne := Player named: 'Fran'.
 	playerTwo := Player named: 'Martu'.
 	playerThree := Player named: 'Maia'.
@@ -308,8 +308,8 @@ GameTest >> test23ThreePlayersPlayTheGameAndPlayerOneWins [
 
 	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	playerOne := Player named: 'Fran'.
 	playerTwo := Player named: 'Martu'.
 	playerThree := Player named: 'Maia'.
@@ -327,8 +327,8 @@ GameTest >> test24AGameIsPlayedByThreePlayersAndTheFirstPlayerFinishesOnTheLastS
 
 	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame playerPositions |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	playerOne := Player named: 'Fran'.
 	playerTwo := Player named: 'Mango'.
 	playerThree := Player named: 'Maia'.
@@ -347,8 +347,8 @@ GameTest >> test25AGameIsPlayedAndTheDiceCupCannotBeThrownAfterTheGameHasFinishe
 	
 	| aDetDie aSecondDetDie players aDiceCup aBoard aGame playerOne playerTwo playerThree |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	playerOne := Player named: 'Fran'.
 	playerTwo := Player named: 'Mango'.
 	playerThree := Player named: 'Maia'.
@@ -368,8 +368,8 @@ GameTest >> test26AGameIsInProgressAndTheWinnerCannotBeDeterminedBecauseTheGameI
 	
 	| aDetDie aSecondDetDie players aDiceCup aBoard aGame playerOne playerTwo playerThree |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	playerOne := Player named: 'Fran'.
 	playerTwo := Player named: 'Mango'.
 	playerThree := Player named: 'Maia'.
@@ -389,8 +389,8 @@ GameTest >> test27AGameCannotBeCreatedIfAnyPlayerHasARepeatedName [
 	
 	| aDetDie aSecondDetDie players aDiceCup aBoard playerOne playerTwo playerThree playerFour playerFive |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	playerOne := Player named: 'Fran'.
 	playerTwo := Player named: 'Mango'.
 	playerThree := Player named: 'Maia'.

@@ -2,65 +2,67 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'squareBoards'
+		'boardSquare'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
 Board class >> containing: aNumberOfSquareBoards [
-	self validateMoreThanOneSquareBoard: aNumberOfSquareBoards.
-	^ self new initializeWith: aNumberOfSquareBoards
+	self validateMoreThanOneBoardSquare: aNumberOfSquareBoards.
+	^ self new initializeBoardWith: aNumberOfSquareBoards
 ]
 
-{ #category : #'instance creation' }
-Board class >> validateMoreThanOneSquareBoard: aNumberOfSquareBoards [
+{ #category : #validation }
+Board class >> validateMoreThanOneBoardSquare: aNumberOfSquareBoards [
 	aNumberOfSquareBoards < 2
 		ifTrue: [ Error signal: 'A board must contain at least 2 square board' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Board >> boardSquares [
-	^squareBoards size.
+	^ boardSquare size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #boardAction }
 Board >> finalPositionsOf: players [
-	^players collect: [ :player | self whereIsPlayer: player ].
+	^ players collect: [ :player | self whereIsPlayer: player ]
 ]
 
 { #category : #initialization }
-Board >> initializeWith: aNumberofSquareBoards [
-	squareBoards := OrderedCollection new.
-	(1 to: aNumberofSquareBoards) do: [ :squareBoardNumber | squareBoards add:(BoardSquare numbered: squareBoardNumber) ].
+Board >> initializeBoardWith: aNumberofSquareBoards [
+	boardSquare := OrderedCollection new.
+	(1 to: aNumberofSquareBoards) do:[ :squareBoardNumber | boardSquare add: (BoardSquare numbered: squareBoardNumber) ]
 ]
 
-{ #category : #'as yet unclassified' }
-Board >> move: player  squares: amountPlaces inGame: aGame [ 
-	
+{ #category : #boardAction }
+Board >> move: player squares: amountPlaces inGame: aGame [
+
 	| playerPosition newPlayerPosition |
 	
-	playerPosition:= self whereIsPlayer: player. 
-	(squareBoards at: playerPosition )removeFromPosition: player.
-	newPlayerPosition:= playerPosition + amountPlaces .
-	(newPlayerPosition >= squareBoards size) ifTrue: [ newPlayerPosition := squareBoards size ].
-	(squareBoards at: newPlayerPosition) place: player.
-	(newPlayerPosition = 20) ifTrue: [ aGame isNotifiedPlayerInLastSquare ]
+	playerPosition := self whereIsPlayer: player.
+	(boardSquare at: playerPosition) removeFromPosition: player.
+	newPlayerPosition := playerPosition + amountPlaces.
+	newPlayerPosition >= boardSquare size ifTrue: [ newPlayerPosition := boardSquare size ].
+	(boardSquare at: newPlayerPosition) place: player.
+	newPlayerPosition = 20 ifTrue: [ aGame isNotifiedPlayerInLastSquare ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Board >> playerAtFinalSquare [
-	^squareBoards last occupyingPlayer.
+	^ boardSquare last occupant
 ]
 
-{ #category : #'as yet unclassified' }
-Board >> setUpWith: players [ 
-players do:[:player| squareBoards first place: player ].
+{ #category : #boardAction }
+Board >> setUpWith: players [
+	players do: [ :player | boardSquare first place: player ]
 ]
 
-{ #category : #'as yet unclassified' }
-Board >> whereIsPlayer: aPlayer [ 
+{ #category : #boardAction }
+Board >> whereIsPlayer: aPlayer [
+
 	| occupiedSquare |
-	occupiedSquare := squareBoards select: [:squareBoard | squareBoard contains: aPlayer].
-	^ occupiedSquare first squareNumber.
+	
+	occupiedSquare := boardSquare select: [ :squareBoard | squareBoard contains: aPlayer ].
+	^ occupiedSquare first squareNumber
 ]
