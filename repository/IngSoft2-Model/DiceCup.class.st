@@ -10,23 +10,23 @@ Class {
 { #category : #'instance creation' }
 DiceCup class >> contains: dice [
 	self validateAmountOfDice: dice.
-	^ self new initializeWith: dice.
+	^ self new initializeWith: dice
 ]
 
 { #category : #'instance creation' }
 DiceCup class >> containsSingle: aDie [ 
-	^self new initializeWith: {aDie}.
+	^self new initializeWith: {aDie}
 ]
 
-{ #category : #'instance creation' }
+{ #category : #validation }
 DiceCup class >> validateAmountOfDice: dice [
 	dice size < 1
-		ifTrue: [ Error signal: 'Dice cups must contain at least a die' ].
+		ifTrue: [ Error signal: 'Dice cups must contain at least a die' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 DiceCup >> amountOfDice [
-	^ dice size.
+	^ dice size
 ]
 
 { #category : #initialization }
@@ -34,7 +34,7 @@ DiceCup >> initializeWith: diceSet [
 	dice := diceSet
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #diceCupAction }
 DiceCup >> throw [
-	^ dice sum: [ :die | die throw ].
+	^ dice sum: [ :die | die throw ]
 ]

@@ -2,29 +2,34 @@ Class {
 	#name : #Player,
 	#superclass : #Object,
 	#instVars : [
-		'playerNumber'
+		'playerName'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-Player class >> number: playerNumber [
-	self validatesPlayerNumberValueIsGreaterThanZero: playerNumber.
-	^ self new initializeWith: playerNumber
+Player class >> named: playerName [
+	self validatesPlayersNamesMustContainAtLeastOneLetter: playerName.
+	^ self new initializeWith: playerName
 ]
 
-{ #category : #'instance creation' }
-Player class >> validatesPlayerNumberValueIsGreaterThanZero: playerNumber [
-	playerNumber < 1
-		ifTrue: [ Error signal: 'Player numbers must be at least 1' ]
+{ #category : #validation }
+Player class >> validatesPlayersNamesMustContainAtLeastOneLetter: playerName [
+	playerName size  < 1
+		ifTrue: [ Error signal: 'Player name must at least contain one letter' ]
 ]
 
 { #category : #initialization }
-Player >> initializeWith: aPlayerNumber [ 
-	playerNumber := aPlayerNumber.
+Player >> initializeWith: aPlayerName [
+	playerName := aPlayerName
 ]
 
-{ #category : #'as yet unclassified' }
-Player >> throwsWith: aDiceCup [ 
-	^ aDiceCup throw.
+{ #category : #accessing }
+Player >> name [
+	^ playerName
+]
+
+{ #category : #playerAction }
+Player >> throwsWith: aDiceCup [
+	^ aDiceCup throw
 ]

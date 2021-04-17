@@ -10,44 +10,44 @@ Class {
 
 { #category : #'instance creation' }
 BoardSquare class >> numbered: aSquareBoardNumber [
-	self validatesSquareBoardNumberGreaterThanZero: aSquareBoardNumber.
+	self validatesBoardSquareNumberGreaterThanZero: aSquareBoardNumber.
 	^ self new initializeWith: aSquareBoardNumber
 ]
 
-{ #category : #'instance creation' }
-BoardSquare class >> validatesSquareBoardNumberGreaterThanZero: aSquareBoardNumber [
+{ #category : #validation }
+BoardSquare class >> validatesBoardSquareNumberGreaterThanZero: aSquareBoardNumber [
 	aSquareBoardNumber < 1
 		ifTrue: [ Error
 				signal: 'A board square must be assigned a value greater than zero' ]
 ]
 
-{ #category : #'as yet unclassified' }
-BoardSquare >> contains: aPlayer [ 
-	^occupants includes: aPlayer.
+{ #category : #accessing }
+BoardSquare >> contains: aPlayer [
+	^ occupants includes: aPlayer
 ]
 
 { #category : #initialization }
 BoardSquare >> initializeWith: aSquareBoardNumber [
-	occupants:= OrderedCollection new.
-	squareBoardNumber := aSquareBoardNumber.
+	occupants := OrderedCollection new.
+	squareBoardNumber := aSquareBoardNumber
 ]
 
-{ #category : #'as yet unclassified' }
-BoardSquare >> occupyingPlayer [
-	^occupants first.
+{ #category : #accessing }
+BoardSquare >> occupant [
+	^ occupants first
 ]
 
-{ #category : #'as yet unclassified' }
-BoardSquare >> place: player [  
-	occupants add: player. 
+{ #category : #boardSquareAction }
+BoardSquare >> place: player [
+	occupants add: player
 ]
 
-{ #category : #'as yet unclassified' }
-BoardSquare >> removeFromPosition: aPlayer [ 
-	occupants remove: aPlayer.
+{ #category : #boardSquareAction }
+BoardSquare >> removeFromPosition: aPlayer [
+	occupants remove: aPlayer
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BoardSquare >> squareNumber [
-	^ squareBoardNumber.
+	^ squareBoardNumber
 ]

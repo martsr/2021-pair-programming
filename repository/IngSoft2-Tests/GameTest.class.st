@@ -1,3 +1,7 @@
+"
+throwDiceCupTimes: anInteger inGame: aGame
+anInteger timesRepeat: [ aGame nextPlayerThrows ].
+"
 Class {
 	#name : #GameTest,
 	#superclass : #TestCase,
@@ -19,7 +23,7 @@ GameTest >> test01ADieWithTwentyFacesRollsANumberBetweenOneAndTwenty [
 	
 	| aDie |
 	
-	aDie := Die with: 20.
+	aDie := RegularDie withAmountOfFaces: 20.
 	self assert: (aDie throw between: 1 and: 20)
 ]
 
@@ -27,7 +31,7 @@ GameTest >> test01ADieWithTwentyFacesRollsANumberBetweenOneAndTwenty [
 GameTest >> test02ADieCannotHaveLessThanFourFaces [
 
 	self
-		should: [ Die with: 3 ]
+		should: [ RegularDie withAmountOfFaces: 3 ]
 		raise: Error
 		withMessage: 'Die faces cannot be less than 4'
 ]
@@ -37,8 +41,8 @@ GameTest >> test03DiceCupsContainsANumberOfDice [
 	
 	| aDie aSecondDie dice aDiceCup |
 	
-	aDie := Die with: 5.
-	aSecondDie := Die with: 14.
+	aDie := RegularDie withAmountOfFaces: 5.
+	aSecondDie := RegularDie withAmountOfFaces: 14.
 	dice := {aDie . aSecondDie}.
 	aDiceCup := DiceCup contains: dice.
 	self assert: aDiceCup amountOfDice equals: 2.
@@ -49,8 +53,8 @@ GameTest >> test04DiceCupWithATwentyFaceDieaAndASixFaceDieRollsANumberBetweenTwo
 	
 	| aDie aSecondDie dice aDiceCup |
 	
-	aDie := Die with: 6.
-	aSecondDie := Die with: 20.
+	aDie := RegularDie withAmountOfFaces: 6.
+	aSecondDie := RegularDie withAmountOfFaces: 20.
 	dice := {aDie . aSecondDie}.
 	aDiceCup := DiceCup contains: dice.
 	self assert: (aDiceCup throw between: 2 and: 26).
@@ -61,7 +65,7 @@ GameTest >> test05DiceCupWithASingleSixFacedDieRollsANumberBetween1and6 [
 	
 	| aDie   aDiceCup |
 	
-	aDie := Die with: 6.
+	aDie := RegularDie withAmountOfFaces: 6.
 	aDiceCup := DiceCup containsSingle: aDie.
 	self assert: (aDiceCup throw between: 1 and: 6).
 ]
@@ -117,12 +121,12 @@ GameTest >> test10ABoardMustContainAtLeast1SquareBoard [
 ]
 
 { #category : #tests }
-GameTest >> test11PlayerNumberShouldBeGreaterThanZero [
+GameTest >> test11PlayerNameShouldContainAtLeastOneCharacter [
 	
 	self
-		should: [ Player number: 0]
+		should: [ Player named: '']
 		raise: Error
-		withMessage: 'Player numbers must be at least 1'.
+		withMessage: 'Player name must at least contain one letter'.
 ]
 
 { #category : #tests }
@@ -130,9 +134,9 @@ GameTest >> test12ANFacedDeterministicDieAlwaysLandsOnNOver2IfTheFacesNumIsEvenO
 	
 	| aDetDie aSecondDetDie aThirdDetDie |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 12.
-	aThirdDetDie := DeterministicDie with: 5.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 12.
+	aThirdDetDie := DeterministicDie withAmountOfFaces: 5.
 	self assert: aDetDie throw equals: 3.
 	self assert: aSecondDetDie throw equals: 6.
 	self assert: aThirdDetDie throw equals: 2
@@ -142,7 +146,7 @@ GameTest >> test12ANFacedDeterministicDieAlwaysLandsOnNOver2IfTheFacesNumIsEvenO
 GameTest >> test13ADeterministicDieCannotHaveLessThanFourFaces [
 
 	self
-		should: [ DeterministicDie  with: 3 ]
+		should: [ DeterministicDie  withAmountOfFaces: 3 ]
 		raise: Error
 		withMessage: 'A Deterministic Die  cannot have less than 4 faces'
 ]
@@ -152,9 +156,9 @@ GameTest >> test14APlayerThrowsADeterministicDieCupWithTwoSixFacedDiceAndTheResu
 	
 	| player aDetDie aSecondDetDie aDiceCup |
 	
-	player := Player number: 1.
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	player := Player named: 'Fran'.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	aDiceCup := DiceCup contains: {aDetDie.aSecondDetDie}.
 	self assert: (player throwsWith: aDiceCup) equals: 6
 ]
@@ -162,45 +166,48 @@ GameTest >> test14APlayerThrowsADeterministicDieCupWithTwoSixFacedDiceAndTheResu
 { #category : #tests }
 GameTest >> test15AtTheStartOfTheGameAllPlayersArePlacedOnTheFirstBoardSquare [
 	
-	| aDetDie aSecondDetDie players aBoard aGame aDiceCup |
+	| aDetDie aSecondDetDie player aBoard aGame aDiceCup playerPositions player2 |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
-	players := Player number: 1.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
+	player := Player named: 'Fran'.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
-	aGame := Game withBoard: aBoard withPlayers: {players} withDice: aDiceCup.
-	self assert: (aBoard whereIsPlayer: players) equals: 1
+	aGame := Game withBoard: aBoard withPlayers: {player} withDice: aDiceCup.
+	playerPositions := Dictionary newFrom: {'Fran' -> 1}.
+	self assert: (aGame playerPositions) equals: playerPositions.
 ]
 
 { #category : #tests }
 GameTest >> test16APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceAndLandsOnSquare7 [
 	
-	| aDetDie aSecondDetDie players aDiceCup aBoard aGame |
+	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
-	players := Player number: 1.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
+	player := Player named: 'Fran'.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
-	aGame := Game withBoard: aBoard withPlayers: {players} withDice: aDiceCup.
-	aGame nextPlayerThrows.
-	self assert: (aBoard whereIsPlayer: players) equals: 7
+	aGame := Game withBoard: aBoard withPlayers: {player} withDice: aDiceCup.
+	self throwDiceCupTimes: 1 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 7}.
+	self assert: (aGame playerPositions) equals: playerPositions.
 ]
 
 { #category : #tests }
 GameTest >> test17APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTimesExceedsTheBoardSizeButIsPlacedOnTheLastSquare [
 	
-	| aDetDie aSecondDetDie players aDiceCup aBoard aGame |
+	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
-	players := Player number: 1.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
+	player := Player named: 'Fran'.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
-	aGame := Game withBoard: aBoard withPlayers: {players} withDice: aDiceCup.
-	4 timesRepeat: [aGame nextPlayerThrows].
-	self assert: (aBoard whereIsPlayer: players) equals: 20.
+	aGame := Game withBoard: aBoard withPlayers: {player} withDice: aDiceCup.
+	self throwDiceCupTimes: 4 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 20}.
+	self assert: (aGame playerPositions) equals: playerPositions.
 	self
 		should: [ aGame nextPlayerThrows ]
 		raise: Error
@@ -210,15 +217,15 @@ GameTest >> test17APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTim
 { #category : #tests }
 GameTest >> test18AGameWithABoardAndADiceCupShouldHaveAtLeastOnePayer [
 	
-	| aDetDie aSecondDetDie aDiceCup aBoard players |
+	| aDetDie aSecondDetDie aDiceCup aBoard player |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
-	players := {}.	
+	player := {}.	
 	self
-		should: [ Game withBoard: aBoard withPlayers: players withDice: aDiceCup ]
+		should: [ Game withBoard: aBoard withPlayers: player withDice: aDiceCup ]
 		raise: Error
 		withMessage: 'A game must have at least 1 player'.
 ]
@@ -226,32 +233,34 @@ GameTest >> test18AGameWithABoardAndADiceCupShouldHaveAtLeastOnePayer [
 { #category : #tests }
 GameTest >> test19APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTimesWinningTheGameAndNowTheGameCanInformThatPlayerIsTheWinner [
 	
-	| aDetDie aSecondDetDie player aDiceCup aBoard aGame |
+	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
-	player := Player number: 1.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
+	player := Player named: 'Fran'.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: {player} withDice: aDiceCup.
-	4 timesRepeat: [aGame nextPlayerThrows].
-	self assert: (aBoard whereIsPlayer: player) equals: 20.
+	self throwDiceCupTimes: 4 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 20}.
+	self assert: (aGame playerPositions) equals: playerPositions.
 	self assert: (aGame gameWinner) equals: player. 
 ]
 
 { #category : #tests }
 GameTest >> test20APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceOneTimeButTheGameCannotDetermineTheWinnerBecauseTheGameIsInProgress [
 	
-	| aDetDie aSecondDetDie player aDiceCup aBoard aGame |
+	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
-	player := Player number: 1.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
+	player := Player named: 'Fran'.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: {player} withDice: aDiceCup.
-	aGame nextPlayerThrows.
-	self assert: (aBoard whereIsPlayer: player) equals: 7.
+	self throwDiceCupTimes: 1 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 7}.
+	self assert: (aGame playerPositions) equals: playerPositions.
 	self
 		should: [ aGame gameWinner ]
 		raise: Error
@@ -261,67 +270,76 @@ GameTest >> test20APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceOneTime
 { #category : #tests }
 GameTest >> test21APlayerThrowsTheDeterministicDiceCupWithTwoSixFacedDiceFourTimesWinningTheGameAndNowTheGameCanInformThePlayerFinalPosition [
 	
-	| aDetDie aSecondDetDie player aDiceCup aBoard aGame |
+	| aDetDie aSecondDetDie player aDiceCup aBoard aGame playerPositions |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
-	player := Player number: 1.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
+	player := Player named: 'Fran'.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: {player} withDice: aDiceCup.
-	4 timesRepeat: [aGame nextPlayerThrows].
+	self throwDiceCupTimes: 4 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 20}.
 	self assert: (aBoard whereIsPlayer: player) equals: 20.
-	self assertCollection: (aGame playerPositions) equals: #(20). 
+	self assert: (aGame playerPositions) equals: playerPositions. 
 ]
 
 { #category : #tests }
 GameTest >> test22ThreePlayersThrowTheDiceCupOfTheGameAndAllLandOnSquareSeven [
-	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame |
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
-	playerOne := Player number: 1.
-	playerTwo := Player number: 2.
-	playerThree := Player number: 3.
+
+	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame playerPositions |
+	
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
+	playerOne := Player named: 'Fran'.
+	playerTwo := Player named: 'Martu'.
+	playerThree := Player named: 'Maia'.
 	players := {playerOne. playerTwo. playerThree}.
 	aDiceCup := DiceCup contains:{aDetDie.aSecondDetDie}.
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: players withDice: aDiceCup.
-	3 timesRepeat: [ aGame nextPlayerThrows ].
-	self assertCollection: (aGame playerPositions ) equals: #(7 7 7).
+	self throwDiceCupTimes: 3 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 7 . 'Martu' -> 7 . 'Maia' -> 7}.
+	self assert: (aGame playerPositions ) equals: playerPositions .
 ]
 
 { #category : #tests }
 GameTest >> test23ThreePlayersPlayTheGameAndPlayerOneWins [
+
 	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame |
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
-	playerOne := Player number: 1.
-	playerTwo := Player number: 2.
-	playerThree := Player number: 3.
+	
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
+	playerOne := Player named: 'Fran'.
+	playerTwo := Player named: 'Martu'.
+	playerThree := Player named: 'Maia'.
 	players := {playerOne. playerTwo. playerThree}.
 	aDiceCup := DiceCup contains:{aDetDie.aSecondDetDie}.
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: players withDice: aDiceCup.
-	10 timesRepeat: [ aGame nextPlayerThrows ].
+	self throwDiceCupTimes: 10 inGame: aGame.
 	self assert: (aGame gameWinner) equals: playerOne. 
 
 ]
 
 { #category : #tests }
 GameTest >> test24AGameIsPlayedByThreePlayersAndTheFirstPlayerFinishesOnTheLastSquareAndTheRemainingOnesInOneSquareBehind [
-	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame |
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
-	playerOne := Player number: 1.
-	playerTwo := Player number: 2.
-	playerThree := Player number: 3.
+
+	| aDetDie aSecondDetDie playerOne playerTwo playerThree players aDiceCup aBoard aGame playerPositions |
+	
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
+	playerOne := Player named: 'Fran'.
+	playerTwo := Player named: 'Mango'.
+	playerThree := Player named: 'Maia'.
 	players := {playerOne. playerTwo.playerThree}.
 	aDiceCup := DiceCup contains:{aDetDie.aSecondDetDie}.
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: players withDice: aDiceCup.
-	10 timesRepeat: [ aGame nextPlayerThrows ].
+	self throwDiceCupTimes: 10 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 20 . 'Mango' -> 19 . 'Maia' -> 19}.
 	self assert: aGame gameWinner equals: playerOne.
-	self assertCollection: aGame playerPositions equals: #(20 19 19).
+	self assert: aGame playerPositions equals: playerPositions.
 ]
 
 { #category : #tests }
@@ -329,16 +347,16 @@ GameTest >> test25AGameIsPlayedAndTheDiceCupCannotBeThrownAfterTheGameHasFinishe
 	
 	| aDetDie aSecondDetDie players aDiceCup aBoard aGame playerOne playerTwo playerThree |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
-	playerOne := Player number: 1.
-	playerTwo := Player number: 2.
-	playerThree := Player number: 3.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
+	playerOne := Player named: 'Fran'.
+	playerTwo := Player named: 'Mango'.
+	playerThree := Player named: 'Maia'.
 	players := { playerOne . playerTwo . playerThree }.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: players withDice: aDiceCup.
-	10 timesRepeat: [ aGame nextPlayerThrows ].
+	self throwDiceCupTimes: 10 inGame: aGame.
 	self
 		should: [ aGame nextPlayerThrows  ]
 		raise: Error
@@ -350,18 +368,44 @@ GameTest >> test26AGameIsInProgressAndTheWinnerCannotBeDeterminedBecauseTheGameI
 	
 	| aDetDie aSecondDetDie players aDiceCup aBoard aGame playerOne playerTwo playerThree |
 	
-	aDetDie := DeterministicDie with: 6.
-	aSecondDetDie := DeterministicDie with: 6.
-	playerOne := Player number: 1.
-	playerTwo := Player number: 2.
-	playerThree := Player number: 3.
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
+	playerOne := Player named: 'Fran'.
+	playerTwo := Player named: 'Mango'.
+	playerThree := Player named: 'Maia'.
 	players := { playerOne . playerTwo . playerThree }.
 	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
 	aBoard := Board containing: 20.
 	aGame := Game withBoard: aBoard withPlayers: players withDice: aDiceCup.
-	9 timesRepeat: [ aGame nextPlayerThrows ].
+	self throwDiceCupTimes: 9 inGame: aGame.
 	self
 		should: [ aGame gameWinner ]
 		raise: Error
 		withMessage: 'A winner cannot be determined, the game is still in progress'. 
+]
+
+{ #category : #tests }
+GameTest >> test27AGameCannotBeCreatedIfAnyPlayerHasARepeatedName [
+	
+	| aDetDie aSecondDetDie players aDiceCup aBoard playerOne playerTwo playerThree playerFour playerFive |
+	
+	aDetDie := DeterministicDie withAmountOfFaces: 6.
+	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
+	playerOne := Player named: 'Fran'.
+	playerTwo := Player named: 'Mango'.
+	playerThree := Player named: 'Maia'.
+	playerFour := Player named: 'Martu'.
+	playerFive := Player named: 'Martu'.
+	players := { playerOne . playerTwo . playerThree . playerFour . playerFive }.
+	aDiceCup := DiceCup contains: {aDetDie . aSecondDetDie}.
+	aBoard := Board containing: 20.
+	self
+		should: [ Game withBoard: aBoard withPlayers: players withDice: aDiceCup ]
+		raise: Error
+		withMessage: 'A game cannot be created with any players having repeated names'. 
+]
+
+{ #category : #iteration }
+GameTest >> throwDiceCupTimes: anInteger inGame: aGame [
+anInteger timesRepeat: [ aGame nextPlayerThrows ].
 ]
