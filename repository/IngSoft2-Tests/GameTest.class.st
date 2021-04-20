@@ -126,7 +126,7 @@ GameTest >> test11PlayerNameShouldContainAtLeastOneCharacter [
 	self
 		should: [ Player named: '']
 		raise: Error
-		withMessage: 'Player name must at least contain one letter'.
+		withMessage: 'Player name must have at least one letter'.
 ]
 
 { #category : #tests }
@@ -166,7 +166,7 @@ GameTest >> test14APlayerThrowsADeterministicDieCupWithTwoSixFacedDiceAndTheResu
 { #category : #tests }
 GameTest >> test15AtTheStartOfTheGameAllPlayersArePlacedOnTheFirstBoardSquare [
 	
-	| aDetDie aSecondDetDie player aBoard aGame aDiceCup playerPositions player2 |
+	| aDetDie aSecondDetDie player aBoard aGame aDiceCup playerPositions |
 	
 	aDetDie := DeterministicDie withAmountOfFaces: 6.
 	aSecondDetDie := DeterministicDie withAmountOfFaces: 6.
