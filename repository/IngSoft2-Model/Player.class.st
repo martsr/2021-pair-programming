@@ -16,7 +16,7 @@ Player class >> named: playerName [
 { #category : #validation }
 Player class >> validatesPlayersNamesMustContainAtLeastOneLetter: playerName [
 	playerName size  < 1
-		ifTrue: [ Error signal: 'Player name must at least contain one letter' ]
+		ifTrue: [ Error signal: 'Player name must have at least one letter' ]
 ]
 
 { #category : #initialization }
