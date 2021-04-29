@@ -2,20 +2,20 @@ Class {
 	#name : #BoardSquare,
 	#superclass : #Object,
 	#instVars : [
-		'squareBoardNumber',
-		'occupants'
+		'occupants',
+		'number'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
 BoardSquare class >> numbered: aSquareBoardNumber [
-	self validatesBoardSquareNumberGreaterThanZero: aSquareBoardNumber.
-	^ self new initializeWith: aSquareBoardNumber
+	self validatesAssignedNumberIsGreaterThanZero: aSquareBoardNumber.
+	^ self new initializeNumbered: aSquareBoardNumber
 ]
 
 { #category : #validation }
-BoardSquare class >> validatesBoardSquareNumberGreaterThanZero: aSquareBoardNumber [
+BoardSquare class >> validatesAssignedNumberIsGreaterThanZero: aSquareBoardNumber [
 	aSquareBoardNumber < 1
 		ifTrue: [ Error
 				signal: 'A board square must be assigned a value greater than zero' ]
@@ -27,9 +27,14 @@ BoardSquare >> contains: aPlayer [
 ]
 
 { #category : #initialization }
-BoardSquare >> initializeWith: aSquareBoardNumber [
+BoardSquare >> initializeNumbered: aSquareBoardNumber [
 	occupants := OrderedCollection new.
-	squareBoardNumber := aSquareBoardNumber
+	number := aSquareBoardNumber
+]
+
+{ #category : #accessing }
+BoardSquare >> number [
+	^ number
 ]
 
 { #category : #accessing }
@@ -37,17 +42,12 @@ BoardSquare >> occupant [
 	^ occupants first
 ]
 
-{ #category : #boardSquareAction }
+{ #category : #action }
 BoardSquare >> place: player [
 	occupants add: player
 ]
 
-{ #category : #boardSquareAction }
+{ #category : #action }
 BoardSquare >> removeFromPosition: aPlayer [
 	occupants remove: aPlayer
-]
-
-{ #category : #accessing }
-BoardSquare >> squareNumber [
-	^ squareBoardNumber
 ]

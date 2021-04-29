@@ -2,67 +2,67 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'boardSquare'
+		'squares'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
 Board class >> containing: aNumberOfSquareBoards [
-	self validateMoreThanOneBoardSquare: aNumberOfSquareBoards.
-	^ self new initializeBoardWith: aNumberOfSquareBoards
+	self validateMoreThanOneSquare: aNumberOfSquareBoards.
+	^ self new initializeContaining: aNumberOfSquareBoards
 ]
 
 { #category : #validation }
-Board class >> validateMoreThanOneBoardSquare: aNumberOfSquareBoards [
+Board class >> validateMoreThanOneSquare: aNumberOfSquareBoards [
 	aNumberOfSquareBoards < 2
 		ifTrue: [ Error signal: 'A board must contain at least 2 square board' ]
 ]
 
 { #category : #accessing }
 Board >> boardSquares [
-	^ boardSquare size
+	^ squares size
 ]
 
-{ #category : #boardAction }
+{ #category : #action }
 Board >> finalPositionsOf: players [
 	^ players collect: [ :player | self whereIsPlayer: player ]
 ]
 
 { #category : #initialization }
-Board >> initializeBoardWith: aNumberofSquareBoards [
-	boardSquare := OrderedCollection new.
-	(1 to: aNumberofSquareBoards) do:[ :squareBoardNumber | boardSquare add: (BoardSquare numbered: squareBoardNumber) ]
+Board >> initializeContaining: aNumberofSquareBoards [
+	squares := OrderedCollection new.
+	1 to: aNumberofSquareBoards do:[ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber) ]
 ]
 
-{ #category : #boardAction }
-Board >> move: player squares: amountPlaces inGame: aGame [
+{ #category : #action }
+Board >> move: player by: amountPlaces in: aGame [
 
 	| playerPosition newPlayerPosition |
 	
 	playerPosition := self whereIsPlayer: player.
-	(boardSquare at: playerPosition) removeFromPosition: player.
+	(squares at: playerPosition) removeFromPosition: player.
 	newPlayerPosition := playerPosition + amountPlaces.
-	newPlayerPosition >= boardSquare size ifTrue: [ newPlayerPosition := boardSquare size ].
-	(boardSquare at: newPlayerPosition) place: player.
-	newPlayerPosition = 20 ifTrue: [ aGame isNotifiedPlayerInLastSquare ]
+	newPlayerPosition :=  newPlayerPosition min: squares size.
+	(squares at: newPlayerPosition) place: player.
+	newPlayerPosition = (squares size) ifTrue: [ aGame isNotifiedPlayerInLastSquare ]
 ]
 
 { #category : #accessing }
 Board >> playerAtFinalSquare [
-	^ boardSquare last occupant
+	^ squares last occupant
 ]
 
-{ #category : #boardAction }
+{ #category : #action }
 Board >> setUpWith: players [
-	players do: [ :player | boardSquare first place: player ]
+	players do: [ :player | squares first place: player ]
 ]
 
-{ #category : #boardAction }
+{ #category : #action }
 Board >> whereIsPlayer: aPlayer [
 
 	| occupiedSquare |
 	
-	occupiedSquare := boardSquare select: [ :squareBoard | squareBoard contains: aPlayer ].
-	^ occupiedSquare first squareNumber
+	occupiedSquare := squares select: [ :squareBoard | squareBoard contains: aPlayer ].
+	^ occupiedSquare first number
 ]
