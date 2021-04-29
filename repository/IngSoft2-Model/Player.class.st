@@ -2,34 +2,34 @@ Class {
 	#name : #Player,
 	#superclass : #Object,
 	#instVars : [
-		'playerName'
+		'name'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
 Player class >> named: playerName [
-	self validatesPlayersNamesMustContainAtLeastOneLetter: playerName.
-	^ self new initializeWith: playerName
+	self validatesNamesMustContainAtLeastOneLetter: playerName.
+	^ self new initializeNamed: playerName
 ]
 
 { #category : #validation }
-Player class >> validatesPlayersNamesMustContainAtLeastOneLetter: playerName [
+Player class >> validatesNamesMustContainAtLeastOneLetter: playerName [
 	playerName size  < 1
 		ifTrue: [ Error signal: 'Player name must have at least one letter' ]
 ]
 
 { #category : #initialization }
-Player >> initializeWith: aPlayerName [
-	playerName := aPlayerName
+Player >> initializeNamed: aPlayerName [
+	name := aPlayerName
 ]
 
 { #category : #accessing }
 Player >> name [
-	^ playerName
+	^ name
 ]
 
-{ #category : #playerAction }
+{ #category : #action }
 Player >> throwsWith: aDiceCup [
 	^ aDiceCup throw
 ]

@@ -8,14 +8,14 @@ Class {
 }
 
 { #category : #'instance creation' }
-DiceCup class >> contains: dice [
+DiceCup class >> containing: dice [
 	self validateAmountOfDice: dice.
-	^ self new initializeWith: dice
+	^ self new initializeContaining: dice
 ]
 
 { #category : #'instance creation' }
-DiceCup class >> containsSingle: aDie [ 
-	^self new initializeWith: {aDie}
+DiceCup class >> containingSingle: aDie [ 
+	^self containing: {aDie}.
 ]
 
 { #category : #validation }
@@ -30,11 +30,11 @@ DiceCup >> amountOfDice [
 ]
 
 { #category : #initialization }
-DiceCup >> initializeWith: diceSet [
+DiceCup >> initializeContaining: diceSet [
 	dice := diceSet
 ]
 
-{ #category : #diceCupAction }
+{ #category : #action }
 DiceCup >> throw [
-	^ dice sum: [ :die | die throw ]
+	^ dice sumNumbers: [ :die | die throw ]
 ]
