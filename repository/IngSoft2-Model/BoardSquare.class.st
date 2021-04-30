@@ -37,11 +37,6 @@ BoardSquare >> number [
 	^ number
 ]
 
-{ #category : #accessing }
-BoardSquare >> occupant [
-	^ occupants first
-]
-
 { #category : #action }
 BoardSquare >> place: player [
 	occupants add: player
