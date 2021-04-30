@@ -6,16 +6,19 @@ Class {
 		'diceCup',
 		'isFinished',
 		'turn',
-		'players'
+		'players',
+		'laps',
+		'playerLaps'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-GameMandM class >> playedOn: aBoard by: players using: aDiceCup [
+GameMandM class >> playedOn: aBoard by: players using: aDiceCup requiring: amountOfLaps [
 	self validatesItMustHaveAtLeastOnePlayer: players.
 	self validatesItDoesntHavePlayersWithSameName: players.
-	^ self new intializePlayedOn: aBoard by: players using: aDiceCup
+	self validatesItNeedsAtLeastOneLap: amountOfLaps.
+	^ self new intializePlayedOn: aBoard by: players using: aDiceCup requiring: amountOfLaps
 ]
 
 { #category : #validation }
@@ -34,20 +37,40 @@ GameMandM class >> validatesItMustHaveAtLeastOnePlayer: aPlayer [
 		ifTrue: [ Error signal: 'A game must have at least 1 player' ]
 ]
 
+{ #category : #'instance creation' }
+GameMandM class >> validatesItNeedsAtLeastOneLap: amountOfLaps [
+	amountOfLaps < 1
+		ifTrue: [ Error signal: 'A game requires at least one lap to be playable.' ]
+]
+
+{ #category : #'as yet unclassified' }
+GameMandM >> amountOfLaps [
+	^laps.
+]
+
 { #category : #initialization }
-GameMandM >> intializePlayedOn: aBoard by: participants using: aDiceCup [
+GameMandM >> intializePlayedOn: aBoard by: participants using: aDiceCup requiring: amountOfLaps [
 
 	board := aBoard.
 	players := participants.
 	diceCup := aDiceCup.
 	isFinished := false.
 	turn := 1.
+	laps:= amountOfLaps. 
+	playerLaps := Dictionary new.
+	1 to: (players size) do: [ :position | playerLaps at: ((players at: position) name) put: 0 ].
 	board setUpWith: players
 ]
 
-{ #category : #notification }
-GameMandM >> isNotifiedPlayerInLastSquare [
-	isFinished := true.
+{ #category : #'as yet unclassified' }
+GameMandM >> isNotified: aPlayer made: amountOfLaps [
+	| playerName lapsDone lapsTotal |
+	playerName := aPlayer name.
+	lapsDone := playerLaps at: playerName.
+	lapsTotal := lapsDone + amountOfLaps.
+	playerLaps at: playerName put: (lapsTotal min: laps).
+	(playerLaps at: playerName) = laps
+		ifTrue: [ self placeWinnerInFinalSquare: aPlayer  ].
 ]
 
 { #category : #action }
@@ -61,6 +84,12 @@ GameMandM >> nextPlayerThrows [
 	board move: player by: resultOfThrow in: self.
 	self verifyNextPlayerNeedsToThrow.
 	
+]
+
+{ #category : #'as yet unclassified' }
+GameMandM >> placeWinnerInFinalSquare: aPlayer [
+	board places: aPlayer at: board boardSquares.
+	isFinished := true
 ]
 
 { #category : #accesing }
@@ -91,6 +120,9 @@ GameMandM >> verifyNextPlayerNeedsToThrow [
 
 { #category : #accesing }
 GameMandM >> winner [
+	| winnerName winner |
 	self verifyItIsInProgress.
-	^ board playerAtFinalSquare
+	winnerName := playerLaps keyAtValue: laps.
+	winner := players detect: [ :player | player name = winnerName ].
+	^ winner
 ]

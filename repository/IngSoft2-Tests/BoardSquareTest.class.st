@@ -15,7 +15,7 @@ BoardSquareTest >> should: errorBlock raise: exceptionClass withMessage: expecte
 ]
 
 { #category : #tests }
-BoardSquareTest >> test07ABoardSquareHasAValidPositionAssigned [
+BoardSquareTest >> test01ABoardSquareHasAValidPositionAssigned [
 	
 	| aBoardSquare |
 	
@@ -24,7 +24,7 @@ BoardSquareTest >> test07ABoardSquareHasAValidPositionAssigned [
 ]
 
 { #category : #tests }
-BoardSquareTest >> test08ABoardSquareMustBeAssignedAValueGreaterThanZero [
+BoardSquareTest >> test02ABoardSquareMustBeAssignedAValueGreaterThanZero [
 	
 	self
 		should: [ BoardSquare numbered: 0 ]

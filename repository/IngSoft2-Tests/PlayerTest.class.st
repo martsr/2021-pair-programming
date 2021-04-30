@@ -15,7 +15,7 @@ PlayerTest >> should: errorBlock raise: exceptionClass withMessage: expectedErro
 ]
 
 { #category : #tests }
-PlayerTest >> test11PlayerNameShouldContainAtLeastOneCharacter [
+PlayerTest >> test01PlayerNameShouldContainAtLeastOneCharacter [
 	
 	self
 		should: [ Player named: '']
@@ -24,7 +24,7 @@ PlayerTest >> test11PlayerNameShouldContainAtLeastOneCharacter [
 ]
 
 { #category : #tests }
-PlayerTest >> test14APlayerThrowsADeterministicDieCupWithTwoSixFacedDiceAndTheResultIsSix [
+PlayerTest >> test02APlayerThrowsADeterministicDieCupWithTwoSixFacedDiceAndTheResultIsSix [
 	
 	| player aDetDie  aDiceCup aSecondDetDie |
 	

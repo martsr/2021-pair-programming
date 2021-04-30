@@ -15,7 +15,7 @@ DeterministicDieTest >> should: errorBlock raise: exceptionClass withMessage: ex
 ]
 
 { #category : #tests }
-DeterministicDieTest >> test12ADeterminsticDieMustHaveASequenceOfAtLeastOneNumber [
+DeterministicDieTest >> test01ADeterminsticDieMustHaveASequenceOfAtLeastOneNumber [
 	
 	| aDeterministicDie |
 	
@@ -27,7 +27,7 @@ DeterministicDieTest >> test12ADeterminsticDieMustHaveASequenceOfAtLeastOneNumbe
 ]
 
 { #category : #tests }
-DeterministicDieTest >> test13ADeterminsticDieWithASequenceThrowsItContinuously [
+DeterministicDieTest >> test02ADeterminsticDieWithASequenceThrowsItContinuously [
 	
 	self
 		should: [ DeterministicDie having: {} ]

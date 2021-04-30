@@ -38,19 +38,25 @@ Board >> initializeContaining: aNumberofSquareBoards [
 { #category : #action }
 Board >> move: player by: amountPlaces in: aGame [
 
-	| playerPosition newPlayerPosition |
+	| playerPosition newPlayerPosition calculatedPlayerPosition amountOfLaps |
 	
 	playerPosition := self whereIsPlayer: player.
 	(squares at: playerPosition) removeFromPosition: player.
-	newPlayerPosition := playerPosition + amountPlaces.
-	newPlayerPosition :=  newPlayerPosition min: squares size.
+	calculatedPlayerPosition := playerPosition + amountPlaces.
+	newPlayerPosition := calculatedPlayerPosition > squares size
+		ifTrue: [ calculatedPlayerPosition rem: squares size ]
+		ifFalse: [ calculatedPlayerPosition ].
 	(squares at: newPlayerPosition) place: player.
-	newPlayerPosition = (squares size) ifTrue: [ aGame isNotifiedPlayerInLastSquare ]
+	amountOfLaps := calculatedPlayerPosition // squares size.
+	amountOfLaps > 0 ifTrue: [ aGame isNotified: player made: amountOfLaps ]
 ]
 
-{ #category : #accessing }
-Board >> playerAtFinalSquare [
-	^ squares last occupant
+{ #category : #'as yet unclassified' }
+Board >> places: aPlayer at: squareNumber [ 
+	| playerPosition |
+	playerPosition := self whereIsPlayer: aPlayer. 
+	(squares at: playerPosition ) removeFromPosition: aPlayer.
+	(squares at: squareNumber) place: aPlayer.
 ]
 
 { #category : #action }

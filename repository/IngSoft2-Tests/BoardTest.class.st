@@ -15,7 +15,7 @@ BoardTest >> should: errorBlock raise: exceptionClass withMessage: expectedError
 ]
 
 { #category : #tests }
-BoardTest >> test09ABoardCreatedWithTwentySquareBoardsHasTwentySquareBoards [
+BoardTest >> test01ABoardCreatedWithTwentySquareBoardsHasTwentySquareBoards [
 	
 	| aBoard |
 	
@@ -24,7 +24,7 @@ BoardTest >> test09ABoardCreatedWithTwentySquareBoardsHasTwentySquareBoards [
 ]
 
 { #category : #tests }
-BoardTest >> test10ABoardMustContainAtLeast1SquareBoard [
+BoardTest >> test02ABoardMustContainAtLeast1SquareBoard [
 	
 	self
 		should: [ Board containing: 0 ]
