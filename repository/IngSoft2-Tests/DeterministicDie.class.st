@@ -2,7 +2,6 @@ Class {
 	#name : #DeterministicDie,
 	#superclass : #Object,
 	#instVars : [
-		'numberOfFaces',
 		'sequence',
 		'index'
 	],

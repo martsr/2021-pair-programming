@@ -70,7 +70,7 @@ GameMandM >> isNotified: aPlayer made: amountOfLaps [
 	lapsTotal := lapsDone + amountOfLaps.
 	playerLaps at: playerName put: (lapsTotal min: laps).
 	(playerLaps at: playerName) = laps
-		ifTrue: [ self placeWinnerInFinalSquare: aPlayer  ].
+		ifTrue: [ self placeWinnerInFirstSquare: aPlayer  ].
 ]
 
 { #category : #action }
@@ -87,8 +87,8 @@ GameMandM >> nextPlayerThrows [
 ]
 
 { #category : #'as yet unclassified' }
-GameMandM >> placeWinnerInFinalSquare: aPlayer [
-	board places: aPlayer at: board boardSquares.
+GameMandM >> placeWinnerInFirstSquare: aPlayer [
+	board places: aPlayer at: 1.
 	isFinished := true
 ]
 
@@ -101,6 +101,18 @@ GameMandM >> playerPositions [
 	playerPositions := Dictionary new.
 	1 to: numberPositions size do: [ :position | playerPositions at: ((players at: position) name) put: (numberPositions at: position) ].
 	^playerPositions.
+]
+
+{ #category : #'as yet unclassified' }
+GameMandM >> playerRanking [
+
+	| placementCalculations playerRanking rankingNames |
+	
+	placementCalculations := playerLaps copy.
+	placementCalculations keysDo: [ :playerName | placementCalculations at: playerName put:((playerLaps at: playerName) * (board boardSquares) + (self playerPositions at: playerName))].
+	playerRanking := players sort: [ :playerOne :playerTwo | (placementCalculations at: playerOne name) > (placementCalculations at: playerTwo name)].
+	rankingNames := playerRanking collect: [ :player | player name ].
+	^rankingNames. 
 ]
 
 { #category : #private }
