@@ -35,20 +35,25 @@ Board >> initializeContaining: aNumberofSquareBoards [
 	1 to: aNumberofSquareBoards do:[ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber) ]
 ]
 
-{ #category : #action }
-Board >> move: player by: amountPlaces in: aGame [
-
-	| playerPosition newPlayerPosition calculatedPlayerPosition amountOfLaps |
-	
+{ #category : #'as yet unclassified' }
+Board >> move: player by: amountPlaces in: aGame onCurrent: lap [
+	| playerPosition newPlayerPosition calculatedPlayerPosition amountOfLaps absolutePosition |
+	amountOfLaps := 0.
 	playerPosition := self whereIsPlayer: player.
 	(squares at: playerPosition) removeFromPosition: player.
 	calculatedPlayerPosition := playerPosition + amountPlaces.
+	absolutePosition := lap * self boardSquares + calculatedPlayerPosition.
+	(calculatedPlayerPosition rem: (squares size)) = 0
+		ifTrue: [ calculatedPlayerPosition := self boardSquares ].
+	calculatedPlayerPosition < 0
+		ifTrue: [ calculatedPlayerPosition := absolutePosition ].
 	newPlayerPosition := calculatedPlayerPosition > squares size
 		ifTrue: [ calculatedPlayerPosition rem: squares size ]
 		ifFalse: [ calculatedPlayerPosition ].
 	(squares at: newPlayerPosition) place: player.
-	amountOfLaps := calculatedPlayerPosition // squares size.
-	amountOfLaps > 0 ifTrue: [ aGame isNotified: player made: amountOfLaps ]
+	amountOfLaps := absolutePosition // self boardSquares.
+  (((absolutePosition rem: self boardSquares)=0)) ifTrue: [ amountOfLaps := amountOfLaps -1 ].
+	amountOfLaps ~= lap ifTrue: [ aGame isNotified: player made: amountOfLaps ]
 ]
 
 { #category : #'as yet unclassified' }

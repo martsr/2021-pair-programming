@@ -64,12 +64,11 @@ GameMandM >> intializePlayedOn: aBoard by: participants using: aDiceCup requirin
 
 { #category : #'as yet unclassified' }
 GameMandM >> isNotified: aPlayer made: amountOfLaps [
-	| playerName lapsDone lapsTotal |
+	| playerName lapsDone |
 	playerName := aPlayer name.
 	lapsDone := playerLaps at: playerName.
-	lapsTotal := lapsDone + amountOfLaps.
-	playerLaps at: playerName put: (lapsTotal min: laps).
-	(playerLaps at: playerName) = laps
+	playerLaps at: playerName put:amountOfLaps.
+	(playerLaps at: playerName) >= laps
 		ifTrue: [ self placeWinnerInFirstSquare: aPlayer  ].
 ]
 
@@ -81,13 +80,14 @@ GameMandM >> nextPlayerThrows [
 	self verifyItisFinished.
 	player := players at: turn.
 	resultOfThrow := player throwsWith: diceCup.
-	board move: player by: resultOfThrow in: self.
+	board move: player by: resultOfThrow in: self onCurrent: (playerLaps at: (player name)).
 	self verifyNextPlayerNeedsToThrow.
 	
 ]
 
 { #category : #'as yet unclassified' }
 GameMandM >> placeWinnerInFirstSquare: aPlayer [
+	playerLaps at: aPlayer name put:laps.
 	board places: aPlayer at: 1.
 	isFinished := true
 ]
