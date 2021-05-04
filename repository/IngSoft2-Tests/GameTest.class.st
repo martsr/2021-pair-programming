@@ -265,7 +265,7 @@ GameTest >> test14NewlyCreatedGameReturnTheAmountOfLapsItsRequired [
 	self generateDeterministicDiceCupWith: #(#(5 8 6 3) #(5 8 6 3)).
 	aBoard := Board containing: 40.
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
-	self assert: (aGame amountOfLaps ) equals: 1. 
+	self assert: (aGame amountOfLaps) equals: 1. 
 ]
 
 { #category : #tests }
@@ -286,7 +286,7 @@ GameTest >> test15VerifyAGameRequiresAtLeastOneLapToBeCreated [
 { #category : #tests }
 GameTest >> test16APlayerPlaysTheGameAndCompletesTwoLapsOfTheThreeLapsRequiredToWin [
 	
-	| aBoard laps aGame playerPositions |
+	| aBoard laps aGame playerPositions playerLaps |
 	
 	laps := 3. 
 	self generatePlayerCollectionWith: #('Fran').
@@ -295,13 +295,15 @@ GameTest >> test16APlayerPlaysTheGameAndCompletesTwoLapsOfTheThreeLapsRequiredTo
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 2 inGame: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 3}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 2}.
+	self assert: aGame playerLaps equals: playerLaps.
 	self assert: aGame playerPositions equals: playerPositions.
 ]
 
 { #category : #tests }
 GameTest >> test17APlayerPlaysTheGameAndCompletesTheAmountOfLapsRequiredMakingHimTheWinnerAndIsPositionedOnTheFirstSquare [
 	
-	| aBoard laps aGame playerPositions |
+	| aBoard laps aGame playerPositions playerLaps |
 	
 	laps := 1. 
 	self generatePlayerCollectionWith: #('Fran').
@@ -310,13 +312,15 @@ GameTest >> test17APlayerPlaysTheGameAndCompletesTheAmountOfLapsRequiredMakingHi
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 1 inGame: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 1}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 1}.
+	self assert: aGame playerLaps equals: playerLaps.
 	self assert: aGame playerPositions equals: playerPositions.
 ]
 
 { #category : #tests }
 GameTest >> test18PlayersPlayTheGameOneWinsAndTheRestFinishWithDifferentLapsDone [
 	
-	| aBoard laps aGame playerPositions |
+	| aBoard laps aGame playerPositions playerLaps |
 	
 	laps := 2.
 	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Mango').
@@ -325,6 +329,8 @@ GameTest >> test18PlayersPlayTheGameOneWinsAndTheRestFinishWithDifferentLapsDone
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 3 inGame: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->7 . 'Martu'->3 . 'Mango'->1}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 0 . 'Martu' -> 1 . 'Mango' -> 2}.
+	self assert: aGame playerLaps equals: playerLaps.
 	self assert: aGame playerPositions equals: playerPositions.
 ]
 

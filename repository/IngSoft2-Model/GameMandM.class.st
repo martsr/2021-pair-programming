@@ -64,9 +64,10 @@ GameMandM >> intializePlayedOn: aBoard by: participants using: aDiceCup requirin
 
 { #category : #'as yet unclassified' }
 GameMandM >> isNotified: aPlayer made: amountOfLaps [
-	| playerName lapsDone |
+	
+	| playerName |
+	
 	playerName := aPlayer name.
-	lapsDone := playerLaps at: playerName.
 	playerLaps at: playerName put:amountOfLaps.
 	(playerLaps at: playerName) >= laps
 		ifTrue: [ self placeWinnerInFirstSquare: aPlayer  ].
@@ -87,9 +88,16 @@ GameMandM >> nextPlayerThrows [
 
 { #category : #'as yet unclassified' }
 GameMandM >> placeWinnerInFirstSquare: aPlayer [
+	
+	"El nombre tiene que cambiar, hace mas cosas de lo que dice"
 	playerLaps at: aPlayer name put:laps.
 	board places: aPlayer at: 1.
 	isFinished := true
+]
+
+{ #category : #testing }
+GameMandM >> playerLaps [
+	^ playerLaps copy.
 ]
 
 { #category : #accesing }
