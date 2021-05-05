@@ -374,13 +374,13 @@ GameTest >> test21RankingForMultiplePlayersWithTwoOfThemWithSameAmountOfLapsAndS
 	| aBoard laps aGame playerPositions nameRanking |
 	
 	laps := 2.
-	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Oscar' 'Mango').
+	self generatePlayerCollectionWith: #('Fran' 'Oscar' 'Martu' 'Mango').
 	self generateDeterministicDiceCupWith: #(#(3 11 11 20) #(3 11 11 20)).
 	aBoard := Board containing: 20.
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 4 inGame: aGame.
-	playerPositions := Dictionary newFrom: {'Fran' ->7 . 'Martu'->3 . 'Oscar'->3 . 'Mango'->1}.
-	nameRanking := #('Mango' 'Oscar' 'Martu' 'Fran').
+	playerPositions := Dictionary newFrom: {'Fran' ->7 . 'Oscar'->3 . 'Martu'->3 . 'Mango'->1}.
+	nameRanking := #('Mango' 'Martu' 'Oscar' 'Fran').
 	self assert: aGame playerPositions equals: playerPositions.
 	self assert: aGame playerRanking equals: nameRanking.
 ]

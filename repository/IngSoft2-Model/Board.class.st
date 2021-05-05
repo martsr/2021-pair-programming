@@ -24,11 +24,6 @@ Board >> boardSquares [
 	^ squares size
 ]
 
-{ #category : #action }
-Board >> finalPositionsOf: players [
-	^ players collect: [ :player | self whereIsPlayer: player ]
-]
-
 { #category : #initialization }
 Board >> initializeContaining: aNumberofSquareBoards [
 	squares := OrderedCollection new.
@@ -36,26 +31,17 @@ Board >> initializeContaining: aNumberofSquareBoards [
 ]
 
 { #category : #'as yet unclassified' }
-Board >> move: player by: amountPlaces in: aGame onCurrent: lap [
+Board >> move: player by: amountPlaces in: aGame with: aPlayerIndex [
 	
-	| playerPosition newPlayerPosition calculatedPlayerPosition amountOfLaps absolutePosition |
+	| playerPosition newPlayerPosition calculatedPlayerPosition |
 	
-	amountOfLaps := 0.
 	playerPosition := self whereIsPlayer: player.
 	(squares at: playerPosition) removeFromPosition: player.
-	calculatedPlayerPosition := playerPosition + amountPlaces.
-	absolutePosition := lap * self boardSquares + calculatedPlayerPosition.
-	(calculatedPlayerPosition rem: (squares size)) = 0
-		ifTrue: [ calculatedPlayerPosition := self boardSquares ].
-	calculatedPlayerPosition < 0
-		ifTrue: [ calculatedPlayerPosition := absolutePosition ].
-	newPlayerPosition := calculatedPlayerPosition > squares size
-		ifTrue: [ calculatedPlayerPosition rem: squares size ]
-		ifFalse: [ calculatedPlayerPosition ].
+	calculatedPlayerPosition := (aGame playerAbsolutePositions at: aPlayerIndex) + amountPlaces.
+	(calculatedPlayerPosition <= 0) ifTrue: [ calculatedPlayerPosition := 1 ].
+	newPlayerPosition := (calculatedPlayerPosition rem: squares size) = 0 ifTrue: [ squares size ] ifFalse: [ calculatedPlayerPosition rem: squares size ].
 	(squares at: newPlayerPosition) place: player.
-	amountOfLaps := absolutePosition // self boardSquares.
-  	((absolutePosition rem: self boardSquares)=0) ifTrue: [ amountOfLaps := amountOfLaps -1 ].
-	amountOfLaps ~= lap ifTrue: [ aGame isNotified: player made: amountOfLaps ].
+	aGame isNotified: player movedTo: calculatedPlayerPosition.
 ]
 
 { #category : #'as yet unclassified' }

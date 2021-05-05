@@ -8,7 +8,7 @@ Class {
 		'turn',
 		'players',
 		'laps',
-		'playerLaps'
+		'playersAbsolutePositions'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -50,38 +50,38 @@ GameMandM >> amountOfLaps [
 
 { #category : #initialization }
 GameMandM >> intializePlayedOn: aBoard by: participants using: aDiceCup requiring: amountOfLaps [
-
+	
 	board := aBoard.
 	players := participants.
 	diceCup := aDiceCup.
 	isFinished := false.
 	turn := 1.
-	laps:= amountOfLaps. 
-	playerLaps := Dictionary new.
-	1 to: (players size) do: [ :position | playerLaps at: ((players at: position) name) put: 0 ].
-	board setUpWith: players
+	laps := amountOfLaps.
+	playersAbsolutePositions := OrderedCollection new.
+	1 to: players size do: [ :position | playersAbsolutePositions add: 1 ].
+	board setUpWith: players.
 ]
 
 { #category : #'as yet unclassified' }
-GameMandM >> isNotified: aPlayer made: amountOfLaps [
+GameMandM >> isNotified: aPlayer movedTo: newPlayerPosition [
 	
-	| playerName |
+	| playerIndex |
 	
-	playerName := aPlayer name.
-	playerLaps at: playerName put:amountOfLaps.
-	(playerLaps at: playerName) >= laps
-		ifTrue: [ self placeWinnerInFirstSquare: aPlayer  ].
+	playerIndex := players indexOf: aPlayer.
+	playersAbsolutePositions at: playerIndex put: newPlayerPosition.
+	(playersAbsolutePositions at: playerIndex) >= (board boardSquares * laps) ifTrue: [ self placeWinnerInFirstSquare: aPlayer ]
 ]
 
 { #category : #action }
 GameMandM >> nextPlayerThrows [
 
-	| resultOfThrow player |
+	| resultOfThrow player playerIndex |
 	
 	self verifyItisFinished.
 	player := players at: turn.
+   playerIndex := players indexOf: player.
 	resultOfThrow := player throwsWith: diceCup.
-	board move: player by: resultOfThrow in: self onCurrent: (playerLaps at: (player name)).
+	board move: player by: resultOfThrow in: self with: playerIndex.
 	self verifyNextPlayerNeedsToThrow.
 	
 ]
@@ -90,22 +90,36 @@ GameMandM >> nextPlayerThrows [
 GameMandM >> placeWinnerInFirstSquare: aPlayer [
 	
 	"El nombre tiene que cambiar, hace mas cosas de lo que dice"
-	playerLaps at: aPlayer name put:laps.
-	board places: aPlayer at: 1.
-	isFinished := true
+	
+	 | playerIndex |
+	 playerIndex := players indexOf: aPlayer.
+	 playersAbsolutePositions at: playerIndex put:(((board boardSquares)* laps)+1).
+    board places: aPlayer at: 1.
+    isFinished := true
+]
+
+{ #category : #'as yet unclassified' }
+GameMandM >> playerAbsolutePositions [
+
+	^ playersAbsolutePositions copy.
 ]
 
 { #category : #testing }
 GameMandM >> playerLaps [
-	^ playerLaps copy.
+	| numberPositions playerPositions |
+	 
+	numberPositions := playersAbsolutePositions collect: [ :position | position // (board boardSquares) ].
+	playerPositions := Dictionary new.
+	1 to: numberPositions size do: [ :position | playerPositions at: ((players at: position) name) put: (numberPositions at: position) ].
+	^playerPositions.
 ]
 
 { #category : #accesing }
 GameMandM >> playerPositions [
 
 	| numberPositions playerPositions |
-	
-	numberPositions := board finalPositionsOf: players.
+	 
+	numberPositions := playersAbsolutePositions collect: [ :position | (position rem: (board boardSquares)) = 0 ifTrue: [ position ] ifFalse: [ position rem: (board boardSquares) ] ].
 	playerPositions := Dictionary new.
 	1 to: numberPositions size do: [ :position | playerPositions at: ((players at: position) name) put: (numberPositions at: position) ].
 	^playerPositions.
@@ -116,9 +130,9 @@ GameMandM >> playerRanking [
 
 	| placementCalculations playerRanking rankingNames |
 	
-	placementCalculations := playerLaps copy.
-	placementCalculations keysDo: [ :playerName | placementCalculations at: playerName put:((playerLaps at: playerName) * (board boardSquares) + (self playerPositions at: playerName))].
-	playerRanking := players sort: [ :playerOne :playerTwo | (placementCalculations at: playerOne name) > (placementCalculations at: playerTwo name)].
+	placementCalculations := Dictionary new.
+	1 to: (players size) do: [ :index | placementCalculations at: ((players at:index) name) put:(playersAbsolutePositions at: index)].
+	playerRanking := players sort: [ :playerOne :playerTwo | (placementCalculations at: playerOne name) > (placementCalculations at: playerTwo name) and: (playerOne name > playerTwo name)].
 	rankingNames := playerRanking collect: [ :player | player name ].
 	^rankingNames. 
 ]
@@ -140,9 +154,10 @@ GameMandM >> verifyNextPlayerNeedsToThrow [
 
 { #category : #accesing }
 GameMandM >> winner [
-	| winnerName winner |
+	| winnerName winner winnerIndex |
+	
 	self verifyItIsInProgress.
-	winnerName := playerLaps keyAtValue: laps.
-	winner := players detect: [ :player | player name = winnerName ].
+	winnerIndex := playersAbsolutePositions indexOf: (((board boardSquares) * laps) + 1).
+	winner := players at: winnerIndex.
 	^ winner
 ]
