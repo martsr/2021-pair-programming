@@ -77,7 +77,7 @@ GameTest >> test02APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 ]
 
 { #category : #tests }
-GameTest >> test03APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequenceFourTimesExceedsTheBoardSizeAndIsPlacedOnTheFirstSquareBecauseItWon [
+GameTest >> test03APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequenceFourTimesExceedsTheBoardSizeAndItWon [
 	
 	| aBoard aGame playerPositions laps |
 	
@@ -87,7 +87,7 @@ GameTest >> test03APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 	aBoard := Board containing: 40.
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 4 inGame: aGame.
-	playerPositions := Dictionary newFrom: {'Fran' -> 1}.
+	playerPositions := Dictionary newFrom: {'Fran' -> 5}.
 	self assert: (aGame playerPositions) equals: playerPositions.
 	self
 		should: [ aGame nextPlayerThrows ]
@@ -120,7 +120,7 @@ GameTest >> test05APlayerThrowsTheDeterministicDiceCupWWithTwoDiceWithTheSameSeq
 	aBoard := Board containing: 40.
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 4 inGame: aGame.
-	playerPositions := Dictionary newFrom: {('Fran' -> 1)}.
+	playerPositions := Dictionary newFrom: {('Fran' -> 5)}.
 	self assert: aGame playerPositions equals: playerPositions.
 	self assert: aGame winner equals: (players at: 1).
 ]
@@ -155,8 +155,8 @@ GameTest >> test07APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 	aBoard := Board containing: 40.
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 4 inGame: aGame.
-	playerPositions := Dictionary newFrom: {'Fran' -> 1}.
-	self assert: (aBoard whereIsPlayer: (players at: 1)) equals: 1.
+	playerPositions := Dictionary newFrom: {'Fran' -> 5}.
+	self assert: (aBoard whereIsPlayer: (players at: 1)) equals: 5.
 	self assert: (aGame playerPositions) equals: playerPositions. 
 ]
 
@@ -383,6 +383,95 @@ GameTest >> test21RankingForMultiplePlayersWithTwoOfThemWithSameAmountOfLapsAndS
 	nameRanking := #('Mango' 'Martu' 'Oscar' 'Fran').
 	self assert: aGame playerPositions equals: playerPositions.
 	self assert: aGame playerRanking equals: nameRanking.
+]
+
+{ #category : #tests }
+GameTest >> test22APlayerLandsOnASquareWithNoEffectAndItsPositionDoesntChange [
+	
+	| aBoard laps aGame playerPositions |
+	
+	laps := 2.
+	self generatePlayerCollectionWith: #('Fran').
+	self generateDeterministicDiceCupWith: #(#(3 11 11 20) #(3 11 11 20)).
+	aBoard := Board containing: 20withEffect: NoEffect new.
+	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
+	self throwDiceCupTimes: 1 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->7 }.
+	self assert: aGame playerPositions equals: playerPositions.
+]
+
+{ #category : #tests }
+GameTest >> test23APlayerLandsOnASquareWithSpeedUpEffectAndItsPositionIncreasesByFour [
+	
+	| aBoard laps aGame playerPositions |
+	
+	laps := 2.
+	self generatePlayerCollectionWith: #('Fran').
+	self generateDeterministicDiceCupWith: #(#(3 11 11 20) #(3 11 11 20)).
+	aBoard := Board containing: 20 withEffect: SpeedUpEffect new.
+	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
+	self throwDiceCupTimes: 1 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->11}.
+	self assert: aGame playerPositions equals: playerPositions.
+]
+
+{ #category : #tests }
+GameTest >> test23APlayerLandsOnASquareWithWormHoleEffectAndItsPositionDecreasesByFour [
+	
+	| aBoard laps aGame playerPositions |
+	
+	laps := 2.
+	self generatePlayerCollectionWith: #('Fran').
+	self generateDeterministicDiceCupWith: #(#(3 11 11 20) #(3 11 11 20)).
+	aBoard := Board containing: 20 withEffect: WormHoleEffect new.
+	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
+	self throwDiceCupTimes: 1 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->3}.
+	self assert: aGame playerPositions equals: playerPositions.
+]
+
+{ #category : #tests }
+GameTest >> test24APlayerLandsOnASquareWithAtomicBombffectAndAllPlayersAreMovedToTheFirstSquareWithoutModifyingTheirLaps [
+	
+	| aBoard laps aGame playerPositions playerLaps |
+	
+	laps := 2.
+	self generatePlayerCollectionWith: #('Fran').
+	self generateDeterministicDiceCupWith: #(#(12) #(12)).
+	aBoard := Board containing: 20 withEffect: AtomicBombEffect new.
+	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
+	self throwDiceCupTimes: 1 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 1}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 1}.
+	self assert: aGame playerPositions equals: playerPositions.
+	self assert: aGame playerLaps equals: playerLaps.
+]
+
+{ #category : #tests }
+GameTest >> test25APlayerLandsOnASquareWithAtomicBombffectAndItsPositionTheFirstSquare [
+	
+	| aBoard laps aGame playerPositions playerLaps |
+	
+	laps := 3.
+	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Mango').
+	self generateDeterministicDiceCupWith: #(#(3 11 21) #(3 11 21 )).
+	aBoard := Board containing: 20 withEffect: AtomicBombEffect new.
+	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
+	self throwDiceCupTimes: 1 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 1.'Martu' -> 1.'Mango' -> 1}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 0.'Martu' -> 0.'Mango' -> 0}.
+	self assert: aGame playerPositions equals: playerPositions.
+	self assert: aGame playerLaps equals: playerLaps.
+	self throwDiceCupTimes: 1 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 1.'Martu' -> 1.'Mango' -> 1}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 0.'Martu' -> 1.'Mango' -> 0}.
+	self assert: aGame playerPositions equals: playerPositions.
+	self assert: aGame playerLaps equals: playerLaps.
+	self throwDiceCupTimes: 1 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 1.'Martu' -> 1.'Mango' -> 1}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 0.'Martu' -> 1.'Mango' -> 2}.
+	self assert: aGame playerPositions equals: playerPositions.
+	self assert: aGame playerLaps equals: playerLaps.
 ]
 
 { #category : #iteration }

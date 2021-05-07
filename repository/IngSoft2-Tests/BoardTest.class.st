@@ -31,3 +31,12 @@ BoardTest >> test02ABoardMustContainAtLeast1SquareBoard [
 		raise: Error
 		withMessage: 'A board must contain at least 2 square board'.
 ]
+
+{ #category : #tests }
+BoardTest >> test03ABoardCreatedWithTwentySquareBoardsWithNoEffect [
+	
+	| aBoard |
+	
+	aBoard := Board containing: 20 withEffect: NoEffect new.
+	self assert: (aBoard boardSquares) equals: 20.
+]

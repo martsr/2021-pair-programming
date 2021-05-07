@@ -48,6 +48,11 @@ GameMandM >> amountOfLaps [
 	^laps.
 ]
 
+{ #category : #accessing }
+GameMandM >> board [
+ ^board. 
+]
+
 { #category : #initialization }
 GameMandM >> intializePlayedOn: aBoard by: participants using: aDiceCup requiring: amountOfLaps [
 	
@@ -59,7 +64,7 @@ GameMandM >> intializePlayedOn: aBoard by: participants using: aDiceCup requirin
 	laps := amountOfLaps.
 	playersAbsolutePositions := OrderedCollection new.
 	1 to: players size do: [ :position | playersAbsolutePositions add: 1 ].
-	board setUpWith: players.
+	board setUpWith: players on: self.
 ]
 
 { #category : #'as yet unclassified' }
@@ -69,7 +74,7 @@ GameMandM >> isNotified: aPlayer movedTo: newPlayerPosition [
 	
 	playerIndex := players indexOf: aPlayer.
 	playersAbsolutePositions at: playerIndex put: newPlayerPosition.
-	(playersAbsolutePositions at: playerIndex) >= (board boardSquares * laps) ifTrue: [ self placeWinnerInFirstSquare: aPlayer ]
+	(playersAbsolutePositions at: playerIndex) > (board boardSquares * laps) ifTrue: [ isFinished := true ]
 ]
 
 { #category : #action }
@@ -84,18 +89,6 @@ GameMandM >> nextPlayerThrows [
 	board move: player by: resultOfThrow in: self with: playerIndex.
 	self verifyNextPlayerNeedsToThrow.
 	
-]
-
-{ #category : #'as yet unclassified' }
-GameMandM >> placeWinnerInFirstSquare: aPlayer [
-	
-	"El nombre tiene que cambiar, hace mas cosas de lo que dice"
-	
-	 | playerIndex |
-	 playerIndex := players indexOf: aPlayer.
-	 playersAbsolutePositions at: playerIndex put:(((board boardSquares)* laps)+1).
-    board places: aPlayer at: 1.
-    isFinished := true
 ]
 
 { #category : #'as yet unclassified' }
@@ -137,6 +130,11 @@ GameMandM >> playerRanking [
 	^rankingNames. 
 ]
 
+{ #category : #accessing }
+GameMandM >> players [
+ ^players copy. 
+]
+
 { #category : #private }
 GameMandM >> verifyItIsInProgress [
 	isFinished ifFalse: [ Error signal: 'A winner cannot be determined, the game is still in progress' ]
@@ -154,10 +152,11 @@ GameMandM >> verifyNextPlayerNeedsToThrow [
 
 { #category : #accesing }
 GameMandM >> winner [
-	| winnerName winner winnerIndex |
+	| winner winnerIndex |
 	
 	self verifyItIsInProgress.
-	winnerIndex := playersAbsolutePositions indexOf: (((board boardSquares) * laps) + 1).
+	winnerIndex := playersAbsolutePositions detect: [ :position | position >= (((board boardSquares) * laps) + 1)].
+	winnerIndex := playersAbsolutePositions indexOf: winnerIndex.
 	winner := players at: winnerIndex.
 	^ winner
 ]
