@@ -416,21 +416,6 @@ GameTest >> test23APlayerLandsOnASquareWithSpeedUpEffectAndItsPositionIncreasesB
 ]
 
 { #category : #tests }
-GameTest >> test23APlayerLandsOnASquareWithWormHoleEffectAndItsPositionDecreasesByFour [
-	
-	| aBoard laps aGame playerPositions |
-	
-	laps := 2.
-	self generatePlayerCollectionWith: #('Fran').
-	self generateDeterministicDiceCupWith: #(#(3 11 11 20) #(3 11 11 20)).
-	aBoard := Board containing: 20 withEffect: WormHoleEffect new.
-	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
-	self throwDiceCupTimes: 1 inGame: aGame.
-	playerPositions := Dictionary newFrom: {'Fran' ->3}.
-	self assert: aGame playerPositions equals: playerPositions.
-]
-
-{ #category : #tests }
 GameTest >> test24APlayerLandsOnASquareWithAtomicBombffectAndAllPlayersAreMovedToTheFirstSquareWithoutModifyingTheirLaps [
 	
 	| aBoard laps aGame playerPositions playerLaps |
@@ -471,6 +456,75 @@ GameTest >> test25APlayerLandsOnASquareWithAtomicBombffectAndItsPositionTheFirst
 	playerPositions := Dictionary newFrom: {'Fran' -> 1.'Martu' -> 1.'Mango' -> 1}.
 	playerLaps := Dictionary newFrom: {'Fran' -> 0.'Martu' -> 1.'Mango' -> 2}.
 	self assert: aGame playerPositions equals: playerPositions.
+	self assert: aGame playerLaps equals: playerLaps.
+]
+
+{ #category : #tests }
+GameTest >> test26APlayerLandsOnASquareWithWormHoleEffectAndItsPositionDecreasesByFour [
+	
+	| aBoard laps aGame playerPositions |
+	
+	laps := 2.
+	self generatePlayerCollectionWith: #('Fran').
+	self generateDeterministicDiceCupWith: #(#(3 11 11 20) #(3 11 11 20)).
+	aBoard := Board containing: 20 withEffect: WormHoleEffect new.
+	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
+	self throwDiceCupTimes: 1 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->3}.
+	self assert: aGame playerPositions equals: playerPositions.
+]
+
+{ #category : #tests }
+GameTest >> test27MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectAndTheirPositionsAreIncreasedByFour [
+	
+	| aBoard laps aGame playerPositions playerLaps |
+	
+	laps := 2.
+	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Maia').
+	self generateDeterministicDiceCupWith: #(#(3 11 15) #(3 11 15)).
+	aBoard := Board containing: 20 withEffect: SpeedUpEffect new.
+	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
+	self throwDiceCupTimes: 3 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->11 . 'Martu'->7 . 'Maia'->15}.
+	self assert: aGame playerPositions equals: playerPositions.
+	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->1 . 'Maia'->1}.
+	self assert: aGame playerLaps equals: playerLaps.
+]
+
+{ #category : #tests }
+GameTest >> test28MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectTheirPositionsAreIncreasedByFourAndOneOfThemWonBecauseItFinishedTheAmoutOflapsRequired [
+	
+	| aBoard laps aGame playerPositions playerLaps nameRanking |
+	
+	laps := 1.
+	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Maia').
+	self generateDeterministicDiceCupWith: #(#(3 7 9) #(3 7 9)).
+	aBoard := Board containing: 20 withEffect: SpeedUpEffect new.
+	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
+	self throwDiceCupTimes: 3 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->11 . 'Martu'->19 . 'Maia'->3}.
+	self assert: aGame playerPositions equals: playerPositions.
+	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->0 . 'Maia'->1}.
+	self assert: aGame playerLaps equals: playerLaps.
+	nameRanking := #('Maia' 'Martu' 'Fran').
+	self assert: aGame playerRanking equals: nameRanking.
+	self assert: aGame winner equals:(players at: 3).
+]
+
+{ #category : #tests }
+GameTest >> test29MoreThanOnePlayerLandsOnASquareWithWormHoleEffectAndTheirPositionsAreDecreasedByFour [
+	
+	| aBoard laps aGame playerPositions playerLaps |
+	
+	laps := 2.
+	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Maia').
+	self generateDeterministicDiceCupWith: #(#(1 11 15) #(1 11 15)).
+	aBoard := Board containing: 20 withEffect: WormHoleEffect new.
+	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
+	self throwDiceCupTimes: 3 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->1 . 'Martu'->19 . 'Maia'->7}.
+	self assert: aGame playerPositions equals: playerPositions.
+	playerLaps := Dictionary newFrom: {'Fran' -> 0 . 'Martu'->0 . 'Maia'->1}.
 	self assert: aGame playerLaps equals: playerLaps.
 ]
 
