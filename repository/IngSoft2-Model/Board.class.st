@@ -25,6 +25,11 @@ Board class >> validateMoreThanOneSquare: aNumberOfSquareBoards [
 		ifTrue: [ Error signal: 'A board must contain at least 2 square board' ]
 ]
 
+{ #category : #testing }
+Board >> atSquare: aSquareBoardNumber [ 
+	^ squares at: aSquareBoardNumber.
+]
+
 { #category : #accessing }
 Board >> boardSquares [
 	^ squares size
@@ -38,7 +43,9 @@ Board >> intializeContaining: aNumberOfSquareBoards withEffect: anEffect [
 
 { #category : #'as yet unclassified' }
 Board >> move: player by: amountPlaces in: aGame with: aPlayerIndex [
+
 	| playerPosition newPlayerPosition calculatedPlayerPosition |
+	
 	playerPosition := self whereIsPlayer: player.
 	(squares at: playerPosition) removeFromPosition: player.
 	calculatedPlayerPosition := (aGame playerAbsolutePositions at: aPlayerIndex) + amountPlaces.

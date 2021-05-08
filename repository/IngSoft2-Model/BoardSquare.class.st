@@ -67,3 +67,8 @@ BoardSquare >> place: player on: aGame [
 BoardSquare >> removeFromPosition: aPlayer [
 	occupants remove: aPlayer
 ]
+
+{ #category : #testing }
+BoardSquare >> typeOfEffect [
+	^effect.
+]

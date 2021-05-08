@@ -39,4 +39,45 @@ BoardTest >> test03ABoardCreatedWithTwentySquareBoardsWithNoEffect [
 	
 	aBoard := Board containing: 20 withEffect: NoEffect new.
 	self assert: (aBoard boardSquares) equals: 20.
+	self assert: (((aBoard atSquare: 1) typeOfEffect) class) equals: (NoEffect).
+	self assert: (((aBoard atSquare: 10) typeOfEffect) class) equals: (NoEffect).
+	self assert: (((aBoard atSquare: 20) typeOfEffect) class) equals: (NoEffect).
+	
+]
+
+{ #category : #tests }
+BoardTest >> test04ABoardCreatedWithTwentySquareBoardsWithSpeedUpEffect [
+	
+	| aBoard |
+	
+	aBoard := Board containing: 20 withEffect: SpeedUpEffect new.
+	self assert: (aBoard boardSquares) equals: 20.
+	self assert: (((aBoard atSquare: 1) typeOfEffect) class) equals: (SpeedUpEffect).
+	self assert: (((aBoard atSquare: 10) typeOfEffect) class) equals: (SpeedUpEffect).
+	self assert: (((aBoard atSquare: 20) typeOfEffect) class) equals: (SpeedUpEffect).
+	
+]
+
+{ #category : #tests }
+BoardTest >> test05ABoardCreatedWithTwentySquareBoardsWithWormHoleEffect [
+	
+	| aBoard |
+	
+	aBoard := Board containing: 20 withEffect: WormHoleEffect new.
+	self assert: (aBoard boardSquares) equals: 20.
+	self assert: (((aBoard atSquare: 1) typeOfEffect) class) equals: (WormHoleEffect).
+	self assert: (((aBoard atSquare: 10) typeOfEffect) class) equals: (WormHoleEffect).
+	self assert: (((aBoard atSquare: 20) typeOfEffect) class) equals: (WormHoleEffect).
+]
+
+{ #category : #tests }
+BoardTest >> test06ABoardCreatedWithTwentySquareBoardsWithAtomicBombEffect [
+	
+	| aBoard |
+	
+	aBoard := Board containing: 20 withEffect: AtomicBombEffect new.
+	self assert: (aBoard boardSquares) equals: 20.
+	self assert: (((aBoard atSquare: 1) typeOfEffect) class) equals: (AtomicBombEffect).
+	self assert: (((aBoard atSquare: 10) typeOfEffect) class) equals: (AtomicBombEffect).
+	self assert: (((aBoard atSquare: 20) typeOfEffect) class) equals: (AtomicBombEffect).
 ]

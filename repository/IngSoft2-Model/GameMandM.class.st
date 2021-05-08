@@ -45,7 +45,7 @@ GameMandM class >> validatesItNeedsAtLeastOneLap: amountOfLaps [
 
 { #category : #'as yet unclassified' }
 GameMandM >> amountOfLaps [
-	^laps.
+	^ laps.
 ]
 
 { #category : #accessing }
