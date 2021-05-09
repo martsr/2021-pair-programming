@@ -43,14 +43,14 @@ GameMandM class >> validatesItNeedsAtLeastOneLap: amountOfLaps [
 		ifTrue: [ Error signal: 'A game requires at least one lap to be playable.' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 GameMandM >> amountOfLaps [
 	^ laps.
 ]
 
 { #category : #accessing }
 GameMandM >> board [
- ^board. 
+ ^ board. 
 ]
 
 { #category : #initialization }
@@ -67,14 +67,13 @@ GameMandM >> intializePlayedOn: aBoard by: participants using: aDiceCup requirin
 	board setUpWith: players on: self.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 GameMandM >> isNotified: aPlayer movedTo: newPlayerPosition [
 	
 	| playerIndex |
 	
 	playerIndex := players indexOf: aPlayer.
 	playersAbsolutePositions at: playerIndex put: newPlayerPosition.
-	(playersAbsolutePositions at: playerIndex) > (board boardSquares * laps) ifTrue: [ isFinished := true ]
 ]
 
 { #category : #action }
@@ -99,32 +98,32 @@ GameMandM >> playerAbsolutePositions [
 
 { #category : #testing }
 GameMandM >> playerLaps [
-	| numberPositions playerPositions |
-	 
-	numberPositions := playersAbsolutePositions collect: [ :position | position // (board boardSquares) ].
-	playerPositions := Dictionary new.
-	1 to: numberPositions size do: [ :position | playerPositions at: ((players at: position) name) put: (numberPositions at: position) ].
-	^playerPositions.
+	| currentLaps playerNames playerLaps |
+	
+	playerNames := players collect: [ :player | player name ].
+	currentLaps := playersAbsolutePositions collect: [ :position | ((position rem: (board boardSquares)) = 0) ifTrue: [position // (board boardSquares) -1] ifFalse:[ position // (board boardSquares) ] ].
+	playerLaps := Dictionary newFromKeys: playerNames andValues: currentLaps.
+	^ playerLaps.
 ]
 
 { #category : #accesing }
 GameMandM >> playerPositions [
 
-	| numberPositions playerPositions |
+	| numberPositions playerPositions playerNames |
 	 
 	numberPositions := playersAbsolutePositions collect: [ :position | (position rem: (board boardSquares)) = 0 ifTrue: [ position ] ifFalse: [ position rem: (board boardSquares) ] ].
-	playerPositions := Dictionary new.
-	1 to: numberPositions size do: [ :position | playerPositions at: ((players at: position) name) put: (numberPositions at: position) ].
-	^playerPositions.
+	playerNames := players collect: [ :player | player name ].
+	playerPositions := Dictionary newFromKeys: playerNames andValues: numberPositions.
+	^ playerPositions.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 GameMandM >> playerRanking [
 
-	| placementCalculations playerRanking rankingNames |
+	| placementCalculations playerRanking rankingNames playerNames |
 	
-	placementCalculations := Dictionary new.
-	1 to: (players size) do: [ :index | placementCalculations at: ((players at:index) name) put:(playersAbsolutePositions at: index)].
+	playerNames := players collect: [ :player | player name ].
+	placementCalculations := Dictionary newFromKeys: playerNames andValues: playersAbsolutePositions .
 	playerRanking := players sort: [ :playerOne :playerTwo | (placementCalculations at: playerOne name) > (placementCalculations at: playerTwo name) and: (playerOne name > playerTwo name)].
 	rankingNames := playerRanking collect: [ :player | player name ].
 	^rankingNames. 
@@ -132,7 +131,7 @@ GameMandM >> playerRanking [
 
 { #category : #accessing }
 GameMandM >> players [
- ^players copy. 
+ ^ players copy. 
 ]
 
 { #category : #private }
@@ -147,7 +146,7 @@ GameMandM >> verifyItisFinished [
 
 { #category : #private }
 GameMandM >> verifyNextPlayerNeedsToThrow [
-	isFinished ifFalse: [ turn := (turn rem: (players size )) + 1 ]
+	(playersAbsolutePositions at: turn) > (board boardSquares * laps) ifTrue: [ isFinished := true ] ifFalse: [ turn := (turn rem: (players size )) + 1 ].
 ]
 
 { #category : #accesing }

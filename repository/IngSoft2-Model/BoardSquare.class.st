@@ -31,7 +31,7 @@ BoardSquare class >> validatesAssignedNumberIsGreaterThanZero: aSquareBoardNumbe
 
 { #category : #'as yet unclassified' }
 BoardSquare >> changeToApplyEffect [
-applyEffect:= true
+	applyEffect := true
 ]
 
 { #category : #'as yet unclassified' }
@@ -63,7 +63,7 @@ BoardSquare >> place: player on: aGame [
 	applyEffect ifTrue: [ effect applyOn: aGame activatedBy: player ].
 ]
 
-{ #category : #action }
+{ #category : #'as yet unclassified' }
 BoardSquare >> removeFromPosition: aPlayer [
 	occupants remove: aPlayer
 ]

@@ -35,9 +35,11 @@ BoardTest >> test02ABoardMustContainAtLeast1SquareBoard [
 { #category : #tests }
 BoardTest >> test03ABoardCreatedWithTwentySquareBoardsWithNoEffect [
 	
-	| aBoard |
+	| aBoard effects |
 	
-	aBoard := Board containing: 20 withEffect: NoEffect new.
+	effects := OrderedCollection new.
+	20 timesRepeat: [ effects add: (NoEffect new) ].
+	aBoard := Board having: effects.
 	self assert: (aBoard boardSquares) equals: 20.
 	self assert: (((aBoard atSquare: 1) typeOfEffect) class) equals: (NoEffect).
 	self assert: (((aBoard atSquare: 10) typeOfEffect) class) equals: (NoEffect).
@@ -48,9 +50,11 @@ BoardTest >> test03ABoardCreatedWithTwentySquareBoardsWithNoEffect [
 { #category : #tests }
 BoardTest >> test04ABoardCreatedWithTwentySquareBoardsWithSpeedUpEffect [
 	
-	| aBoard |
+	| aBoard effects |
 	
-	aBoard := Board containing: 20 withEffect: SpeedUpEffect new.
+	effects := OrderedCollection new.
+	20 timesRepeat: [ effects add: (SpeedUpEffect new) ].
+	aBoard := Board having: effects.
 	self assert: (aBoard boardSquares) equals: 20.
 	self assert: (((aBoard atSquare: 1) typeOfEffect) class) equals: (SpeedUpEffect).
 	self assert: (((aBoard atSquare: 10) typeOfEffect) class) equals: (SpeedUpEffect).
@@ -61,9 +65,11 @@ BoardTest >> test04ABoardCreatedWithTwentySquareBoardsWithSpeedUpEffect [
 { #category : #tests }
 BoardTest >> test05ABoardCreatedWithTwentySquareBoardsWithWormHoleEffect [
 	
-	| aBoard |
+	| aBoard effects |
 	
-	aBoard := Board containing: 20 withEffect: WormHoleEffect new.
+	effects := OrderedCollection new.
+	20 timesRepeat: [ effects add: (WormHoleEffect new) ].
+	aBoard := Board having: effects.
 	self assert: (aBoard boardSquares) equals: 20.
 	self assert: (((aBoard atSquare: 1) typeOfEffect) class) equals: (WormHoleEffect).
 	self assert: (((aBoard atSquare: 10) typeOfEffect) class) equals: (WormHoleEffect).
@@ -73,11 +79,38 @@ BoardTest >> test05ABoardCreatedWithTwentySquareBoardsWithWormHoleEffect [
 { #category : #tests }
 BoardTest >> test06ABoardCreatedWithTwentySquareBoardsWithAtomicBombEffect [
 	
-	| aBoard |
+	| aBoard effects |
 	
-	aBoard := Board containing: 20 withEffect: AtomicBombEffect new.
+	effects := OrderedCollection new.
+	20 timesRepeat: [ effects add: (AtomicBombEffect new) ].
+	aBoard := Board having: effects.
 	self assert: (aBoard boardSquares) equals: 20.
 	self assert: (((aBoard atSquare: 1) typeOfEffect) class) equals: (AtomicBombEffect).
 	self assert: (((aBoard atSquare: 10) typeOfEffect) class) equals: (AtomicBombEffect).
 	self assert: (((aBoard atSquare: 20) typeOfEffect) class) equals: (AtomicBombEffect).
+]
+
+{ #category : #tests }
+BoardTest >> test07ABoardCreatedWithTwentySquareBoardsWithMoonWalkEffect [
+	
+	| aBoard effects |
+
+	effects := { MoonWalkEffect goingBack: 2. MoonWalkEffect goingBack: 7. MoonWalkEffect goingBack: 4. MoonWalkEffect goingBack:  2. MoonWalkEffect goingBack: 7 }.
+	aBoard := Board having: effects.
+	self assert: (aBoard boardSquares) equals: 5.
+	self assert: (((aBoard atSquare: 1) typeOfEffect) class) equals: (MoonWalkEffect).
+	self assert: (((aBoard atSquare: 3) typeOfEffect) class) equals: (MoonWalkEffect).
+	self assert: (((aBoard atSquare: 5) typeOfEffect) class) equals: (MoonWalkEffect).
+]
+
+{ #category : #tests }
+BoardTest >> test08ABoardCannotBeCreatedWithNoSquares [
+	
+	| effects |
+
+	effects := {NoEffect new}.
+	self
+		should: [ Board having: effects ]
+		raise: Error
+		withMessage: 'A board must contain at least 2 square board'. 
 ]

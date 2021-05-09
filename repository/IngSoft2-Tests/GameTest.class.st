@@ -12,7 +12,7 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #generators }
 GameTest >> generateDeterministicDiceCupWith: sequences [
 
 	| dice |
@@ -23,7 +23,7 @@ GameTest >> generateDeterministicDiceCupWith: sequences [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generators }
 GameTest >> generatePlayerCollectionWith: playerNames [
 
 	players := OrderedCollection new.
@@ -388,12 +388,14 @@ GameTest >> test21RankingForMultiplePlayersWithTwoOfThemWithSameAmountOfLapsAndS
 { #category : #tests }
 GameTest >> test22APlayerLandsOnASquareWithNoEffectAndItsPositionDoesntChange [
 	
-	| aBoard laps aGame playerPositions |
+	| aBoard laps aGame playerPositions squares |
 	
 	laps := 2.
 	self generatePlayerCollectionWith: #('Fran').
 	self generateDeterministicDiceCupWith: #(#(3 11 11 20) #(3 11 11 20)).
-	aBoard := Board containing: 20withEffect: NoEffect new.
+	squares := OrderedCollection new.
+	20 timesRepeat: [ squares add: (NoEffect new) ].
+	aBoard := Board having: squares.
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 1 inGame: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->7 }.
@@ -403,12 +405,14 @@ GameTest >> test22APlayerLandsOnASquareWithNoEffectAndItsPositionDoesntChange [
 { #category : #tests }
 GameTest >> test23APlayerLandsOnASquareWithSpeedUpEffectAndItsPositionIncreasesByFour [
 	
-	| aBoard laps aGame playerPositions |
+	| aBoard laps aGame playerPositions squares |
 	
 	laps := 2.
 	self generatePlayerCollectionWith: #('Fran').
 	self generateDeterministicDiceCupWith: #(#(3 11 11 20) #(3 11 11 20)).
-	aBoard := Board containing: 20 withEffect: SpeedUpEffect new.
+	squares := OrderedCollection new.
+	20 timesRepeat: [ squares add: (SpeedUpEffect new) ].
+	aBoard := Board having: squares.
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 1 inGame: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->11}.
@@ -418,12 +422,14 @@ GameTest >> test23APlayerLandsOnASquareWithSpeedUpEffectAndItsPositionIncreasesB
 { #category : #tests }
 GameTest >> test24APlayerLandsOnASquareWithAtomicBombffectAndAllPlayersAreMovedToTheFirstSquareWithoutModifyingTheirLaps [
 	
-	| aBoard laps aGame playerPositions playerLaps |
+	| aBoard laps aGame playerPositions playerLaps squares |
 	
 	laps := 2.
 	self generatePlayerCollectionWith: #('Fran').
 	self generateDeterministicDiceCupWith: #(#(12) #(12)).
-	aBoard := Board containing: 20 withEffect: AtomicBombEffect new.
+	squares := OrderedCollection new.
+	20 timesRepeat: [ squares add: (AtomicBombEffect new) ].
+	aBoard := Board having: squares.
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 1 inGame: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 1}.
@@ -435,12 +441,14 @@ GameTest >> test24APlayerLandsOnASquareWithAtomicBombffectAndAllPlayersAreMovedT
 { #category : #tests }
 GameTest >> test25APlayerLandsOnASquareWithAtomicBombffectAndItsPositionTheFirstSquare [
 	
-	| aBoard laps aGame playerPositions playerLaps |
+	| aBoard laps aGame playerPositions playerLaps squares |
 	
 	laps := 3.
 	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Mango').
 	self generateDeterministicDiceCupWith: #(#(3 11 21) #(3 11 21 )).
-	aBoard := Board containing: 20 withEffect: AtomicBombEffect new.
+	squares := OrderedCollection new.
+	20 timesRepeat: [ squares add: (AtomicBombEffect new) ].
+	aBoard := Board having: squares.
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 1 inGame: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 1.'Martu' -> 1.'Mango' -> 1}.
@@ -462,12 +470,14 @@ GameTest >> test25APlayerLandsOnASquareWithAtomicBombffectAndItsPositionTheFirst
 { #category : #tests }
 GameTest >> test26APlayerLandsOnASquareWithWormHoleEffectAndItsPositionDecreasesByFour [
 	
-	| aBoard laps aGame playerPositions |
+	| aBoard laps aGame playerPositions squares |
 	
 	laps := 2.
 	self generatePlayerCollectionWith: #('Fran').
 	self generateDeterministicDiceCupWith: #(#(3 11 11 20) #(3 11 11 20)).
-	aBoard := Board containing: 20 withEffect: WormHoleEffect new.
+	squares := OrderedCollection new.
+	20 timesRepeat: [ squares add: (WormHoleEffect new) ].
+	aBoard := Board having: squares.
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 1 inGame: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->3}.
@@ -477,12 +487,14 @@ GameTest >> test26APlayerLandsOnASquareWithWormHoleEffectAndItsPositionDecreases
 { #category : #tests }
 GameTest >> test27MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectAndTheirPositionsAreIncreasedByFour [
 	
-	| aBoard laps aGame playerPositions playerLaps |
+	| aBoard laps aGame playerPositions playerLaps squares |
 	
 	laps := 2.
 	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWith: #(#(3 11 15) #(3 11 15)).
-	aBoard := Board containing: 20 withEffect: SpeedUpEffect new.
+	squares := OrderedCollection new.
+	20 timesRepeat: [ squares add: (SpeedUpEffect new) ].
+	aBoard := Board having: squares.
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 3 inGame: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->11 . 'Martu'->7 . 'Maia'->15}.
@@ -494,12 +506,14 @@ GameTest >> test27MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectAndTheirPositi
 { #category : #tests }
 GameTest >> test28MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectTheirPositionsAreIncreasedByFourAndOneOfThemWonBecauseItFinishedTheAmoutOflapsRequired [
 	
-	| aBoard laps aGame playerPositions playerLaps nameRanking |
+	| aBoard laps aGame playerPositions playerLaps nameRanking squares |
 	
 	laps := 1.
 	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWith: #(#(3 7 9) #(3 7 9)).
-	aBoard := Board containing: 20 withEffect: SpeedUpEffect new.
+	squares := OrderedCollection new.
+	20 timesRepeat: [ squares add: (SpeedUpEffect new) ].
+	aBoard := Board having: squares.
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 3 inGame: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->11 . 'Martu'->19 . 'Maia'->3}.
@@ -514,17 +528,47 @@ GameTest >> test28MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectTheirPositions
 { #category : #tests }
 GameTest >> test29MoreThanOnePlayerLandsOnASquareWithWormHoleEffectAndTheirPositionsAreDecreasedByFour [
 	
-	| aBoard laps aGame playerPositions playerLaps |
+	| aBoard laps aGame playerPositions playerLaps squares |
 	
 	laps := 2.
 	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWith: #(#(1 11 15) #(1 11 15)).
-	aBoard := Board containing: 20 withEffect: WormHoleEffect new.
+	squares := OrderedCollection new.
+	20 timesRepeat: [ squares add: (WormHoleEffect new) ].
+	aBoard := Board having: squares.
 	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
 	self throwDiceCupTimes: 3 inGame: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->1 . 'Martu'->19 . 'Maia'->7}.
 	self assert: aGame playerPositions equals: playerPositions.
 	playerLaps := Dictionary newFrom: {'Fran' -> 0 . 'Martu'->0 . 'Maia'->1}.
+	self assert: aGame playerLaps equals: playerLaps.
+]
+
+{ #category : #tests }
+GameTest >> test30MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayersReturnSpacesAccordingToTheEffectExceptForThePlayersOnLap0Position1 [
+	
+	| aBoard laps aGame playerPositions playerLaps squares |
+	
+	laps := 3.
+	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Maia').
+	self generateDeterministicDiceCupWith: #(#(8 11 7) #(8 11 7)).
+	squares := { MoonWalkEffect goingBack: 2. MoonWalkEffect goingBack: 4. MoonWalkEffect goingBack: 7. MoonWalkEffect goingBack:  2. MoonWalkEffect goingBack: 4. MoonWalkEffect goingBack: 7. MoonWalkEffect goingBack: 2. MoonWalkEffect goingBack: 4. MoonWalkEffect goingBack: 7. MoonWalkEffect goingBack: 2}.
+	aBoard := Board having: squares.
+	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
+	self throwDiceCupTimes: 1 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->7 . 'Martu'->1 . 'Maia'->1}.
+	self assert: aGame playerPositions equals: playerPositions.
+	playerLaps := Dictionary newFrom: {'Fran' ->1 . 'Martu'->0 . 'Maia'->0}.
+	self assert: aGame playerLaps equals: playerLaps.
+	self throwDiceCupTimes: 1 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->10 . 'Martu'->3 . 'Maia'->1}.
+	self assert: aGame playerPositions equals: playerPositions.
+	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->2 . 'Maia'->0}.
+	self assert: aGame playerLaps equals: playerLaps.
+	self throwDiceCupTimes: 1 inGame: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->6 . 'Martu'->9 . 'Maia'->5}.
+	self assert: aGame playerPositions equals: playerPositions.
+	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->1 . 'Maia'->1}.
 	self assert: aGame playerLaps equals: playerLaps.
 ]
 

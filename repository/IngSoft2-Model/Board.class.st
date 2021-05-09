@@ -9,14 +9,19 @@ Class {
 
 { #category : #'instance creation' }
 Board class >> containing: aNumberOfSquareBoards [
+	
+	| squares |
+	
 	self validateMoreThanOneSquare: aNumberOfSquareBoards.
-	^ self new intializeContaining: aNumberOfSquareBoards withEffect: NoEffect new. 
+	squares := OrderedCollection new.
+	aNumberOfSquareBoards timesRepeat: [ squares add: (NoEffect new) ].
+	^ self having: squares. 
 ]
 
 { #category : #'instance creation' }
-Board class >> containing: aNumberOfSquareBoards withEffect: anEffect [  
-	self validateMoreThanOneSquare: aNumberOfSquareBoards.
-	^self new intializeContaining: aNumberOfSquareBoards withEffect: anEffect. 
+Board class >> having: squares [
+	self validateMoreThanOneSquare: (squares size).
+	^self new initializeHaving: squares.
 ]
 
 { #category : #validation }
@@ -36,12 +41,12 @@ Board >> boardSquares [
 ]
 
 { #category : #initialization }
-Board >> intializeContaining: aNumberOfSquareBoards withEffect: anEffect [ 
+Board >> initializeHaving: effects [
 	squares := OrderedCollection new.
-	1 to: aNumberOfSquareBoards do:[ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: anEffect) ].
+	1 to: (effects size) do:[ :number | squares add: (BoardSquare numbered: number withEffect: (effects at: number)) ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Board >> move: player by: amountPlaces in: aGame with: aPlayerIndex [
 
 	| playerPosition newPlayerPosition calculatedPlayerPosition |
@@ -57,17 +62,17 @@ Board >> move: player by: amountPlaces in: aGame with: aPlayerIndex [
 	
 ]
 
-{ #category : #initialization }
+{ #category : #action }
 Board >> setUpSquaresToApplyEffect [
 	squares do: [ :square | square changeToApplyEffect ]
 ]
 
-{ #category : #initialization }
+{ #category : #action }
 Board >> setUpSquaresToNotApplyEffect [
 	squares do: [ :square | square changeToNotApplyEffect ]
 ]
 
-{ #category : #initialization }
+{ #category : #action }
 Board >> setUpWith: players on: aGame [
 	players do: [ :player | (squares first) place: player on: aGame].
 	self setUpSquaresToApplyEffect 

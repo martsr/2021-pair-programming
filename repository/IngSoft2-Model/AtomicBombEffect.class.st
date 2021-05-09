@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #accessing }
+{ #category : #action }
 AtomicBombEffect >> applyOn: aGame activatedBy: aPlayer [
 	| playerIndex amountOfSquaresToGoBack |
 	aGame board setUpSquaresToNotApplyEffect.
