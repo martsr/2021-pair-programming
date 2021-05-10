@@ -114,3 +114,32 @@ BoardTest >> test08ABoardCannotBeCreatedWithNoSquares [
 		raise: Error
 		withMessage: 'A board must contain at least 2 square board'. 
 ]
+
+{ #category : #tests }
+BoardTest >> test09ABoarOfSizeTwentyAnd1LapHasTwentySquares [
+	
+	| aBoard laps |
+	
+	laps := 1.
+	aBoard := Board ofSize: 20 requiring: laps.
+	self assert: (aBoard boardSquares) equals: 20.
+]
+
+{ #category : #tests }
+BoardTest >> test10ABoardRequiresAtLeast1LapToBePlayable [
+	
+	self
+		should: [ Board ofSize: 20 requiring: 0 ]
+		raise: Error
+		withMessage: 'A board requires at least one lap to be playable.'.
+]
+
+{ #category : #tests }
+BoardTest >> test11ABoarOfSizeTwentyAndThreeLapsHasSixtySquares [
+	
+	| aBoard laps |
+	
+	laps := 3.
+	aBoard := Board ofSize: 20 requiring: laps.
+	self assert: (aBoard boardSquares) equals: 60.
+]

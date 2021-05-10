@@ -82,9 +82,11 @@ GameMandM >> nextPlayerThrows [
 	| resultOfThrow player playerIndex |
 	
 	self verifyItisFinished.
+	"Desde aca."
 	player := players at: turn.
    playerIndex := players indexOf: player.
 	resultOfThrow := player throwsWith: diceCup.
+	"Las 3 lineas de arriba se van y esto se reemplaza con nextTurn y abajo de este comentario tiene que ir board nextPlayerThrows"
 	board move: player by: resultOfThrow in: self with: playerIndex.
 	self verifyNextPlayerNeedsToThrow.
 	
@@ -146,12 +148,15 @@ GameMandM >> verifyItisFinished [
 
 { #category : #private }
 GameMandM >> verifyNextPlayerNeedsToThrow [
+	"Este mensaje se va porque los turnos los maneja el board de ahora en mas. El board envia un mensaje de notificacion al game en el momento que la posicion absoluta de un jugador exceda o iguale la maxima posible. 81 en board 20 laps 4"
 	(playersAbsolutePositions at: turn) > (board boardSquares * laps) ifTrue: [ isFinished := true ] ifFalse: [ turn := (turn rem: (players size )) + 1 ].
 ]
 
 { #category : #accesing }
 GameMandM >> winner [
 	| winner winnerIndex |
+	
+	"Esto no va a estar mas en el game, se va a poder preguntar al board que le va a preguntar al tracker quien gano"
 	
 	self verifyItIsInProgress.
 	winnerIndex := playersAbsolutePositions detect: [ :position | position >= (((board boardSquares) * laps) + 1)].

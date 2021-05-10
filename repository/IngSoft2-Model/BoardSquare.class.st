@@ -41,6 +41,7 @@ applyEffect := false
 
 { #category : #accessing }
 BoardSquare >> contains: aPlayer [
+	"Hasta la vista, baby"
 	^ occupants includes: aPlayer
 ]
 
@@ -59,12 +60,14 @@ BoardSquare >> number [
 
 { #category : #'as yet unclassified' }
 BoardSquare >> place: player on: aGame [
+	"Hasta la vista, baby. Solo la linea de abajo, la otra safo :) (por ahora)"
 	occupants add: player.
 	applyEffect ifTrue: [ effect applyOn: aGame activatedBy: player ].
 ]
 
 { #category : #'as yet unclassified' }
 BoardSquare >> removeFromPosition: aPlayer [
+	"Hasta la vista, baby"
 	occupants remove: aPlayer
 ]
 
