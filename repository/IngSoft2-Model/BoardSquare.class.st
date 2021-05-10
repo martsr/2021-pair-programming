@@ -59,10 +59,9 @@ BoardSquare >> number [
 ]
 
 { #category : #'as yet unclassified' }
-BoardSquare >> place: player on: aGame [
-	"Hasta la vista, baby. Solo la linea de abajo, la otra safo :) (por ahora)"
-	occupants add: player.
-	applyEffect ifTrue: [ effect applyOn: aGame activatedBy: player ].
+BoardSquare >> place: player on: aBoard [
+
+	applyEffect ifTrue: [ effect applyOn: aBoard activatedBy: player ].
 ]
 
 { #category : #'as yet unclassified' }

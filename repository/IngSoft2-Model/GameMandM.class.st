@@ -14,6 +14,11 @@ Class {
 }
 
 { #category : #'instance creation' }
+GameMandM class >> playedOn: aBoard [ 
+	^self new initializePlayedOn: aBoard.
+]
+
+{ #category : #'instance creation' }
 GameMandM class >> playedOn: aBoard by: players using: aDiceCup requiring: amountOfLaps [
 	self validatesItMustHaveAtLeastOnePlayer: players.
 	self validatesItDoesntHavePlayersWithSameName: players.
@@ -54,6 +59,12 @@ GameMandM >> board [
 ]
 
 { #category : #initialization }
+GameMandM >> initializePlayedOn: aBoard [
+ 
+	isFinished := false.
+]
+
+{ #category : #initialization }
 GameMandM >> intializePlayedOn: aBoard by: participants using: aDiceCup requiring: amountOfLaps [
 	
 	board := aBoard.
@@ -88,6 +99,15 @@ GameMandM >> nextPlayerThrows [
 	resultOfThrow := player throwsWith: diceCup.
 	"Las 3 lineas de arriba se van y esto se reemplaza con nextTurn y abajo de este comentario tiene que ir board nextPlayerThrows"
 	board move: player by: resultOfThrow in: self with: playerIndex.
+	self verifyNextPlayerNeedsToThrow.
+	
+]
+
+{ #category : #'as yet unclassified' }
+GameMandM >> nextTurn [
+	
+	self verifyItisFinished.
+	board nextPlayerThrowsIn: self.
 	self verifyNextPlayerNeedsToThrow.
 	
 ]

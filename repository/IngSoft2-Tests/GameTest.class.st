@@ -55,8 +55,8 @@ GameTest >> test01AtTheStartOfTheGameAllPlayersArePlacedOnTheFirstBoardSquare [
 	laps := 1.
 	self generatePlayerCollectionWith: #('Fran').
 	self generateDeterministicDiceCupWith: #(#(5 8 6 3) #(5 8 6 3)).
-	aBoard := Board containing: 40.
-	aGame := GameMandM playedOn: aBoard by: players using: diceCup requiring: laps.
+	aBoard := Board ofSize: 40 requiring: laps by: players using: diceCup.
+	aGame := GameMandM playedOn: aBoard.
 	playerPositions := Dictionary newFrom: {'Fran' -> 1}.
 	self assert: (aGame playerPositions) equals: playerPositions.
 ]
@@ -93,20 +93,6 @@ GameTest >> test03APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 		should: [ aGame nextPlayerThrows ]
 		raise: Error
 		withMessage: 'The game has finished, dice cannot be rolled anymore'.
-]
-
-{ #category : #tests }
-GameTest >> test04AGameWithABoardAndADiceCupShouldHaveAtLeastOnePayer [
-	
-	| aBoard laps |
-	
-	laps := 1.
-	self generateDeterministicDiceCupWith: #(#(5 8 6 3) #(5 8 6 3)).
-	aBoard := Board containing: 40.
-	self
-		should: [ GameMandM playedOn: aBoard by: players using: diceCup requiring: laps ]
-		raise: Error
-		withMessage: 'A game must have at least 1 player'.
 ]
 
 { #category : #tests }
@@ -574,5 +560,5 @@ GameTest >> test30MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayers
 
 { #category : #iteration }
 GameTest >> throwDiceCupTimes: anInteger inGame: aGame [
-anInteger timesRepeat: [ aGame nextPlayerThrows ].
+	anInteger timesRepeat: [ aGame nextTurn ].
 ]

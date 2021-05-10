@@ -5,7 +5,9 @@ Class {
 		'squares',
 		'size',
 		'players',
-		'diceCup'
+		'diceCup',
+		'turn',
+		'positionTracker'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -91,7 +93,9 @@ Board >> initializeHaving: effects [
 
 { #category : #initialization }
 Board >> initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers [  
+	turn := 1.
 	players := aGroupOfPlayers.
+	positionTracker := PositionsTracker of: players inBoardSize: aNumberOfSquareBoards requiring: aNumberOfLaps.
 	size := aNumberOfSquareBoards * aNumberOfLaps.
 	squares := OrderedCollection new.
 	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: NoEffect new) ].
@@ -102,6 +106,7 @@ Board >> initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aG
 	diceCup := aDiceCup.
 	players := aGroupOfPlayers.
 	size := aNumberOfSquareBoards * aNumberOfLaps.
+	turn := 1.
 	squares := OrderedCollection new.
 	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: NoEffect new) ].
 ]
@@ -112,6 +117,36 @@ Board >> intializeOfSize: aNumberOfSquareBoards requiring: laps [
 	size := aNumberOfSquareBoards * laps.
 	squares := OrderedCollection new.
 	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: NoEffect new) ].
+]
+
+{ #category : #'as yet unclassified' }
+Board >> move: player by: amountPlaces [
+
+	| playerPosition newPlayerPosition calculatedPlayerPosition aGame aPlayerIndex |
+	
+	"Se simplifica la logica preguntando al tracker donde esta el jugador en cuestion y se adicionan o restan lo de la tirada"
+	playerPosition := positionTracker positionOf: player.
+	calculatedPlayerPosition := playerPosition + amountPlaces.
+	calculatedPlayerPosition <= 0	ifTrue: [ calculatedPlayerPosition := 1 ].
+	"La linea de abajo se cambia como un update al tracker sobre la posicion del jugador que tiro"
+	positionTracker update: player withNew: calculatedPlayerPosition.
+	"Se pregunta si se excedio o igualo la casilla maxima, si se excedio, le dice al tracker que lo ponga en la primera casilla y avisa al game, venga o no con efecto (Decision de equipo). De lo contrario, manda a hacer el placement"
+	(calculatedPlayerPosition > size) ifTrue:[].
+	(squares at: newPlayerPosition) place: player on: aGame.
+	
+]
+
+{ #category : #'as yet unclassified' }
+Board >> move: player by: amountPlaces in: aGame [
+
+	| playerPosition calculatedPlayerPosition |
+	
+	playerPosition := positionTracker positionOf: player.
+	calculatedPlayerPosition := playerPosition + amountPlaces.
+	calculatedPlayerPosition <= 0	ifTrue: [ calculatedPlayerPosition := 1 ].
+	positionTracker update: player withNew: calculatedPlayerPosition.
+	(calculatedPlayerPosition > size) ifTrue:[ aGame isNotifiedGameFinishedWithPositions: positionTracker copy] ifFalse: [ (squares at: calculatedPlayerPosition) place: player on: self ].
+	
 ]
 
 { #category : #action }
@@ -130,6 +165,29 @@ Board >> move: player by: amountPlaces in: aGame with: aPlayerIndex [
 	aGame isNotified: player movedTo: calculatedPlayerPosition.
 	"Se pregunta si se excedio o igualo la casilla maxima, si se excedio, le dice al tracker que lo ponga en la primera casilla y avisa al game, venga o no con efecto (Decision de equipo). De lo contrario, manda a hacer el placement"
 	(squares at: newPlayerPosition) place: player on: aGame.
+	
+]
+
+{ #category : #action }
+Board >> nextPlayerThrows [
+
+	| resultOfThrow player playerIndex |
+	
+	player := players at: turn.
+   playerIndex := players indexOf: player.
+	resultOfThrow := player throwsWith: diceCup.
+	self move: player by: resultOfThrow.
+	
+]
+
+{ #category : #action }
+Board >> nextPlayerThrowsIn: aGame [
+
+	| resultOfThrow player |
+	
+	player := players at: turn.
+	resultOfThrow := player throwsWith: diceCup.
+	self move: player by: resultOfThrow in: aGame.
 	
 ]
 
