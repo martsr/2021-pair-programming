@@ -1,8 +1,39 @@
 Class {
 	#name : #BoardTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'players',
+		'diceCup'
+	],
+	#classInstVars : [
+		'playerNames'
+	],
 	#category : #'IngSoft2-Tests'
 }
+
+{ #category : #generators }
+BoardTest >> generateDeterministicDiceCupWith: sequences [
+
+	| dice |
+	
+	dice := OrderedCollection new.
+	dice := sequences  collect: [ :sequence | DeterministicDie having: sequence ].
+	diceCup := DiceCup containing: dice.
+]
+
+{ #category : #generators }
+BoardTest >> generatePlayerCollectionWith: playerNames [
+
+	players := OrderedCollection new.
+	players := playerNames collect: [ :name | Player named: name ].
+]
+
+{ #category : #running }
+BoardTest >> setUp [
+
+	super setUp. 
+	players := OrderedCollection new.
+]
 
 { #category : #asserting }
 BoardTest >> should: errorBlock raise: exceptionClass withMessage: expectedErrorMessage [
@@ -142,4 +173,41 @@ BoardTest >> test11ABoarOfSizeTwentyAndThreeLapsHasSixtySquares [
 	laps := 3.
 	aBoard := Board ofSize: 20 requiring: laps.
 	self assert: (aBoard boardSquares) equals: 60.
+]
+
+{ #category : #tests }
+BoardTest >> test12ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePlayers [
+	
+	| aBoard laps |
+	
+	laps := 3.
+	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Mango').
+	aBoard := Board ofSize: 20 requiring: laps by: players.
+	self assert: (aBoard boardSquares) equals: 60.
+	self assert: (aBoard amountOfPlayers) equals: 3.
+]
+
+{ #category : #tests }
+BoardTest >> test13ABoardMustHaveAtLeastOnePlayer [
+	
+	| laps |
+	
+	laps := 1.
+	self
+		should: [ Board ofSize: 20 requiring: laps by: { }. ]
+		raise: Error
+		withMessage: 'A game must have at least 1 player'.
+]
+
+{ #category : #tests }
+BoardTest >> test14ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePlayersAndADeterminsticDiceCup [
+	
+	| aBoard laps |
+	
+	laps := 3.
+	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Mango').
+	self generateDeterministicDiceCupWith: #(#(4 4 5 ) #(4 4 5)).
+	aBoard := Board ofSize: 20 requiring: laps by: players using: diceCup.
+	self assert: (aBoard boardSquares) equals: 60.
+	self assert: (aBoard amountOfPlayers) equals: 3.
 ]

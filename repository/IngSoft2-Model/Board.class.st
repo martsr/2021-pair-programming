@@ -3,7 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'squares',
-		'size'
+		'size',
+		'players',
+		'diceCup'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -32,16 +34,43 @@ Board class >> ofSize: aNumberOfSquareBoards requiring: aNumberOfLaps [
 	^ self new intializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps.
 ]
 
+{ #category : #'instance creation' }
+Board class >> ofSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers [ 
+	self validatesItMustHaveAtLeastOnePlayer: aGroupOfPlayers.
+	self validateMoreThanOneSquare: aNumberOfSquareBoards.
+	self validatesItNeedsAtLeastOneLap: aNumberOfLaps.
+	^self new initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers .
+]
+
+{ #category : #'instance creation' }
+Board class >> ofSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup [ 
+	self validatesItMustHaveAtLeastOnePlayer: aGroupOfPlayers.
+	self validateMoreThanOneSquare: aNumberOfSquareBoards.
+	self validatesItNeedsAtLeastOneLap: aNumberOfLaps.
+	^self new initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup.
+]
+
 { #category : #validation }
 Board class >> validateMoreThanOneSquare: aNumberOfSquareBoards [
 	aNumberOfSquareBoards < 2
 		ifTrue: [ Error signal: 'A board must contain at least 2 square board' ]
 ]
 
+{ #category : #validation }
+Board class >> validatesItMustHaveAtLeastOnePlayer: aPlayer [
+	aPlayer size < 1
+		ifTrue: [ Error signal: 'A game must have at least 1 player' ]
+]
+
 { #category : #'instance creation' }
 Board class >> validatesItNeedsAtLeastOneLap: amountOfLaps [
 	amountOfLaps < 1
 		ifTrue: [ Error signal: 'A board requires at least one lap to be playable.' ]
+]
+
+{ #category : #'as yet unclassified' }
+Board >> amountOfPlayers [
+	^players size.
 ]
 
 { #category : #testing }
@@ -58,6 +87,23 @@ Board >> boardSquares [
 Board >> initializeHaving: effects [
 	squares := OrderedCollection new.
 	1 to: (effects size) do:[ :number | squares add: (BoardSquare numbered: number withEffect: (effects at: number)) ].
+]
+
+{ #category : #initialization }
+Board >> initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers [  
+	players := aGroupOfPlayers.
+	size := aNumberOfSquareBoards * aNumberOfLaps.
+	squares := OrderedCollection new.
+	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: NoEffect new) ].
+]
+
+{ #category : #initialization }
+Board >> initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup [ 
+	diceCup := aDiceCup.
+	players := aGroupOfPlayers.
+	size := aNumberOfSquareBoards * aNumberOfLaps.
+	squares := OrderedCollection new.
+	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: NoEffect new) ].
 ]
 
 { #category : #'as yet unclassified' }
