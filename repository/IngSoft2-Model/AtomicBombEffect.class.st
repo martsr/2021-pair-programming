@@ -5,9 +5,9 @@ Class {
 }
 
 { #category : #action }
-AtomicBombEffect >> applyOn: aGame activatedBy: aPlayer [
-	| playerIndex amountOfSquaresToGoBack |
-	aGame board setUpSquaresToNotApplyEffect.
+AtomicBombEffect >> applyOn: aBoard activatedBy: aPlayer [
+	| playerIndex amountOfSquaresToGoBack aGame |
+	aBoard setUpSquaresToNotApplyEffect.
 	aGame players
 		do: [ :player | 
 			playerIndex := aGame players indexOf: player.

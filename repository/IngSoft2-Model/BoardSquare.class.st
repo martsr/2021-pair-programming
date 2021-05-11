@@ -50,7 +50,7 @@ BoardSquare >> initializeNumbered: aSquareBoardNumber withEffect: anEffect [
 	occupants := OrderedCollection new.
 	number := aSquareBoardNumber.
 	effect := anEffect.
-	applyEffect:= false. 
+	applyEffect:= true. 
 ]
 
 { #category : #accessing }

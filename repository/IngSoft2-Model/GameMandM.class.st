@@ -48,11 +48,6 @@ GameMandM class >> validatesItNeedsAtLeastOneLap: amountOfLaps [
 		ifTrue: [ Error signal: 'A game requires at least one lap to be playable.' ]
 ]
 
-{ #category : #testing }
-GameMandM >> amountOfLaps [
-	^ laps.
-]
-
 { #category : #accessing }
 GameMandM >> board [
  ^ board. 
@@ -60,7 +55,7 @@ GameMandM >> board [
 
 { #category : #initialization }
 GameMandM >> initializePlayedOn: aBoard [
- 
+ 	board:= aBoard. 
 	isFinished := false.
 ]
 
@@ -87,6 +82,11 @@ GameMandM >> isNotified: aPlayer movedTo: newPlayerPosition [
 	playersAbsolutePositions at: playerIndex put: newPlayerPosition.
 ]
 
+{ #category : #testing }
+GameMandM >> isNotifiedItHasFinished [ 
+	isFinished := true. 
+]
+
 { #category : #action }
 GameMandM >> nextPlayerThrows [
 
@@ -108,7 +108,7 @@ GameMandM >> nextTurn [
 	
 	self verifyItisFinished.
 	board nextPlayerThrowsIn: self.
-	self verifyNextPlayerNeedsToThrow.
+
 	
 ]
 
@@ -120,35 +120,25 @@ GameMandM >> playerAbsolutePositions [
 
 { #category : #testing }
 GameMandM >> playerLaps [
-	| currentLaps playerNames playerLaps |
-	
-	playerNames := players collect: [ :player | player name ].
-	currentLaps := playersAbsolutePositions collect: [ :position | ((position rem: (board boardSquares)) = 0) ifTrue: [position // (board boardSquares) -1] ifFalse:[ position // (board boardSquares) ] ].
-	playerLaps := Dictionary newFromKeys: playerNames andValues: currentLaps.
+	| playerLaps |
+	playerLaps := board playerLaps.
 	^ playerLaps.
 ]
 
 { #category : #accesing }
 GameMandM >> playerPositions [
-
-	| numberPositions playerPositions playerNames |
 	 
-	numberPositions := playersAbsolutePositions collect: [ :position | (position rem: (board boardSquares)) = 0 ifTrue: [ position ] ifFalse: [ position rem: (board boardSquares) ] ].
-	playerNames := players collect: [ :player | player name ].
-	playerPositions := Dictionary newFromKeys: playerNames andValues: numberPositions.
-	^ playerPositions.
+	| playerPositions |
+	playerPositions := board playerPositions .
+	^playerPositions.
 ]
 
 { #category : #testing }
 GameMandM >> playerRanking [
 
-	| placementCalculations playerRanking rankingNames playerNames |
-	
-	playerNames := players collect: [ :player | player name ].
-	placementCalculations := Dictionary newFromKeys: playerNames andValues: playersAbsolutePositions .
-	playerRanking := players sort: [ :playerOne :playerTwo | (placementCalculations at: playerOne name) > (placementCalculations at: playerTwo name) and: (playerOne name > playerTwo name)].
-	rankingNames := playerRanking collect: [ :player | player name ].
-	^rankingNames. 
+	| playerRanking |
+	playerRanking := board playerRanking.
+	^ playerRanking.
 ]
 
 { #category : #accessing }
@@ -174,13 +164,12 @@ GameMandM >> verifyNextPlayerNeedsToThrow [
 
 { #category : #accesing }
 GameMandM >> winner [
-	| winner winnerIndex |
+	| winner playerRanking |
 	
 	"Esto no va a estar mas en el game, se va a poder preguntar al board que le va a preguntar al tracker quien gano"
 	
 	self verifyItIsInProgress.
-	winnerIndex := playersAbsolutePositions detect: [ :position | position >= (((board boardSquares) * laps) + 1)].
-	winnerIndex := playersAbsolutePositions indexOf: winnerIndex.
-	winner := players at: winnerIndex.
+	playerRanking := board playerRanking. 
+	winner:= playerRanking at: 1.
 	^ winner
 ]

@@ -5,12 +5,9 @@ Class {
 }
 
 { #category : #action }
-SpeedUpEffect >> applyOn: aGame activatedBy: aPlayer [
-
-	| playerIndex |
+SpeedUpEffect >> applyOn: aBoard activatedBy: aPlayer [
 	
-	(aGame board) setUpSquaresToNotApplyEffect.
-	playerIndex := aGame players indexOf: aPlayer.
-	(aGame board) move: aPlayer by: 4 in: aGame with: playerIndex.
-	(aGame board) setUpSquaresToApplyEffect
+	aBoard setUpSquaresToNotApplyEffect.
+	aBoard move: aPlayer by: 4.
+	aBoard setUpSquaresToApplyEffect
 ]

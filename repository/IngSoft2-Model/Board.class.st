@@ -13,6 +13,15 @@ Class {
 }
 
 { #category : #'instance creation' }
+Board class >> consistingOf: squares  requiring: aNumberOfLaps  by: aGroupOfPlayers  using: aDiceCup [ 
+	self validatesItMustHaveAtLeastOnePlayer: aGroupOfPlayers.
+	self validateMoreThanOneSquare: (squares size).
+	self validatesItNeedsAtLeastOneLap: aNumberOfLaps.
+	self validatesItDoesntHavePlayersWithSameName: aGroupOfPlayers.
+	^self new initializeConsistingOf: squares requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup.
+]
+
+{ #category : #'instance creation' }
 Board class >> containing: aNumberOfSquareBoards [
 	
 	| squares |
@@ -49,6 +58,7 @@ Board class >> ofSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroup
 	self validatesItMustHaveAtLeastOnePlayer: aGroupOfPlayers.
 	self validateMoreThanOneSquare: aNumberOfSquareBoards.
 	self validatesItNeedsAtLeastOneLap: aNumberOfLaps.
+	self validatesItDoesntHavePlayersWithSameName: aGroupOfPlayers.
 	^self new initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup.
 ]
 
@@ -56,6 +66,16 @@ Board class >> ofSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroup
 Board class >> validateMoreThanOneSquare: aNumberOfSquareBoards [
 	aNumberOfSquareBoards < 2
 		ifTrue: [ Error signal: 'A board must contain at least 2 square board' ]
+]
+
+{ #category : #validation }
+Board class >> validatesItDoesntHavePlayersWithSameName: players [
+
+	| playerNames |
+	
+	playerNames := players collect: [ :player | player name ].
+	playerNames := playerNames asSet.
+	(players size) > (playerNames size) ifTrue: [ Error signal: 'A game cannot be created with any players having repeated names' ]
 ]
 
 { #category : #validation }
@@ -86,6 +106,16 @@ Board >> boardSquares [
 ]
 
 { #category : #initialization }
+Board >> initializeConsistingOf: boardSquares requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup [ 
+	diceCup := aDiceCup.
+	players := aGroupOfPlayers.
+	size := (boardSquares size) * aNumberOfLaps.
+	turn := 1.
+	squares := boardSquares.
+	positionTracker := PositionsTracker of: aGroupOfPlayers inBoardSize: (boardSquares size) requiring: aNumberOfLaps.
+]
+
+{ #category : #initialization }
 Board >> initializeHaving: effects [
 	squares := OrderedCollection new.
 	1 to: (effects size) do:[ :number | squares add: (BoardSquare numbered: number withEffect: (effects at: number)) ].
@@ -109,6 +139,7 @@ Board >> initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aG
 	turn := 1.
 	squares := OrderedCollection new.
 	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: NoEffect new) ].
+	positionTracker := PositionsTracker of: aGroupOfPlayers  inBoardSize: aNumberOfSquareBoards  requiring: aNumberOfLaps .
 ]
 
 { #category : #'as yet unclassified' }
@@ -122,17 +153,13 @@ Board >> intializeOfSize: aNumberOfSquareBoards requiring: laps [
 { #category : #'as yet unclassified' }
 Board >> move: player by: amountPlaces [
 
-	| playerPosition newPlayerPosition calculatedPlayerPosition aGame aPlayerIndex |
+	| playerPosition calculatedPlayerPosition |
 	
-	"Se simplifica la logica preguntando al tracker donde esta el jugador en cuestion y se adicionan o restan lo de la tirada"
 	playerPosition := positionTracker positionOf: player.
 	calculatedPlayerPosition := playerPosition + amountPlaces.
 	calculatedPlayerPosition <= 0	ifTrue: [ calculatedPlayerPosition := 1 ].
-	"La linea de abajo se cambia como un update al tracker sobre la posicion del jugador que tiro"
 	positionTracker update: player withNew: calculatedPlayerPosition.
-	"Se pregunta si se excedio o igualo la casilla maxima, si se excedio, le dice al tracker que lo ponga en la primera casilla y avisa al game, venga o no con efecto (Decision de equipo). De lo contrario, manda a hacer el placement"
-	(calculatedPlayerPosition > size) ifTrue:[].
-	(squares at: newPlayerPosition) place: player on: aGame.
+	(calculatedPlayerPosition > size) ifFalse: [ (squares at: calculatedPlayerPosition) place: player on: self ].
 	
 ]
 
@@ -145,7 +172,7 @@ Board >> move: player by: amountPlaces in: aGame [
 	calculatedPlayerPosition := playerPosition + amountPlaces.
 	calculatedPlayerPosition <= 0	ifTrue: [ calculatedPlayerPosition := 1 ].
 	positionTracker update: player withNew: calculatedPlayerPosition.
-	(calculatedPlayerPosition > size) ifTrue:[ aGame isNotifiedGameFinishedWithPositions: positionTracker copy] ifFalse: [ (squares at: calculatedPlayerPosition) place: player on: self ].
+	(calculatedPlayerPosition > size) ifTrue:[ aGame isNotifiedItHasFinished ] ifFalse: [ (squares at: calculatedPlayerPosition) place: player on: self ].
 	
 ]
 
@@ -187,8 +214,26 @@ Board >> nextPlayerThrowsIn: aGame [
 	
 	player := players at: turn.
 	resultOfThrow := player throwsWith: diceCup.
-	self move: player by: resultOfThrow in: aGame.
+	self move: player by: resultOfThrow. 
+	((positionTracker positionOf: player ) > size) ifTrue:[ aGame isNotifiedItHasFinished ]  ifFalse: [ turn := (turn rem: (players size )) + 1 ].
 	
+]
+
+{ #category : #testing }
+Board >> playerLaps [ 
+	^positionTracker playerLaps.
+	
+]
+
+{ #category : #accesing }
+Board >> playerPositions [ 
+
+ ^positionTracker actualPositions.
+]
+
+{ #category : #testing }
+Board >> playerRanking [
+	^ positionTracker playerRanking .
 ]
 
 { #category : #action }

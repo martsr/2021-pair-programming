@@ -211,3 +211,17 @@ BoardTest >> test14ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePlayersAndADeter
 	self assert: (aBoard boardSquares) equals: 60.
 	self assert: (aBoard amountOfPlayers) equals: 3.
 ]
+
+{ #category : #tests }
+BoardTest >> test15ABoardCannotBeCreatedIfAnyPlayerHasARepeatedName [
+	
+	| laps |
+	
+	laps := 1.
+	self generatePlayerCollectionWith: #('Fran' 'Mango' 'Maia' 'Martu' 'Martu').
+	self generateDeterministicDiceCupWith: #(#(5 1 1) #(5 1 1)).
+	self
+		should: [Board ofSize: 20 requiring: laps by: players using: diceCup ]
+		raise: Error
+		withMessage: 'A game cannot be created with any players having repeated names'. 
+]
