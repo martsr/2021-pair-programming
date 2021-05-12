@@ -48,17 +48,24 @@ BoardTest >> should: errorBlock raise: exceptionClass withMessage: expectedError
 { #category : #tests }
 BoardTest >> test01ABoardCreatedWithTwentySquareBoardsHasTwentySquareBoards [
 	
-	| aBoard |
+	| aBoard laps |
 	
-	aBoard := Board containing: 20.
+	laps := 1. 
+	self generatePlayerCollectionWith: #('Fran').
+	self generateDeterministicDiceCupWith: #(#(5 1 1) #(5 1 1)).
+	aBoard := Board ofSize: 20 requiring: laps by: players using: diceCup .
 	self assert: (aBoard boardSquares) equals: 20.
 ]
 
 { #category : #tests }
 BoardTest >> test02ABoardMustContainAtLeast1SquareBoard [
 	
+	| laps |
+	laps := 1.
+	self generatePlayerCollectionWith: #('Fran').
+	self generateDeterministicDiceCupWith: #(#(5 1 1) #(5 1 1)).
 	self
-		should: [ Board containing: 0 ]
+		should: [ Board ofSize: 0 requiring: laps by: players using: diceCup ]
 		raise: Error
 		withMessage: 'A board must contain at least 2 square board'.
 ]

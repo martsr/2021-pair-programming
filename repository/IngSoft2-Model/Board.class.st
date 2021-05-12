@@ -22,17 +22,6 @@ Board class >> consistingOf: squares  requiring: aNumberOfLaps  by: aGroupOfPlay
 ]
 
 { #category : #'instance creation' }
-Board class >> containing: aNumberOfSquareBoards [
-	
-	| squares |
-	
-	self validateMoreThanOneSquare: aNumberOfSquareBoards.
-	squares := OrderedCollection new.
-	aNumberOfSquareBoards timesRepeat: [ squares add: (NoEffect new) ].
-	^ self having: squares. 
-]
-
-{ #category : #'instance creation' }
 Board class >> having: squares [
 	self validateMoreThanOneSquare: (squares size).
 	^self new initializeHaving: squares.
@@ -112,7 +101,7 @@ Board >> initializeConsistingOf: boardSquares requiring: aNumberOfLaps by: aGrou
 	size := (boardSquares size) * aNumberOfLaps.
 	turn := 1.
 	squares := boardSquares.
-	positionTracker := PositionsTracker of: aGroupOfPlayers inBoardSize: (boardSquares size) requiring: aNumberOfLaps.
+	positionTracker := PositionsTracker of: aGroupOfPlayers inBoardSize: ((boardSquares size) / aNumberOfLaps)  requiring: aNumberOfLaps.
 ]
 
 { #category : #initialization }
@@ -164,47 +153,24 @@ Board >> move: player by: amountPlaces [
 ]
 
 { #category : #'as yet unclassified' }
-Board >> move: player by: amountPlaces in: aGame [
+Board >> moveAllPlayersToFirstSquareOfTheirLap [
 
-	| playerPosition calculatedPlayerPosition |
-	
-	playerPosition := positionTracker positionOf: player.
-	calculatedPlayerPosition := playerPosition + amountPlaces.
-	calculatedPlayerPosition <= 0	ifTrue: [ calculatedPlayerPosition := 1 ].
-	positionTracker update: player withNew: calculatedPlayerPosition.
-	(calculatedPlayerPosition > size) ifTrue:[ aGame isNotifiedItHasFinished ] ifFalse: [ (squares at: calculatedPlayerPosition) place: player on: self ].
-	
+	| relativePositions relativePlayerPosition |
+	relativePositions := positionTracker actualPositions.
+	players do: [ :player |
+		relativePlayerPosition := relativePositions at: (player name).
+		self move: player by: ((relativePlayerPosition - 1) * (-1)).
+		 ].
 ]
 
-{ #category : #action }
-Board >> move: player by: amountPlaces in: aGame with: aPlayerIndex [
-
-	| playerPosition newPlayerPosition calculatedPlayerPosition |
+{ #category : #'as yet unclassified' }
+Board >> movePlayersBack: aNumberOfSpaces except: aPlayer [
 	
-	"Se simplifica la logica preguntando al tracker donde esta el jugador en cuestion y se adicionan o restan lo de la tirada"
-	playerPosition := self whereIsPlayer: player.
-	(squares at: playerPosition) removeFromPosition: player.
-	calculatedPlayerPosition := (aGame playerAbsolutePositions at: aPlayerIndex) + amountPlaces.
-	calculatedPlayerPosition <= 0	ifTrue: [ calculatedPlayerPosition := 1 ].
-	newPlayerPosition := (calculatedPlayerPosition rem: squares size) = 0 ifTrue: [ squares size ]
-	ifFalse: [ calculatedPlayerPosition rem: squares size ].
-	"La linea de abajo se cambia como un update al tracker sobre la posicion del jugador que tiro"
-	aGame isNotified: player movedTo: calculatedPlayerPosition.
-	"Se pregunta si se excedio o igualo la casilla maxima, si se excedio, le dice al tracker que lo ponga en la primera casilla y avisa al game, venga o no con efecto (Decision de equipo). De lo contrario, manda a hacer el placement"
-	(squares at: newPlayerPosition) place: player on: aGame.
+	| affectedPlayers |
 	
-]
-
-{ #category : #action }
-Board >> nextPlayerThrows [
-
-	| resultOfThrow player playerIndex |
-	
-	player := players at: turn.
-   playerIndex := players indexOf: player.
-	resultOfThrow := player throwsWith: diceCup.
-	self move: player by: resultOfThrow.
-	
+	affectedPlayers := players asOrderedCollection remove: aPlayer.
+	affectedPlayers
+		do: [ :player | self move: player by: aNumberOfSpaces ]
 ]
 
 { #category : #action }
@@ -251,14 +217,4 @@ Board >> setUpWith: players on: aGame [
 	"Este mensaje queda deleteado"
 	players do: [ :player | (squares first) place: player on: aGame].
 	self setUpSquaresToApplyEffect 
-]
-
-{ #category : #action }
-Board >> whereIsPlayer: aPlayer [
-
-	"Dudoso que siga, a chequear porque el tracker mismo se puede encargar de esta funcionalidad"
-	| occupiedSquare |
-	
-	occupiedSquare := squares select: [ :squareBoard | squareBoard contains: aPlayer ].
-	^ occupiedSquare first number
 ]

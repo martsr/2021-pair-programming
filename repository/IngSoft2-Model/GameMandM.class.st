@@ -48,11 +48,6 @@ GameMandM class >> validatesItNeedsAtLeastOneLap: amountOfLaps [
 		ifTrue: [ Error signal: 'A game requires at least one lap to be playable.' ]
 ]
 
-{ #category : #accessing }
-GameMandM >> board [
- ^ board. 
-]
-
 { #category : #initialization }
 GameMandM >> initializePlayedOn: aBoard [
  	board:= aBoard. 
@@ -73,34 +68,9 @@ GameMandM >> intializePlayedOn: aBoard by: participants using: aDiceCup requirin
 	board setUpWith: players on: self.
 ]
 
-{ #category : #action }
-GameMandM >> isNotified: aPlayer movedTo: newPlayerPosition [
-	
-	| playerIndex |
-	
-	playerIndex := players indexOf: aPlayer.
-	playersAbsolutePositions at: playerIndex put: newPlayerPosition.
-]
-
-{ #category : #testing }
-GameMandM >> isNotifiedItHasFinished [ 
-	isFinished := true. 
-]
-
-{ #category : #action }
-GameMandM >> nextPlayerThrows [
-
-	| resultOfThrow player playerIndex |
-	
-	self verifyItisFinished.
-	"Desde aca."
-	player := players at: turn.
-   playerIndex := players indexOf: player.
-	resultOfThrow := player throwsWith: diceCup.
-	"Las 3 lineas de arriba se van y esto se reemplaza con nextTurn y abajo de este comentario tiene que ir board nextPlayerThrows"
-	board move: player by: resultOfThrow in: self with: playerIndex.
-	self verifyNextPlayerNeedsToThrow.
-	
+{ #category : #'as yet unclassified' }
+GameMandM >> isNotifiedItHasFinished [
+	isFinished := true .
 ]
 
 { #category : #'as yet unclassified' }
@@ -141,11 +111,6 @@ GameMandM >> playerRanking [
 	^ playerRanking.
 ]
 
-{ #category : #accessing }
-GameMandM >> players [
- ^ players copy. 
-]
-
 { #category : #private }
 GameMandM >> verifyItIsInProgress [
 	isFinished ifFalse: [ Error signal: 'A winner cannot be determined, the game is still in progress' ]
@@ -156,17 +121,9 @@ GameMandM >> verifyItisFinished [
 	isFinished ifTrue: [ Error signal: 'The game has finished, dice cannot be rolled anymore' ]
 ]
 
-{ #category : #private }
-GameMandM >> verifyNextPlayerNeedsToThrow [
-	"Este mensaje se va porque los turnos los maneja el board de ahora en mas. El board envia un mensaje de notificacion al game en el momento que la posicion absoluta de un jugador exceda o iguale la maxima posible. 81 en board 20 laps 4"
-	(playersAbsolutePositions at: turn) > (board boardSquares * laps) ifTrue: [ isFinished := true ] ifFalse: [ turn := (turn rem: (players size )) + 1 ].
-]
-
 { #category : #accesing }
 GameMandM >> winner [
 	| winner playerRanking |
-	
-	"Esto no va a estar mas en el game, se va a poder preguntar al board que le va a preguntar al tracker quien gano"
 	
 	self verifyItIsInProgress.
 	playerRanking := board playerRanking. 

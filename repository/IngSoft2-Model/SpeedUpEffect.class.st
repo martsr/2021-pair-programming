@@ -6,7 +6,7 @@ Class {
 
 { #category : #action }
 SpeedUpEffect >> applyOn: aBoard activatedBy: aPlayer [
-	
+
 	aBoard setUpSquaresToNotApplyEffect.
 	aBoard move: aPlayer by: 4.
 	aBoard setUpSquaresToApplyEffect

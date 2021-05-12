@@ -29,6 +29,11 @@ BoardSquare class >> validatesAssignedNumberIsGreaterThanZero: aSquareBoardNumbe
 				signal: 'A board square must be assigned a value greater than zero' ]
 ]
 
+{ #category : #'instance creation' }
+BoardSquare class >> withEffect: anEffect [
+	^self new initializeWithEffect: anEffect. 
+]
+
 { #category : #'as yet unclassified' }
 BoardSquare >> changeToApplyEffect [
 	applyEffect := true
@@ -53,6 +58,12 @@ BoardSquare >> initializeNumbered: aSquareBoardNumber withEffect: anEffect [
 	applyEffect:= true. 
 ]
 
+{ #category : #initialization }
+BoardSquare >> initializeWithEffect: anEffect [ 
+	effect := anEffect.
+	applyEffect:= true.
+]
+
 { #category : #accessing }
 BoardSquare >> number [
 	^ number
@@ -61,13 +72,7 @@ BoardSquare >> number [
 { #category : #'as yet unclassified' }
 BoardSquare >> place: player on: aBoard [
 
-	applyEffect ifTrue: [ effect applyOn: aBoard activatedBy: player ].
-]
-
-{ #category : #'as yet unclassified' }
-BoardSquare >> removeFromPosition: aPlayer [
-	"Hasta la vista, baby"
-	occupants remove: aPlayer
+	applyEffect ifTrue:[ effect applyOn: aBoard activatedBy: player ].
 ]
 
 { #category : #testing }

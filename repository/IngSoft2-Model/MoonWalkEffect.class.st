@@ -13,17 +13,11 @@ MoonWalkEffect class >> goingBack: aNumberOfSpaces [
 ]
 
 { #category : #action }
-MoonWalkEffect >> applyOn: aGame activatedBy: aPlayer [
-	| playerIndex unaffectedPlayerIndex |
-	aGame board setUpSquaresToNotApplyEffect.
-	unaffectedPlayerIndex := aGame players indexOf: aPlayer.
-	aGame players
-		do: [ :player | 
-			playerIndex := aGame players indexOf: player.
-			(playerIndex = unaffectedPlayerIndex)
-				ifFalse: [ aGame board move: player by: (moonWalkSpaces*(-1)) in: aGame with: playerIndex ] 
-			].
-	aGame board setUpSquaresToApplyEffect
+MoonWalkEffect >> applyOn: aBoard activatedBy: aPlayer [
+	
+	aBoard setUpSquaresToNotApplyEffect.
+	aBoard movePlayersBack: moonWalkSpaces except: aPlayer.
+	aBoard setUpSquaresToApplyEffect
 ]
 
 { #category : #initialization }
