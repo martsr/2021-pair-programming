@@ -15,19 +15,10 @@ BoardSquareTest >> should: errorBlock raise: exceptionClass withMessage: expecte
 ]
 
 { #category : #tests }
-BoardSquareTest >> test01ABoardSquareHasAValidPositionAssigned [
+BoardSquareTest >> test01ABoardSquareHasAnEffect [
 	
 	| aBoardSquare |
 	
-	aBoardSquare := BoardSquare numbered: 1.
-	self assert:(aBoardSquare number) equals: 1.
-]
-
-{ #category : #tests }
-BoardSquareTest >> test02ABoardSquareMustBeAssignedAValueGreaterThanZero [
-	
-	self
-		should: [ BoardSquare numbered: 0 ]
-		raise: Error
-		withMessage: 'A board square must be assigned a value greater than zero'.
+	aBoardSquare := BoardSquare withEffect: NoEffect new.
+	self assert:(aBoardSquare typeOfEffect class) equals: NoEffect.
 ]

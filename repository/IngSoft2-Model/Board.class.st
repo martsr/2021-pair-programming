@@ -21,12 +21,6 @@ Board class >> consistingOf: squares  requiring: aNumberOfLaps  by: aGroupOfPlay
 	^self new initializeConsistingOf: squares requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup.
 ]
 
-{ #category : #'instance creation' }
-Board class >> having: squares [
-	self validateMoreThanOneSquare: (squares size).
-	^self new initializeHaving: squares.
-]
-
 { #category : #'as yet unclassified' }
 Board class >> ofSize: aNumberOfSquareBoards requiring: aNumberOfLaps [ 
 	self validateMoreThanOneSquare: aNumberOfSquareBoards.
@@ -105,19 +99,13 @@ Board >> initializeConsistingOf: boardSquares requiring: aNumberOfLaps by: aGrou
 ]
 
 { #category : #initialization }
-Board >> initializeHaving: effects [
-	squares := OrderedCollection new.
-	1 to: (effects size) do:[ :number | squares add: (BoardSquare numbered: number withEffect: (effects at: number)) ].
-]
-
-{ #category : #initialization }
 Board >> initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers [  
 	turn := 1.
 	players := aGroupOfPlayers.
 	positionTracker := PositionsTracker of: players inBoardSize: aNumberOfSquareBoards requiring: aNumberOfLaps.
 	size := aNumberOfSquareBoards * aNumberOfLaps.
 	squares := OrderedCollection new.
-	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: NoEffect new) ].
+	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare withEffect: NoEffect new) ].
 ]
 
 { #category : #initialization }
@@ -127,7 +115,7 @@ Board >> initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aG
 	size := aNumberOfSquareBoards * aNumberOfLaps.
 	turn := 1.
 	squares := OrderedCollection new.
-	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: NoEffect new) ].
+	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare withEffect: NoEffect new) ].
 	positionTracker := PositionsTracker of: aGroupOfPlayers  inBoardSize: aNumberOfSquareBoards  requiring: aNumberOfLaps .
 ]
 
@@ -136,7 +124,7 @@ Board >> intializeOfSize: aNumberOfSquareBoards requiring: laps [
 
 	size := aNumberOfSquareBoards * laps.
 	squares := OrderedCollection new.
-	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: NoEffect new) ].
+	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare  withEffect: NoEffect new) ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -210,11 +198,4 @@ Board >> setUpSquaresToApplyEffect [
 { #category : #action }
 Board >> setUpSquaresToNotApplyEffect [
 	squares do: [ :square | square changeToNotApplyEffect ]
-]
-
-{ #category : #action }
-Board >> setUpWith: players on: aGame [
-	"Este mensaje queda deleteado"
-	players do: [ :player | (squares first) place: player on: aGame].
-	self setUpSquaresToApplyEffect 
 ]

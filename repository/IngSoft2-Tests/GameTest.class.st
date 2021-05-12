@@ -340,7 +340,7 @@ GameTest >> test22APlayerLandsOnASquareWithNoEffectAndItsPositionDoesntChange [
 	self generatePlayerCollectionWith: #('Fran').
 	self generateDeterministicDiceCupWith: #(#(3 11 11 20) #(3 11 11 20)).
 	squares := OrderedCollection new.
-	1 to: size do: [ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: NoEffect new) ].
+	1 to: size do: [ :squareBoardNumber | squares add: (BoardSquare withEffect: NoEffect new) ].
 	aBoard := Board consistingOf: squares requiring: laps by: players using: diceCup.
 	aGame := GameMandM playedOn: aBoard.
 	self throwDiceCupTimes: 1 inGame: aGame.
@@ -358,7 +358,7 @@ GameTest >> test23APlayerLandsOnASquareWithSpeedUpEffectAndItsPositionIncreasesB
 	self generatePlayerCollectionWith: #('Fran').
 	self generateDeterministicDiceCupWith: #(#(3 11 11 20) #(3 11 11 20)).
 	squares := OrderedCollection new.
-	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: SpeedUpEffect new) ].
+	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare withEffect: SpeedUpEffect new) ].
 	aBoard := Board consistingOf: squares requiring: laps by: players using: diceCup.
 	aGame := GameMandM playedOn: aBoard.
 	self throwDiceCupTimes: 1 inGame: aGame.
@@ -376,7 +376,7 @@ GameTest >> test24APlayerLandsOnASquareWithAtomicBombffectAndAllPlayersAreMovedT
 	self generatePlayerCollectionWith: #('Fran').
 	self generateDeterministicDiceCupWith: #(#(12) #(12)).
 	squares := OrderedCollection new.
-	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: AtomicBombEffect new) ].
+	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare withEffect: AtomicBombEffect new) ].
 	aBoard := Board consistingOf: squares requiring: laps by: players using: diceCup.
 	aGame := GameMandM playedOn: aBoard.
 	self throwDiceCupTimes: 1 inGame: aGame.
@@ -396,7 +396,7 @@ GameTest >> test25APlayerLandsOnASquareWithAtomicBombffectAndItsPositionTheFirst
 	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Mango').
 	self generateDeterministicDiceCupWith: #(#(3 11 21) #(3 11 21 )).
 	squares := OrderedCollection new.
-	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: AtomicBombEffect new) ].
+	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare withEffect: AtomicBombEffect new) ].
 	aBoard := Board consistingOf: squares requiring: laps by: players using: diceCup.
 	aGame := GameMandM playedOn: aBoard.
 	self throwDiceCupTimes: 1 inGame: aGame.
@@ -426,7 +426,7 @@ GameTest >> test26APlayerLandsOnASquareWithWormHoleEffectAndItsPositionDecreases
 	self generatePlayerCollectionWith: #('Fran').
 	self generateDeterministicDiceCupWith: #(#(3 11 11 20) #(3 11 11 20)).
 	squares := OrderedCollection new.
-	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: WormHoleEffect new) ].
+	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare withEffect: WormHoleEffect new) ].
 	aBoard := Board consistingOf: squares requiring: laps by: players using: diceCup.
 	aGame := GameMandM playedOn: aBoard.
 	self throwDiceCupTimes: 1 inGame: aGame.
@@ -444,7 +444,7 @@ GameTest >> test27MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectAndTheirPositi
 	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWith: #(#(3 11 15) #(3 11 15)).
 	squares := OrderedCollection new.
-	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: SpeedUpEffect new) ].
+	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare withEffect: SpeedUpEffect new) ].
 	aBoard := Board consistingOf: squares requiring: laps by: players using: diceCup.
 	aGame := GameMandM playedOn: aBoard.
 	self throwDiceCupTimes: 3 inGame: aGame.
@@ -464,7 +464,7 @@ GameTest >> test28MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectTheirPositions
 	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWith: #(#(3 7 9) #(3 7 9)).
 	squares := OrderedCollection new.
-	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: SpeedUpEffect new) ].
+	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare withEffect: SpeedUpEffect new) ].
 	aBoard := Board consistingOf: squares requiring: laps by: players using: diceCup.
 	aGame := GameMandM playedOn: aBoard.
 	self throwDiceCupTimes: 3 inGame: aGame.
@@ -487,7 +487,7 @@ GameTest >> test29MoreThanOnePlayerLandsOnASquareWithWormHoleEffectAndTheirPosit
 	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWith: #(#(1 11 15) #(1 11 15)).
 	squares := OrderedCollection new.
-	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber withEffect: WormHoleEffect new) ].
+	1 to: (size * laps) do: [ :squareBoardNumber | squares add: (BoardSquare withEffect: WormHoleEffect new) ].
 	aBoard := Board consistingOf: squares requiring: laps by: players using: diceCup.
 	aGame := GameMandM playedOn: aBoard.
 	self throwDiceCupTimes: 3 inGame: aGame.
