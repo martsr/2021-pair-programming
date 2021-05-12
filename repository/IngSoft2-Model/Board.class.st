@@ -168,9 +168,9 @@ Board >> movePlayersBack: aNumberOfSpaces except: aPlayer [
 	
 	| affectedPlayers |
 	
-	affectedPlayers := players asOrderedCollection remove: aPlayer.
+	affectedPlayers := players reject: [ :player | player = aPlayer ].
 	affectedPlayers
-		do: [ :player | self move: player by: aNumberOfSpaces ]
+		do: [ :player | self move: player by: (-1) * aNumberOfSpaces ]
 ]
 
 { #category : #action }

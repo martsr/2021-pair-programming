@@ -509,19 +509,19 @@ GameTest >> test30MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayers
 	aBoard := Board consistingOf: squares requiring: laps by: players using: diceCup.
 	aGame := GameMandM playedOn: aBoard.
 	self throwDiceCupTimes: 1 inGame: aGame.
-	playerPositions := Dictionary newFrom: {'Fran' ->7 . 'Martu'->1 . 'Maia'->1}.
+	playerPositions := Dictionary newFrom: {'Fran' ->9 . 'Martu'->1 . 'Maia'->1}.
 	self assert: aGame playerPositions equals: playerPositions.
-	playerLaps := Dictionary newFrom: {'Fran' ->1 . 'Martu'->0 . 'Maia'->0}.
+	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->0 . 'Maia'->0}.
 	self assert: aGame playerLaps equals: playerLaps.
 	self throwDiceCupTimes: 1 inGame: aGame.
-	playerPositions := Dictionary newFrom: {'Fran' ->10 . 'Martu'->3 . 'Maia'->1}.
+	playerPositions := Dictionary newFrom: {'Fran' ->7 . 'Martu'->7 . 'Maia'->1}.
 	self assert: aGame playerPositions equals: playerPositions.
-	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->2 . 'Maia'->0}.
+	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->0 . 'Maia'->0}.
 	self assert: aGame playerLaps equals: playerLaps.
 	self throwDiceCupTimes: 1 inGame: aGame.
-	playerPositions := Dictionary newFrom: {'Fran' ->6 . 'Martu'->9 . 'Maia'->5}.
+	playerPositions := Dictionary newFrom: {'Fran' ->4 . 'Martu'->4 . 'Maia'->3}.
 	self assert: aGame playerPositions equals: playerPositions.
-	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->1 . 'Maia'->1}.
+	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->0 . 'Maia'->0}.
 	self assert: aGame playerLaps equals: playerLaps.
 ]
 
