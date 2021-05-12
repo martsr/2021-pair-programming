@@ -159,10 +159,15 @@ BoardTest >> test07ABoardCreatedWithTwentySquareBoardsWithMoonWalkEffect [
 { #category : #tests }
 BoardTest >> test09ABoarOfSizeTwentyAnd1LapHasTwentySquares [
 	
-	| aBoard laps |
+	| aBoard laps size squares |
 	
 	laps := 1.
-	aBoard := Board ofSize: 20 requiring: laps.
+	size := 20.
+	self generatePlayerCollectionWith: #('Fran').
+	self generateDeterministicDiceCupWith: #(#(3 11 11 20) #(3 11 11 20)).
+	squares := OrderedCollection new.
+	1 to: (size) do: [ :squareBoardNumber | squares add: (BoardSquare withEffect: NoEffect new) ].
+	aBoard := Board consistingOf: squares requiring: laps by: players using: diceCup.
 	self assert: (aBoard boardSquares) equals: 20.
 ]
 

@@ -21,21 +21,6 @@ Board class >> consistingOf: squares  requiring: aNumberOfLaps  by: aGroupOfPlay
 	^self new initializeConsistingOf: squares requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup.
 ]
 
-{ #category : #'as yet unclassified' }
-Board class >> ofSize: aNumberOfSquareBoards requiring: aNumberOfLaps [ 
-	self validateMoreThanOneSquare: aNumberOfSquareBoards.
-	self validatesItNeedsAtLeastOneLap: aNumberOfLaps.
-	^ self new intializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps.
-]
-
-{ #category : #'instance creation' }
-Board class >> ofSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers [ 
-	self validatesItMustHaveAtLeastOnePlayer: aGroupOfPlayers.
-	self validateMoreThanOneSquare: aNumberOfSquareBoards.
-	self validatesItNeedsAtLeastOneLap: aNumberOfLaps.
-	^self new initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers .
-]
-
 { #category : #'instance creation' }
 Board class >> ofSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup [ 
 	self validatesItMustHaveAtLeastOnePlayer: aGroupOfPlayers.
@@ -96,16 +81,6 @@ Board >> initializeConsistingOf: boardSquares requiring: aNumberOfLaps by: aGrou
 	turn := 1.
 	squares := boardSquares.
 	positionTracker := PositionsTracker of: aGroupOfPlayers inBoardSize: ((boardSquares size) / aNumberOfLaps)  requiring: aNumberOfLaps.
-]
-
-{ #category : #initialization }
-Board >> initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers [  
-	turn := 1.
-	players := aGroupOfPlayers.
-	positionTracker := PositionsTracker of: players inBoardSize: aNumberOfSquareBoards requiring: aNumberOfLaps.
-	size := aNumberOfSquareBoards * aNumberOfLaps.
-	squares := OrderedCollection new.
-	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare withEffect: NoEffect new) ].
 ]
 
 { #category : #initialization }
