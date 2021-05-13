@@ -1,6 +1,6 @@
 Class {
 	#name : #MoonWalkEffect,
-	#superclass : #Object,
+	#superclass : #Effect,
 	#instVars : [
 		'moonWalkSpaces'
 	],
@@ -10,6 +10,11 @@ Class {
 { #category : #'instance creation' }
 MoonWalkEffect class >> goingBack: aNumberOfSpaces [
 	^ self new initializeGoingBack: aNumberOfSpaces
+]
+
+{ #category : #'instance creation' }
+MoonWalkEffect class >> newWithParameter: aNumber [
+ ^ self goingBack: aNumber
 ]
 
 { #category : #action }

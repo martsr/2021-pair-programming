@@ -267,3 +267,16 @@ BoardTest >> test15ABoardCannotBeCreatedIfAnyPlayerHasARepeatedName [
 		raise: Error
 		withMessage: 'A game cannot be created with any players having repeated names'. 
 ]
+
+{ #category : #tests }
+BoardTest >> test16GenerateArandomBoard [
+
+
+	| aBoard effects |
+	self generatePlayerCollectionWith: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generateDeterministicDiceCupWith: #(#(5 1 1) #(5 1 1)).
+	effects := Dictionary newFrom: { NoEffect -> 0.48 . WormHoleEffect -> 0.20 . SpeedUpEffect -> 0.20 . MoonWalkEffect -> 0.10 . AtomicBombEffect  -> 0.02 }.
+	aBoard := BoardGenerator ofSize: 20 requiringLaps: 1 playedBy: players using: diceCup usingEffects: effects.
+	self halt.
+	
+]
