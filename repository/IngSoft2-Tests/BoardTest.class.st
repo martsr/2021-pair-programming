@@ -11,6 +11,22 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
+{ #category : #'as yet unclassified' }
+BoardTest >> calculateDistributionOf: aBoard [ 
+
+	| boardSquaresType boardSquareType noEffects wormHoleEffects speedUpEffects moonWalkEffects atomicBombEffects boardSquaresDistribution |
+	boardSquaresType := OrderedCollection new.
+	1 to: (aBoard boardSquares) do: [ :position | boardSquaresType add: (aBoard atSquare: position) ].
+	boardSquareType := boardSquaresType collect: [ :boardSquare | boardSquare typeOfEffect ].
+	noEffects := boardSquareType count: [ :boardSquare | boardSquare class = NoEffect ].
+	wormHoleEffects := boardSquareType count: [ :boardSquare | boardSquare class = WormHoleEffect ].
+	speedUpEffects := boardSquareType count: [ :boardSquare | boardSquare class = SpeedUpEffect ].
+	moonWalkEffects := boardSquareType count: [ :boardSquare | boardSquare class = MoonWalkEffect ].
+	atomicBombEffects := boardSquareType count: [ :boardSquare | boardSquare class = AtomicBombEffect ].
+	boardSquaresDistribution := Dictionary newFrom: { SpeedUpEffect -> speedUpEffects . WormHoleEffect -> wormHoleEffects . MoonWalkEffect -> moonWalkEffects . AtomicBombEffect -> atomicBombEffects . NoEffect -> noEffects }.
+	^ boardSquaresDistribution.
+]
+
 { #category : #generators }
 BoardTest >> generateDeterministicDiceCupWith: sequences [
 
@@ -272,11 +288,29 @@ BoardTest >> test15ABoardCannotBeCreatedIfAnyPlayerHasARepeatedName [
 BoardTest >> test16GenerateArandomBoard [
 
 
-	| aBoard effects |
+	| aBoard effects boardDistribution |
 	self generatePlayerCollectionWith: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWith: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: { NoEffect -> 0.48 . WormHoleEffect -> 0.20 . SpeedUpEffect -> 0.20 . MoonWalkEffect -> 0.10 . AtomicBombEffect  -> 0.02 }.
-	aBoard := BoardGenerator ofSize: 20 requiringLaps: 1 playedBy: players using: diceCup usingEffects: effects.
-	self halt.
-	
+	aBoard := BoardGenerator ofSize: 20 requiringLaps: 2 playedBy: players using: diceCup usingEffects: effects.
+	self assert: aBoard boardSquares equals: 20.
+	boardDistribution := Dictionary newFrom: { SpeedUpEffect -> 4 . WormHoleEffect -> 4 . MoonWalkEffect -> 2 . AtomicBombEffect -> 1 . NoEffect -> 9 }.
+	self assert: (self calculateDistributionOf: aBoard) equals: boardDistribution.
+
+	 
+]
+
+{ #category : #tests }
+BoardTest >> test17GenerateArandomBoardUnaffected [
+
+
+	| aBoard effects boardDistribution |
+	self generatePlayerCollectionWith: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generateDeterministicDiceCupWith: #(#(5 1 1) #(5 1 1)).
+	effects := Dictionary newFrom: { NoEffect -> 1 }.
+	aBoard := BoardGenerator ofSize: 20 requiringLaps: 2 playedBy: players using: diceCup usingEffects: effects.
+	self assert: aBoard boardSquares equals: 20.
+	boardDistribution := Dictionary newFrom: { SpeedUpEffect -> 0 . WormHoleEffect -> 0 . MoonWalkEffect -> 0 . AtomicBombEffect -> 0 . NoEffect -> 20 }.
+	self assert: (self calculateDistributionOf: aBoard) equals: boardDistribution.
+
 ]
