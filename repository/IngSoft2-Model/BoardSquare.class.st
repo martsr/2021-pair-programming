@@ -37,5 +37,5 @@ BoardSquare >> place: player on: aBoard [
 
 { #category : #testing }
 BoardSquare >> typeOfEffect [
-	^effect.
+	^ effect typeOfEffect.
 ]

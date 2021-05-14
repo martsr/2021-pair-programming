@@ -29,5 +29,5 @@ PositionsTrackerTest >> test01PositionTrackerIsCreatedFromAGroupOfPlayersandThei
 	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Vader').
 	positionTracker := PositionsTracker of: players inBoardSize: 20 requiring: 2.
 	playersPositions:= Dictionary newFrom: {'Fran' ->1 . 'Martu'-> 1 .'Vader' ->1 }.
-	self assert: (positionTracker actualPositions) equals: playersPositions.
+	self assert: (positionTracker relativePositions) equals: playersPositions.
 ]

@@ -15,13 +15,17 @@ PositionsTracker class >> of: aGroupOfPlayers  inBoardSize: aNumberOfSquareBoard
 ]
 
 { #category : #'as yet unclassified' }
-PositionsTracker >> actualPositions [
+PositionsTracker >> absolutePositionOf: player [
 
-	| relativePositions |
-	relativePositions := Dictionary new. 
-	playerPositions keysAndValuesDo: [:playerName :absolutePosition | relativePositions at:(playerName) put: ((absolutePosition rem: boardSize ) = 0 ifTrue: [boardSize ] ifFalse: [ absolutePosition rem: boardSize]) ].
-	^ relativePositions. 
-	
+	| playerName playerPosition |
+	playerName := player name. 
+	playerPosition := playerPositions at: playerName.
+	^ playerPosition. 	
+]
+
+{ #category : #'as yet unclassified' }
+PositionsTracker >> absolutePositions [
+	^ playerPositions copy.
 ]
 
 { #category : #initialization }
@@ -57,12 +61,22 @@ PositionsTracker >> playerRanking [
 ]
 
 { #category : #'as yet unclassified' }
-PositionsTracker >> positionOf: player [
+PositionsTracker >> relativePositionOf: player [
 
-	| playerName playerPosition |
-	playerName := player name. 
-	playerPosition := playerPositions at: playerName.
-	^ playerPosition. 	
+	| playerRelativePosition playerRelativePositions |
+	playerRelativePositions := self relativePositions.
+	playerRelativePosition := playerRelativePositions at: (player name). 
+	^ playerRelativePosition. 	
+]
+
+{ #category : #'as yet unclassified' }
+PositionsTracker >> relativePositions [
+
+	| relativePositions |
+	relativePositions := Dictionary new. 
+	playerPositions keysAndValuesDo: [:playerName :absolutePosition | relativePositions at:(playerName) put: ((absolutePosition rem: boardSize ) = 0 ifTrue: [boardSize ] ifFalse: [ absolutePosition rem: boardSize]) ].
+	^ relativePositions copy. 
+	
 ]
 
 { #category : #'as yet unclassified' }

@@ -11,3 +11,8 @@ AtomicBombEffect >> applyOn: aBoard activatedBy: aPlayer [
 	aBoard moveAllPlayersToFirstSquareOfTheirLap.
 	aBoard setUpSquaresToApplyEffect
 ]
+
+{ #category : #testing }
+AtomicBombEffect >> typeOfEffect [
+	^ 'Atomic Bomb'.
+]

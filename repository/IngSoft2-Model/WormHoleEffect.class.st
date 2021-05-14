@@ -11,3 +11,8 @@ WormHoleEffect >> applyOn: aBoard activatedBy: aPlayer [
 	aBoard move: aPlayer by: (-4).
 	aBoard setUpSquaresToApplyEffect
 ]
+
+{ #category : #testing }
+WormHoleEffect >> typeOfEffect [
+	^ 'Worm Hole'.
+]

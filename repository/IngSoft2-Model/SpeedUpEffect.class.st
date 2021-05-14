@@ -11,3 +11,8 @@ SpeedUpEffect >> applyOn: aBoard activatedBy: aPlayer [
 	aBoard move: aPlayer by: 4.
 	aBoard setUpSquaresToApplyEffect
 ]
+
+{ #category : #testing }
+SpeedUpEffect >> typeOfEffect [
+	^ 'Speed Up'.
+]

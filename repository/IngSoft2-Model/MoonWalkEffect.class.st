@@ -29,3 +29,8 @@ MoonWalkEffect >> applyOn: aBoard activatedBy: aPlayer [
 MoonWalkEffect >> initializeGoingBack: aNumberOfSpaces [  
 	moonWalkSpaces := aNumberOfSpaces.
 ]
+
+{ #category : #testing }
+MoonWalkEffect >> typeOfEffect [
+	^ 'Moon Walk'.
+]

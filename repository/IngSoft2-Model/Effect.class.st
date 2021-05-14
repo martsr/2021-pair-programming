@@ -14,3 +14,8 @@ Effect >> applyOn: aBoard activatedBy: aPlayer [
 	self subclassResponsibility.
 	
 ]
+
+{ #category : #testing }
+Effect >> typeOfEffect [
+	self subclassResponsibility.
+]
