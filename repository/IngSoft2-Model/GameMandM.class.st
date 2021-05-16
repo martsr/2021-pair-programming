@@ -3,75 +3,52 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'board',
-		'diceCup',
-		'isFinished',
-		'turn',
-		'players'
+		'isFinished'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-GameMandM class >> playedOn: aBoard by: players using: aDiceCup [
-	self validatesItMustHaveAtLeastOnePlayer: players.
-	self validatesItDoesntHavePlayersWithSameName: players.
-	^ self new intializePlayedOn: aBoard by: players using: aDiceCup
-]
-
-{ #category : #validation }
-GameMandM class >> validatesItDoesntHavePlayersWithSameName: players [
-
-	| playerNames |
-	
-	playerNames := players collect: [ :player | player name ].
-	playerNames := playerNames asSet.
-	(players size) > (playerNames size) ifTrue: [ Error signal: 'A game cannot be created with any players having repeated names' ]
-]
-
-{ #category : #validation }
-GameMandM class >> validatesItMustHaveAtLeastOnePlayer: aPlayer [
-	aPlayer size < 1
-		ifTrue: [ Error signal: 'A game must have at least 1 player' ]
+GameMandM class >> playedOn: aBoard [ 
+	^self new initializePlayedOn: aBoard.
 ]
 
 { #category : #initialization }
-GameMandM >> intializePlayedOn: aBoard by: participants using: aDiceCup [
-
+GameMandM >> initializePlayedOn: aBoard [
 	board := aBoard.
-	players := participants.
-	diceCup := aDiceCup.
-	isFinished := false.
-	turn := 1.
-	board setUpWith: players
+	isFinished := false
 ]
 
 { #category : #notification }
-GameMandM >> isNotifiedPlayerInLastSquare [
-	isFinished := true.
+GameMandM >> isNotifiedItHasFinished [
+	isFinished := true
 ]
 
 { #category : #action }
-GameMandM >> nextPlayerThrows [
-
-	| resultOfThrow player |
-	
+GameMandM >> nextTurn [
 	self verifyItisFinished.
-	player := players at: turn.
-	resultOfThrow := player throwsWith: diceCup.
-	board move: player by: resultOfThrow in: self.
-	self verifyNextPlayerNeedsToThrow.
-	
+	board nextPlayerThrowsIn: self
+]
+
+{ #category : #testing }
+GameMandM >> playerLaps [
+	| playerLaps |
+	playerLaps := board playerLaps.
+	^ playerLaps
 ]
 
 { #category : #accesing }
 GameMandM >> playerPositions [
+	| playerPositions |
+	playerPositions := board playerPositions.
+	^ playerPositions
+]
 
-	| numberPositions playerPositions |
-	
-	numberPositions := board finalPositionsOf: players.
-	playerPositions := Dictionary new.
-	1 to: numberPositions size do: [ :position | playerPositions at: ((players at: position) name) put: (numberPositions at: position) ].
-	^playerPositions.
+{ #category : #testing }
+GameMandM >> playerRanking [
+	| playerRanking |
+	playerRanking := board playerRanking.
+	^ playerRanking
 ]
 
 { #category : #private }
@@ -84,13 +61,11 @@ GameMandM >> verifyItisFinished [
 	isFinished ifTrue: [ Error signal: 'The game has finished, dice cannot be rolled anymore' ]
 ]
 
-{ #category : #private }
-GameMandM >> verifyNextPlayerNeedsToThrow [
-	isFinished ifFalse: [ turn := (turn rem: (players size )) + 1 ]
-]
-
 { #category : #accesing }
 GameMandM >> winner [
+	| winner playerRanking |
 	self verifyItIsInProgress.
-	^ board playerAtFinalSquare
+	playerRanking := board playerRanking.
+	winner := playerRanking at: 1.
+	^ winner
 ]

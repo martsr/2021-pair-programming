@@ -15,7 +15,7 @@ DiceCupTest >> should: errorBlock raise: exceptionClass withMessage: expectedErr
 ]
 
 { #category : #tests }
-DiceCupTest >> test03DiceCupsContainsANumberOfDice [
+DiceCupTest >> test01DiceCupsContainsANumberOfDice [
 	
 	| aDie aSecondDie dice aDiceCup |
 	
@@ -27,7 +27,7 @@ DiceCupTest >> test03DiceCupsContainsANumberOfDice [
 ]
 
 { #category : #tests }
-DiceCupTest >> test04DiceCupWithATwentyFaceDieaAndASixFaceDieRollsANumberBetweenTwoAndTwentySix [
+DiceCupTest >> test02DiceCupWithATwentyFaceDieaAndASixFaceDieRollsANumberBetweenTwoAndTwentySix [
 	
 	| aDie aSecondDie dice aDiceCup |
 	
@@ -39,7 +39,7 @@ DiceCupTest >> test04DiceCupWithATwentyFaceDieaAndASixFaceDieRollsANumberBetween
 ]
 
 { #category : #tests }
-DiceCupTest >> test05DiceCupWithASingleSixFacedDieRollsANumberBetween1and6 [
+DiceCupTest >> test03DiceCupWithASingleSixFacedDieRollsANumberBetween1and6 [
 	
 	| aDie   aDiceCup |
 	
@@ -49,7 +49,7 @@ DiceCupTest >> test05DiceCupWithASingleSixFacedDieRollsANumberBetween1and6 [
 ]
 
 { #category : #tests }
-DiceCupTest >> test06DiceCupsMustContainAtLeastOneDie [
+DiceCupTest >> test04DiceCupsMustContainAtLeastOneDie [
 	
 	| dice |
 	

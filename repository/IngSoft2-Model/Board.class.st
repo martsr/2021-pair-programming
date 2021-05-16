@@ -2,67 +2,132 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'squares'
+		'squares',
+		'size',
+		'players',
+		'diceCup',
+		'turn',
+		'positionTracker',
+		'laps'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-Board class >> containing: aNumberOfSquareBoards [
-	self validateMoreThanOneSquare: aNumberOfSquareBoards.
-	^ self new initializeContaining: aNumberOfSquareBoards
-]
-
-{ #category : #validation }
-Board class >> validateMoreThanOneSquare: aNumberOfSquareBoards [
-	aNumberOfSquareBoards < 2
-		ifTrue: [ Error signal: 'A board must contain at least 2 square board' ]
+Board class >> consistingOf: squares  requiring: aNumberOfLaps  usedBy: aGroupOfPlayers  playingWith: aDiceCup [ 
+	^self new initializeConsistingOf: squares requiring: aNumberOfLaps usedBy: aGroupOfPlayers playingWith: aDiceCup.
 ]
 
 { #category : #accessing }
-Board >> boardSquares [
-	^ squares size
+Board >> absoluteSize [
+	^ size * laps
+]
+
+{ #category : #accessing }
+Board >> amountOfLaps [
+	^ laps
+]
+
+{ #category : #accessing }
+Board >> amountOfPlayers [
+	^ players size
+]
+
+{ #category : #testing }
+Board >> atSquare: aSquareBoardNumber [ 
+	^ squares at: aSquareBoardNumber.
 ]
 
 { #category : #action }
-Board >> finalPositionsOf: players [
-	^ players collect: [ :player | self whereIsPlayer: player ]
+Board >> incrementTurn [
+	turn := (turn rem: players size) + 1
 ]
 
 { #category : #initialization }
-Board >> initializeContaining: aNumberofSquareBoards [
-	squares := OrderedCollection new.
-	1 to: aNumberofSquareBoards do:[ :squareBoardNumber | squares add: (BoardSquare numbered: squareBoardNumber) ]
+Board >> initializeConsistingOf: boardSquares requiring: aNumberOfLaps usedBy: aGroupOfPlayers playingWith: aDiceCup [ 
+	diceCup := aDiceCup.
+	players := aGroupOfPlayers.
+	size := boardSquares size.
+	turn := 1.
+	squares := boardSquares.
+	laps := aNumberOfLaps.
+	positionTracker := PositionsTracker of: aGroupOfPlayers inBoardOf: size requiring: aNumberOfLaps.
 ]
 
 { #category : #action }
-Board >> move: player by: amountPlaces in: aGame [
+Board >> move: player by: amountPlaces [
 
-	| playerPosition newPlayerPosition |
+	| playerPosition calculatedPlayerPosition |
 	
-	playerPosition := self whereIsPlayer: player.
-	(squares at: playerPosition) removeFromPosition: player.
-	newPlayerPosition := playerPosition + amountPlaces.
-	newPlayerPosition :=  newPlayerPosition min: squares size.
-	(squares at: newPlayerPosition) place: player.
-	newPlayerPosition = (squares size) ifTrue: [ aGame isNotifiedPlayerInLastSquare ]
+	playerPosition := positionTracker absolutePositionOf: player.
+	calculatedPlayerPosition := playerPosition + amountPlaces.
+	calculatedPlayerPosition <= 0	ifTrue: [ calculatedPlayerPosition := 1 ].
+	positionTracker update: player withNew: calculatedPlayerPosition.
+	(calculatedPlayerPosition > (self absoluteSize )) ifFalse: [ (squares at: (self relativePositionOf: player)) place: player on: self ].
+	
+]
+
+{ #category : #action }
+Board >> moveAllPlayersToFirstSquareOfTheirLap [
+
+	| relativePositions relativePlayerPosition |
+	relativePositions := positionTracker relativePositions.
+	players do: [ :player |
+		relativePlayerPosition := relativePositions at: (player name).
+		self move: player by: ((relativePlayerPosition - 1) * (-1)).
+		 ].
+]
+
+{ #category : #action }
+Board >> movePlayersBack: aNumberOfSpaces except: aPlayer [
+	
+	| affectedPlayers |
+	
+	affectedPlayers := players reject: [ :player | player = aPlayer ].
+	affectedPlayers
+		do: [ :player | self move: player by: (-1) * aNumberOfSpaces ]
+]
+
+{ #category : #action }
+Board >> nextPlayerThrowsIn: aGame [
+	| resultOfThrow player |
+	player := players at: turn.
+	resultOfThrow := player throwsWith: diceCup.
+	self move: player by: resultOfThrow.
+	(positionTracker absolutePositionOf: player) > self absoluteSize ifTrue: [ aGame isNotifiedItHasFinished ] ifFalse: [ self incrementTurn ]
+]
+
+{ #category : #notification }
+Board >> notifySquaresToApplyEffect [
+	squares do: [ :square | square applyEffect ]
+]
+
+{ #category : #notification }
+Board >> notifySquaresToNotApplyEffect [
+	squares do: [ :square | square doNotApplyEffect ]
+]
+
+{ #category : #testing }
+Board >> playerLaps [
+	^ positionTracker playerLaps
 ]
 
 { #category : #accessing }
-Board >> playerAtFinalSquare [
-	^ squares last occupant
+Board >> playerPositions [
+	^ positionTracker relativePositions
 ]
 
-{ #category : #action }
-Board >> setUpWith: players [
-	players do: [ :player | squares first place: player ]
+{ #category : #testing }
+Board >> playerRanking [
+	^ positionTracker playerRanking
 ]
 
-{ #category : #action }
-Board >> whereIsPlayer: aPlayer [
+{ #category : #accessing }
+Board >> relativePositionOf: aPlayer [
+	^ positionTracker relativePositionOf: aPlayer
+]
 
-	| occupiedSquare |
-	
-	occupiedSquare := squares select: [ :squareBoard | squareBoard contains: aPlayer ].
-	^ occupiedSquare first number
+{ #category : #accessing }
+Board >> size [
+	^size
 ]

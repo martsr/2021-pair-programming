@@ -2,52 +2,40 @@ Class {
 	#name : #BoardSquare,
 	#superclass : #Object,
 	#instVars : [
-		'occupants',
-		'number'
+		'effect',
+		'applyEffect'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-BoardSquare class >> numbered: aSquareBoardNumber [
-	self validatesAssignedNumberIsGreaterThanZero: aSquareBoardNumber.
-	^ self new initializeNumbered: aSquareBoardNumber
+BoardSquare class >> applying: anEffect [
+	^self new initializeApplying: anEffect. 
 ]
 
-{ #category : #validation }
-BoardSquare class >> validatesAssignedNumberIsGreaterThanZero: aSquareBoardNumber [
-	aSquareBoardNumber < 1
-		ifTrue: [ Error
-				signal: 'A board square must be assigned a value greater than zero' ]
+{ #category : #action }
+BoardSquare >> applyEffect [
+	applyEffect := true
 ]
 
-{ #category : #accessing }
-BoardSquare >> contains: aPlayer [
-	^ occupants includes: aPlayer
+{ #category : #action }
+BoardSquare >> doNotApplyEffect [
+applyEffect := false
 ]
 
 { #category : #initialization }
-BoardSquare >> initializeNumbered: aSquareBoardNumber [
-	occupants := OrderedCollection new.
-	number := aSquareBoardNumber
-]
-
-{ #category : #accessing }
-BoardSquare >> number [
-	^ number
-]
-
-{ #category : #accessing }
-BoardSquare >> occupant [
-	^ occupants first
+BoardSquare >> initializeApplying: anEffect [
+	effect := anEffect.
+	applyEffect := true
 ]
 
 { #category : #action }
-BoardSquare >> place: player [
-	occupants add: player
+BoardSquare >> place: player on: aBoard [
+
+	applyEffect ifTrue:[ effect applyOn: aBoard activatedBy: player ].
 ]
 
-{ #category : #action }
-BoardSquare >> removeFromPosition: aPlayer [
-	occupants remove: aPlayer
+{ #category : #testing }
+BoardSquare >> typeOfEffect [
+	^ effect typeOfEffect
 ]
