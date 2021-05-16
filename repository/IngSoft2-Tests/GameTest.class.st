@@ -474,9 +474,9 @@ GameTest >> test25MoreThanOnePlayerLandsOnASquareWithWormHoleEffectAndTheirPosit
 ]
 
 { #category : #tests }
-GameTest >> test26MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayersReturnSpacesAccordingToTheEffectExceptForThePlayersOnLap0Position1 [
+GameTest >> test26MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayersReturnARandomNumberOfspacesBetweenOneandHalfTheBoardSize [
 	
-	| aBoard  aGame playerPositions playerLaps  effects |
+	| aBoard aGame playerPositions effects |
 	
 	self generatePlayerCollectionWith: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWith: #(#(4 3 1) #(4 3 1)).
@@ -486,18 +486,17 @@ GameTest >> test26MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayers
 	self throwDiceCupTimes: 1 inGame: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->9 . 'Martu'->1 . 'Maia'->1}.
 	self assert: aGame playerPositions equals: playerPositions.
-	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->0 . 'Maia'->0}.
-	self assert: aGame playerLaps equals: playerLaps.
+	playerPositions := aGame playerPositions.
 	self throwDiceCupTimes: 1 inGame: aGame.
-	playerPositions := Dictionary newFrom: {'Fran' ->7 . 'Martu'->7 . 'Maia'->1}.
-	self assert: aGame playerPositions equals: playerPositions.
-	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->0 . 'Maia'->0}.
-	self assert: aGame playerLaps equals: playerLaps.
+	playerPositions := aGame playerPositions.
+	self assert: ((playerPositions  at: ((players at: 1) name)) between: 1 and: 8). 
+	self assert: (playerPositions  at: ((players at: 2) name)) equals: 7.
+	self assert: (playerPositions  at: ((players at: 3) name)) equals: 1.
 	self throwDiceCupTimes: 1 inGame: aGame.
-	playerPositions := Dictionary newFrom: {'Fran' ->4 . 'Martu'->4 . 'Maia'->3}.
-	self assert: aGame playerPositions equals: playerPositions.
-	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->0 . 'Maia'->0}.
-	self assert: aGame playerLaps equals: playerLaps.
+	playerPositions := aGame playerPositions.
+	self assert: ((playerPositions  at: ((players at: 1) name)) between: 1 and: 7). 
+	self assert: ((playerPositions  at: ((players at: 2) name)) between: 1 and: 6).
+	self assert: (playerPositions  at: ((players at: 3) name)) equals: 3.
 ]
 
 { #category : #iteration }

@@ -23,11 +23,6 @@ PositionsTracker >> absolutePositionOf: player [
 	^ playerPosition. 	
 ]
 
-{ #category : #'as yet unclassified' }
-PositionsTracker >> absolutePositions [
-	^ playerPositions copy.
-]
-
 { #category : #initialization }
 PositionsTracker >> initializeOf: aGroupOfPlayers  inBoardSize: aNumberOfSquareBoards  requiring: aNumberOfLaps [ 
 	| positions playersName |

@@ -18,11 +18,6 @@ Board class >> consistingOf: squares  requiring: aNumberOfLaps  by: aGroupOfPlay
 	^self new initializeConsistingOf: squares requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup.
 ]
 
-{ #category : #'instance creation' }
-Board class >> ofSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup [ 
-	^self new initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup.
-]
-
 { #category : #'as yet unclassified' }
 Board >> amountOfLaps [
 	^laps.
@@ -52,26 +47,6 @@ Board >> initializeConsistingOf: boardSquares requiring: aNumberOfLaps by: aGrou
 	squares := boardSquares.
 	laps := aNumberOfLaps.
 	positionTracker := PositionsTracker of: aGroupOfPlayers inBoardSize: (boardSquares size)requiring: aNumberOfLaps.
-]
-
-{ #category : #initialization }
-Board >> initializeOfSize: aNumberOfSquareBoards requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup [ 
-	diceCup := aDiceCup.
-	players := aGroupOfPlayers.
-	size := aNumberOfSquareBoards.
-	turn := 1.
-	laps := aNumberOfLaps .
-	squares := OrderedCollection new.
-	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare withEffect: NoEffect new) ].
-	positionTracker := PositionsTracker of: aGroupOfPlayers  inBoardSize: aNumberOfSquareBoards  requiring: aNumberOfLaps .
-]
-
-{ #category : #'as yet unclassified' }
-Board >> intializeOfSize: aNumberOfSquareBoards requiring: laps [ 
-
-	size := aNumberOfSquareBoards * laps.
-	squares := OrderedCollection new.
-	1 to: size do:[ :squareBoardNumber | squares add: (BoardSquare  withEffect: NoEffect new) ].
 ]
 
 { #category : #'as yet unclassified' }
