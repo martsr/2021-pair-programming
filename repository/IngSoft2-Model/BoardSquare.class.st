@@ -9,24 +9,24 @@ Class {
 }
 
 { #category : #'instance creation' }
-BoardSquare class >> withEffect: anEffect [
-	^self new initializeWithEffect: anEffect. 
+BoardSquare class >> applying: anEffect [
+	^self new initializeApplying: anEffect. 
 ]
 
 { #category : #action }
-BoardSquare >> changeToApplyEffect [
+BoardSquare >> applyEffect [
 	applyEffect := true
 ]
 
 { #category : #action }
-BoardSquare >> changeToNotApplyEffect [
+BoardSquare >> doNotApplyEffect [
 applyEffect := false
 ]
 
 { #category : #initialization }
-BoardSquare >> initializeWithEffect: anEffect [ 
+BoardSquare >> initializeApplying: anEffect [
 	effect := anEffect.
-	applyEffect:= true.
+	applyEffect := true
 ]
 
 { #category : #action }
@@ -37,5 +37,5 @@ BoardSquare >> place: player on: aBoard [
 
 { #category : #testing }
 BoardSquare >> typeOfEffect [
-	^ effect typeOfEffect.
+	^ effect typeOfEffect
 ]

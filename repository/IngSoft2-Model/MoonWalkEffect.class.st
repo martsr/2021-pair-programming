@@ -8,21 +8,21 @@ Class {
 }
 
 { #category : #'instance creation' }
-MoonWalkEffect class >> goingBack: aNumberOfSpaces [
-	^ self new initializeGoingBack: aNumberOfSpaces
+MoonWalkEffect class >> applyingValue: aNumber [
+ ^ self goingBack: aNumber
 ]
 
 { #category : #'instance creation' }
-MoonWalkEffect class >> newWithParameter: aNumber [
- ^ self goingBack: aNumber
+MoonWalkEffect class >> goingBack: aNumberOfSpaces [
+	^ self new initializeGoingBack: aNumberOfSpaces
 ]
 
 { #category : #action }
 MoonWalkEffect >> applyOn: aBoard activatedBy: aPlayer [
 	
-	aBoard setUpSquaresToNotApplyEffect.
+	aBoard notifySquaresToNotApplyEffect.
 	aBoard movePlayersBack: moonWalkSpaces except: aPlayer.
-	aBoard setUpSquaresToApplyEffect
+	aBoard notifySquaresToApplyEffect
 ]
 
 { #category : #initialization }

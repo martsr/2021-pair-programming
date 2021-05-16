@@ -15,45 +15,40 @@ GameMandM class >> playedOn: aBoard [
 
 { #category : #initialization }
 GameMandM >> initializePlayedOn: aBoard [
- 	board:= aBoard. 
-	isFinished := false.
+	board := aBoard.
+	isFinished := false
 ]
 
 { #category : #notification }
 GameMandM >> isNotifiedItHasFinished [
-	isFinished := true .
+	isFinished := true
 ]
 
 { #category : #action }
 GameMandM >> nextTurn [
-	
 	self verifyItisFinished.
-	board nextPlayerThrowsIn: self.
-
-	
+	board nextPlayerThrowsIn: self
 ]
 
 { #category : #testing }
 GameMandM >> playerLaps [
 	| playerLaps |
 	playerLaps := board playerLaps.
-	^ playerLaps.
+	^ playerLaps
 ]
 
 { #category : #accesing }
 GameMandM >> playerPositions [
-	 
 	| playerPositions |
-	playerPositions := board playerPositions .
-	^playerPositions.
+	playerPositions := board playerPositions.
+	^ playerPositions
 ]
 
 { #category : #testing }
 GameMandM >> playerRanking [
-
 	| playerRanking |
 	playerRanking := board playerRanking.
-	^ playerRanking.
+	^ playerRanking
 ]
 
 { #category : #private }
@@ -69,9 +64,8 @@ GameMandM >> verifyItisFinished [
 { #category : #accesing }
 GameMandM >> winner [
 	| winner playerRanking |
-	
 	self verifyItIsInProgress.
-	playerRanking := board playerRanking. 
-	winner:= playerRanking at: 1.
+	playerRanking := board playerRanking.
+	winner := playerRanking at: 1.
 	^ winner
 ]

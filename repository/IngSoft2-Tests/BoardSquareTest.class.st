@@ -19,6 +19,6 @@ BoardSquareTest >> test01ABoardSquareHasAnEffect [
 	
 	| aBoardSquare |
 	
-	aBoardSquare := BoardSquare withEffect: NoEffect new.
-	self assert:(aBoardSquare typeOfEffect class) equals: NoEffect.
+	aBoardSquare := BoardSquare applying: NoEffect new.
+	self assert:(aBoardSquare typeOfEffect) equals: 'No Effect'.
 ]

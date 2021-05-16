@@ -7,9 +7,9 @@ Class {
 { #category : #action }
 SpeedUpEffect >> applyOn: aBoard activatedBy: aPlayer [
 
-	aBoard setUpSquaresToNotApplyEffect.
+	aBoard notifySquaresToNotApplyEffect.
 	aBoard move: aPlayer by: 4.
-	aBoard setUpSquaresToApplyEffect
+	aBoard notifySquaresToApplyEffect
 ]
 
 { #category : #testing }

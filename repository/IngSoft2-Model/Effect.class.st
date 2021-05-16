@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-Effect class >> newWithParameter: aNumber [
+Effect class >> applyingValue: aNumber [
  ^ self new initialize.
 ]
 
