@@ -18,12 +18,12 @@ Board class >> consistingOf: squares  requiring: aNumberOfLaps  by: aGroupOfPlay
 	^self new initializeConsistingOf: squares requiring: aNumberOfLaps by: aGroupOfPlayers using: aDiceCup.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Board >> amountOfLaps [
 	^laps.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Board >> amountOfPlayers [
 	^players size.
 ]
@@ -49,7 +49,7 @@ Board >> initializeConsistingOf: boardSquares requiring: aNumberOfLaps by: aGrou
 	positionTracker := PositionsTracker of: aGroupOfPlayers inBoardSize: (boardSquares size)requiring: aNumberOfLaps.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Board >> move: player by: amountPlaces [
 
 	| playerPosition calculatedPlayerPosition |
@@ -62,7 +62,7 @@ Board >> move: player by: amountPlaces [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Board >> moveAllPlayersToFirstSquareOfTheirLap [
 
 	| relativePositions relativePlayerPosition |
@@ -73,7 +73,7 @@ Board >> moveAllPlayersToFirstSquareOfTheirLap [
 		 ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Board >> movePlayersBack: aNumberOfSpaces except: aPlayer [
 	
 	| affectedPlayers |
@@ -101,7 +101,7 @@ Board >> playerLaps [
 	
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 Board >> playerPositions [ 
 
  ^positionTracker relativePositions.

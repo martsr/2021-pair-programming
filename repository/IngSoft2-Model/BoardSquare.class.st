@@ -13,12 +13,12 @@ BoardSquare class >> withEffect: anEffect [
 	^self new initializeWithEffect: anEffect. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 BoardSquare >> changeToApplyEffect [
 	applyEffect := true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 BoardSquare >> changeToNotApplyEffect [
 applyEffect := false
 ]
@@ -29,7 +29,7 @@ BoardSquare >> initializeWithEffect: anEffect [
 	applyEffect:= true.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 BoardSquare >> place: player on: aBoard [
 
 	applyEffect ifTrue:[ effect applyOn: aBoard activatedBy: player ].

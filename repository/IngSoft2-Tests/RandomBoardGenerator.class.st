@@ -57,7 +57,7 @@ RandomBoardGenerator class >> validatesProbabilitiesSumEqualsOne: effects [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 RandomBoardGenerator >> generateMoonWalkValuesWithBoardSize: aNumberOfSquareBoards [
 	| moonWalkValues maxGoingBack |
 	moonWalkValues := OrderedCollection new.

@@ -19,12 +19,12 @@ GameMandM >> initializePlayedOn: aBoard [
 	isFinished := false.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #notification }
 GameMandM >> isNotifiedItHasFinished [
 	isFinished := true .
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 GameMandM >> nextTurn [
 	
 	self verifyItisFinished.

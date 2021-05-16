@@ -14,7 +14,7 @@ PositionsTracker class >> of: aGroupOfPlayers  inBoardSize: aNumberOfSquareBoard
 	^ self new initializeOf: aGroupOfPlayers  inBoardSize: aNumberOfSquareBoards  requiring: aNumberOfLaps . 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PositionsTracker >> absolutePositionOf: player [
 
 	| playerName playerPosition |
@@ -35,7 +35,7 @@ PositionsTracker >> initializeOf: aGroupOfPlayers  inBoardSize: aNumberOfSquareB
 	boardSize := aNumberOfSquareBoards. 
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 PositionsTracker >> playerLaps [
 	| playerLaps |
 	playerLaps := Dictionary new. 
@@ -45,7 +45,7 @@ PositionsTracker >> playerLaps [
 
 ]
 
-{ #category : #testing }
+{ #category : #generation }
 PositionsTracker >> playerRanking [
 
 	|playerRanking playerNames |
@@ -55,7 +55,7 @@ PositionsTracker >> playerRanking [
 	^playerRanking. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PositionsTracker >> relativePositionOf: player [
 
 	| playerRelativePosition playerRelativePositions |
@@ -64,7 +64,7 @@ PositionsTracker >> relativePositionOf: player [
 	^ playerRelativePosition. 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PositionsTracker >> relativePositions [
 
 	| relativePositions |
@@ -74,7 +74,7 @@ PositionsTracker >> relativePositions [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 PositionsTracker >> update: player withNew: calculatedPlayerPosition [
 
 	| playerName |
