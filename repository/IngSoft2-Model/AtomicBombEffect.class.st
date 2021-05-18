@@ -7,9 +7,8 @@ Class {
 { #category : #action }
 AtomicBombEffect >> applyOn: aBoard activatedBy: aPlayer [
 
-	aBoard notifySquaresToNotApplyEffect.
 	aBoard moveAllPlayersToFirstSquareOfTheirLap.
-	aBoard notifySquaresToApplyEffect
+
 ]
 
 { #category : #testing }
