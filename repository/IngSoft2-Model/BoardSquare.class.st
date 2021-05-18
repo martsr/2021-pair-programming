@@ -32,7 +32,9 @@ BoardSquare >> initializeApplying: anEffect [
 { #category : #action }
 BoardSquare >> place: player on: aBoard [
 
-	applyEffect ifTrue:[ effect applyOn: aBoard activatedBy: player ].
+	applyEffect ifTrue:[ 
+		aBoard disableEffectsDuring: [ effect applyOn: aBoard activatedBy: player ]. 
+		].
 ]
 
 { #category : #testing }

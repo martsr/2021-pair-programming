@@ -39,6 +39,13 @@ Board >> atSquare: aSquareBoardNumber [
 ]
 
 { #category : #action }
+Board >> disableEffectsDuring: anAction [
+	self notifySquaresToNotApplyEffect.
+	anAction value.
+	self notifySquaresToApplyEffect.
+]
+
+{ #category : #action }
 Board >> incrementTurn [
 	turn := (turn rem: players size) + 1
 ]

@@ -7,9 +7,7 @@ Class {
 { #category : #action }
 WormHoleEffect >> applyOn: aBoard activatedBy: aPlayer [
 
-	aBoard notifySquaresToNotApplyEffect.
 	aBoard move: aPlayer by: (-4).
-	aBoard notifySquaresToApplyEffect
 ]
 
 { #category : #testing }

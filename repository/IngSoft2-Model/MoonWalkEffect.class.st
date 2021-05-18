@@ -20,9 +20,7 @@ MoonWalkEffect class >> goingBack: aNumberOfSpaces [
 { #category : #action }
 MoonWalkEffect >> applyOn: aBoard activatedBy: aPlayer [
 	
-	aBoard notifySquaresToNotApplyEffect.
 	aBoard movePlayersBack: moonWalkSpaces except: aPlayer.
-	aBoard notifySquaresToApplyEffect
 ]
 
 { #category : #initialization }
