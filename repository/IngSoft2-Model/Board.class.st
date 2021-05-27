@@ -70,7 +70,7 @@ Board >> move: player by: amountPlaces [
 	calculatedPlayerPosition := playerPosition + amountPlaces.
 	calculatedPlayerPosition <= 0	ifTrue: [ calculatedPlayerPosition := 1 ].
 	positionTracker update: player withNew: calculatedPlayerPosition.
-	(calculatedPlayerPosition > (self absoluteSize )) ifFalse: [ (squares at: (self relativePositionOf: player)) place: player on: self ].
+	(calculatedPlayerPosition > (self absoluteSize )) ifFalse: [ (squares at: (self positionOf: player)) place: player on: self ].
 	
 ]
 
@@ -78,7 +78,7 @@ Board >> move: player by: amountPlaces [
 Board >> moveAllPlayersToFirstSquareOfTheirLap [
 
 	| relativePositions relativePlayerPosition |
-	relativePositions := positionTracker relativePositions.
+	relativePositions := positionTracker boardPositions.
 	players do: [ :player |
 		relativePlayerPosition := relativePositions at: (player name).
 		self move: player by: ((relativePlayerPosition - 1) * (-1)).
@@ -121,7 +121,7 @@ Board >> playerLaps [
 
 { #category : #accessing }
 Board >> playerPositions [
-	^ positionTracker relativePositions
+	^ positionTracker boardPositions
 ]
 
 { #category : #testing }
@@ -130,8 +130,8 @@ Board >> playerRanking [
 ]
 
 { #category : #accessing }
-Board >> relativePositionOf: aPlayer [
-	^ positionTracker relativePositionOf: aPlayer
+Board >> positionOf: aPlayer [
+	^ positionTracker boardPositionOf: aPlayer
 ]
 
 { #category : #accessing }
