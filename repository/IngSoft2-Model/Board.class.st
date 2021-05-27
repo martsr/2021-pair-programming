@@ -14,8 +14,8 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> consistingOf: squares  requiring: aNumberOfLaps  usedBy: aGroupOfPlayers  playingWith: aDiceCup [ 
-	^self new initializeConsistingOf: squares requiring: aNumberOfLaps usedBy: aGroupOfPlayers playingWith: aDiceCup.
+Board class >> having: squares  requiring: aNumberOfLaps  usedBy: aGroupOfPlayers  throwing: aDiceCup [ 
+	^self new initializeHaving: squares  requiring: aNumberOfLaps  usedBy: aGroupOfPlayers  throwing: aDiceCup 
 ]
 
 { #category : #accessing }
@@ -51,14 +51,14 @@ Board >> incrementTurn [
 ]
 
 { #category : #initialization }
-Board >> initializeConsistingOf: boardSquares requiring: aNumberOfLaps usedBy: aGroupOfPlayers playingWith: aDiceCup [ 
+Board >> initializeHaving: boardSquares requiring: aNumberOfLaps usedBy: aGroupOfPlayers throwing: aDiceCup [ 
 	diceCup := aDiceCup.
 	players := aGroupOfPlayers.
 	size := boardSquares size.
 	turn := 1.
 	squares := boardSquares.
 	laps := aNumberOfLaps.
-	positionTracker := PositionsTracker of: aGroupOfPlayers inBoardOf: size requiring: aNumberOfLaps.
+	positionTracker := PositionsTracker of: aGroupOfPlayers inBoardOf: size.
 ]
 
 { #category : #action }

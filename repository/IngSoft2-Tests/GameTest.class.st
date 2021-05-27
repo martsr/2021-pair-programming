@@ -24,7 +24,7 @@ GameTest >> generateDeterministicDiceCupWithSequences: sequences [
 ]
 
 { #category : #generators }
-GameTest >> generatePlayersWithNames: playerNames [
+GameTest >> generatePlayerNames: playerNames [
 
 	players := OrderedCollection new.
 	players := playerNames collect: [ :name | Player named: name ].
@@ -52,7 +52,7 @@ GameTest >> test01AtTheStartOfTheGameAllPlayersArePlacedOnTheFirstBoardSquare [
 	
 	| aBoard aGame playerPositions effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 8 6 3) #(5 8 6 3)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 40 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
@@ -67,13 +67,13 @@ GameTest >> test02APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 	
 	| aBoard aGame playerPositions  effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 8 6 3) #(5 8 6 3)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 11}.
 	self assert: (aGame playerPositions) equals: playerPositions.
 ]
@@ -84,13 +84,13 @@ GameTest >> test03APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 	| aBoard aGame playerPositions playerLaps effects aRandomBoardGenerator |
 	
 
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 8 6 3) #(5 8 6 3)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 40 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 4 inGame: aGame.
+	self throwDiceCupTimes: 4 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 5}.
 	self assert: (aGame playerPositions) equals: playerPositions.
 	playerLaps:= Dictionary newFrom: {'Fran' -> 1}.
@@ -106,13 +106,13 @@ GameTest >> test04APlayerThrowsTheDeterministicDiceCupWWithTwoDiceWithTheSameSeq
 	
 	| aBoard aGame playerPositions  effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 8 6 3) #(5 8 6 3)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 40 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 4 inGame: aGame.
+	self throwDiceCupTimes: 4 in: aGame.
 	playerPositions := Dictionary newFrom: {('Fran' -> 5)}.
 	self assert: aGame playerPositions equals: playerPositions.
 	self assert: aGame winner equals: ((players at: 1)name).
@@ -123,13 +123,13 @@ GameTest >> test05APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 	
 	| aBoard aGame playerPositions  effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 8 6 3) #(5 8 6 3)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 40 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 11}.
 	self assert: (aGame playerPositions) equals: playerPositions.
 	self
@@ -143,13 +143,13 @@ GameTest >> test06APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 	
 	| aBoard aGame playerPositions effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 8 6 3) #(5 8 6 3)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 40 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 4 inGame: aGame.
+	self throwDiceCupTimes: 4 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 5}.
 	self assert: (aGame playerPositions) equals: playerPositions. 
 	self assert: aGame winner equals: ((players at: 1) name).
@@ -160,13 +160,13 @@ GameTest >> test07ThreePlayersThrowTheDiceCupOfTheGameAndAllLandOnSquareSeven [
 
 	| aBoard aGame playerPositions  effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Martu' 'Maia').
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(5 8 6 3) #(5 8 6 3)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 40 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 3 inGame: aGame.
+	self throwDiceCupTimes: 3 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 11 . 'Martu' -> 17 . 'Maia' -> 13}.
 	self assert: (aGame playerPositions ) equals: playerPositions .
 ]
@@ -176,13 +176,13 @@ GameTest >> test08ThreePlayersPlayTheGameAndPlayerOneWins [
 
 	| aBoard aGame  effects aRandomBoardGenerator |
 	 
-	self generatePlayersWithNames: #('Fran' 'Martu' 'Maia').
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 4 inGame: aGame.
+	self throwDiceCupTimes: 4 in: aGame.
 	self assert: (aGame winner) equals: (players at: 1) name. 
 
 ]
@@ -192,13 +192,13 @@ GameTest >> test09AGameIsPlayedByThreePlayersAndTheThirdPlayerFinishesOnTheLastS
 
 	|  aBoard aGame playerPositions  effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(4 4 5 ) #(4 4 5)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 6 inGame: aGame.
+	self throwDiceCupTimes: 6 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 17 . 'Mango' -> 17 . 'Maia' -> 1}.
 	self assert: aGame winner equals:(players at: 3) name .
 	self assert: aGame playerPositions equals: playerPositions.
@@ -209,13 +209,13 @@ GameTest >> test10AGameIsPlayedAndTheDiceCupCannotBeThrownAfterTheGameHasFinishe
 	
 	| aBoard aGame effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(4 4 5) #(4 4 5)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 6 inGame: aGame.
+	self throwDiceCupTimes: 6 in: aGame.
 	self
 		should: [ aGame nextTurn  ]
 		raise: Error
@@ -227,13 +227,13 @@ GameTest >> test11AGameIsInProgressAndTheWinnerCannotBeDeterminedBecauseTheGameI
 	
 	| aBoard aGame effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(4 4 4) #(4 4 4)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 3 inGame: aGame.
+	self throwDiceCupTimes: 3 in: aGame.
 	self
 		should: [ aGame winner ]
 		raise: Error
@@ -245,13 +245,13 @@ GameTest >> test12APlayerPlaysTheGameAndCompletesTwoLapsOfTheThreeLapsRequiredTo
 	
 	| aBoard aGame playerPositions playerLaps effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(10 11 6 3) #(10 11 6 3)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 3 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 2 inGame: aGame.
+	self throwDiceCupTimes: 2 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 3}.
 	playerLaps := Dictionary newFrom: {'Fran' -> 2}.
 	self assert: aGame playerLaps equals: playerLaps.
@@ -263,13 +263,13 @@ GameTest >> test13APlayerPlaysTheGameAndCompletesTheAmountOfLapsRequiredMakingHi
 	
 	| aBoard aGame playerPositions playerLaps effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(10 8 6 3) #(10 8 6 3)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 1}.
 	playerLaps := Dictionary newFrom: {'Fran' -> 1}.
 	self assert: aGame playerLaps equals: playerLaps.
@@ -281,13 +281,13 @@ GameTest >> test14PlayersPlayTheGameOneWinsAndTheRestFinishWithDifferentLapsDone
 	
 	| aBoard aGame playerPositions playerLaps effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Martu' 'Mango').
+	self generatePlayerNames: #('Fran' 'Martu' 'Mango').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 20) #(3 11 20)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 3 inGame: aGame.
+	self throwDiceCupTimes: 3 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->7 . 'Martu'->3 . 'Mango'->1}.
 	playerLaps := Dictionary newFrom: {'Fran' -> 0 . 'Martu' -> 1 . 'Mango' -> 2}.
 	self assert: aGame playerLaps equals: playerLaps.
@@ -299,13 +299,13 @@ GameTest >> test15AGameIsPlayedByASinglePlayerWhoWinsAndFinishesOnFirstPlaceInTh
 	
 	| aBoard aGame playerPositions nameRanking effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(10 8 6 3) #(10 8 6 3)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 1}.
 	nameRanking := #('Fran').
 	self assert: aGame playerPositions equals: playerPositions.
@@ -317,13 +317,13 @@ GameTest >> test16AGameIsPlayedByThreePlayersAndWhenTheGameFinishesTheFinalRanki
 	
 	| aBoard aGame playerPositions nameRanking effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Martu' 'Mango').
+	self generatePlayerNames: #('Fran' 'Martu' 'Mango').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 20) #(3 11 20)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 3 inGame: aGame.
+	self throwDiceCupTimes: 3 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->7 . 'Martu'->3 . 'Mango'->1}.
 	nameRanking := #('Mango' 'Martu' 'Fran').
 	self assert: aGame playerPositions equals: playerPositions.
@@ -335,13 +335,13 @@ GameTest >> test17APlayerLandsOnASquareWithNoEffectAndItsPositionDoesntChange [
 	
 	| effects aBoard aGame playerPositions aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->7 }.
 	self assert: aGame playerPositions equals: playerPositions.
 ]
@@ -351,13 +351,13 @@ GameTest >> test18PlayerLandsOnASquareWithSpeedUpEffectAndItsPositionIncreasesBy
 	
 	| effects aBoard aGame playerPositions aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	effects := Dictionary newFrom: { SpeedUpEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->11}.
 	self assert: aGame playerPositions equals: playerPositions.
 ]
@@ -366,13 +366,13 @@ GameTest >> test18PlayerLandsOnASquareWithSpeedUpEffectAndItsPositionIncreasesBy
 GameTest >> test19APlayerLandsOnASquareWithAtomicBombffectAndAllPlayersAreMovedToTheFirstSquareWithoutModifyingTheirLaps [
 
 	| effects aBoard aGame playerPositions playerLaps aRandomBoardGenerator |
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(12) #(12)).
 	effects := Dictionary newFrom: { AtomicBombEffect  -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 1}.
 	playerLaps := Dictionary newFrom: {'Fran' -> 1}.
 	self assert: aGame playerPositions equals: playerPositions.
@@ -384,23 +384,23 @@ GameTest >> test20APlayerLandsOnASquareWithAtomicBombffectAndItsPositionTheFirst
 	
 	| effects aBoard aGame playerPositions playerLaps aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Martu' 'Mango').
+	self generatePlayerNames: #('Fran' 'Martu' 'Mango').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 21) #(3 11 21 )).
 	effects := Dictionary newFrom: { AtomicBombEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 3 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 1.'Martu' -> 1.'Mango' -> 1}.
 	playerLaps := Dictionary newFrom: {'Fran' -> 0.'Martu' -> 0.'Mango' -> 0}.
 	self assert: aGame playerPositions equals: playerPositions.
 	self assert: aGame playerLaps equals: playerLaps.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 1.'Martu' -> 1.'Mango' -> 1}.
 	playerLaps := Dictionary newFrom: {'Fran' -> 0.'Martu' -> 1.'Mango' -> 0}.
 	self assert: aGame playerPositions equals: playerPositions.
 	self assert: aGame playerLaps equals: playerLaps.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 1.'Martu' -> 1.'Mango' -> 1}.
 	playerLaps := Dictionary newFrom: {'Fran' -> 0.'Martu' -> 1.'Mango' -> 2}.
 	self assert: aGame playerPositions equals: playerPositions.
@@ -412,13 +412,13 @@ GameTest >> test21APlayerLandsOnASquareWithWormHoleEffectAndItsPositionDecreases
 	
 	| aBoard aGame playerPositions effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	effects := Dictionary newFrom: { WormHoleEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->3}.
 	self assert: aGame playerPositions equals: playerPositions.
 ]
@@ -428,13 +428,13 @@ GameTest >> test22MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectAndTheirPositi
 	
 	| effects aBoard aGame playerPositions playerLaps aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Martu' 'Maia').
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 15) #(3 11 15)).
 	effects := Dictionary newFrom: { SpeedUpEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 3 inGame: aGame.
+	self throwDiceCupTimes: 3 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->11 . 'Martu'->7 . 'Maia'->15}.
 	self assert: aGame playerPositions equals: playerPositions.
 	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->1 . 'Maia'->1}.
@@ -446,13 +446,13 @@ GameTest >> test23MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectTheirPositions
 	
 	| effects aBoard aGame playerPositions playerLaps nameRanking aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Martu' 'Maia').
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(3 7 9) #(3 7 9)).
 	effects := Dictionary newFrom: { SpeedUpEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 3 inGame: aGame.
+	self throwDiceCupTimes: 3 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->11 . 'Martu'->19 . 'Maia'->3}.
 	self assert: aGame playerPositions equals: playerPositions.
 	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->0 . 'Maia'->1}.
@@ -467,13 +467,13 @@ GameTest >> test24MoreThanOnePlayerLandsOnASquareWithWormHoleEffectAndTheirPosit
 	
 	| effects aBoard aGame playerPositions playerLaps aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Martu' 'Maia').
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(1 11 15) #(1 11 15)).
 	effects := Dictionary newFrom: { WormHoleEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 3 inGame: aGame.
+	self throwDiceCupTimes: 3 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->1 . 'Martu'->19 . 'Maia'->7}.
 	self assert: aGame playerPositions equals: playerPositions.
 	playerLaps := Dictionary newFrom: {'Fran' -> 0 . 'Martu'->0 . 'Maia'->1}.
@@ -485,22 +485,22 @@ GameTest >> test25MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayers
 	
 	| aBoard aGame playerPositions effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Martu' 'Maia').
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(4 3 1) #(4 3 1)).
 	effects := Dictionary newFrom: { MoonWalkEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 10 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->9 . 'Martu'->1 . 'Maia'->1}.
 	self assert: aGame playerPositions equals: playerPositions.
 	playerPositions := aGame playerPositions.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := aGame playerPositions.
 	self assert: ((playerPositions  at: ((players at: 1) name)) between: 1 and: 8). 
 	self assert: (playerPositions  at: ((players at: 2) name)) equals: 7.
 	self assert: (playerPositions  at: ((players at: 3) name)) equals: 1.
-	self throwDiceCupTimes: 1 inGame: aGame.
+	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := aGame playerPositions.
 	self assert: ((playerPositions  at: ((players at: 1) name)) between: 1 and: 7). 
 	self assert: ((playerPositions  at: ((players at: 2) name)) between: 1 and: 6).
@@ -508,6 +508,6 @@ GameTest >> test25MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayers
 ]
 
 { #category : #iteration }
-GameTest >> throwDiceCupTimes: anInteger inGame: aGame [
+GameTest >> throwDiceCupTimes: anInteger in: aGame [
 	anInteger timesRepeat: [ aGame nextTurn ].
 ]

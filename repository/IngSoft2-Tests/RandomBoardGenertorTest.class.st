@@ -35,7 +35,7 @@ RandomBoardGenertorTest >> generateDeterministicDiceCupWithSequences: sequences 
 ]
 
 { #category : #generators }
-RandomBoardGenertorTest >> generatePlayersWithNames: playerNames [
+RandomBoardGenertorTest >> generatePlayerNames: playerNames [
 
 	players := OrderedCollection new.
 	players := playerNames collect: [ :name | Player named: name ].
@@ -63,7 +63,7 @@ RandomBoardGenertorTest >> test01ABoardMustContainAtLeast5SquareBoardsToBeGenera
 
 	| effects |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	self
@@ -77,7 +77,7 @@ RandomBoardGenertorTest >> test02ABoardMustHavePlayersWithDifferentNamesToBeGene
 
 	|  effects |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia' 'Martu' 'Martu').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	self 
@@ -104,7 +104,7 @@ RandomBoardGenertorTest >> test04ABoarOfSizeTwentyAnd1LapHasTwentySquares [
 	
 	| aBoard effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
@@ -117,7 +117,7 @@ RandomBoardGenertorTest >> test05ABoardRequiresAtLeast1LapToBeGenerated [
 
 	| effects |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	self
@@ -131,7 +131,7 @@ RandomBoardGenertorTest >> test06ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePl
 	
 	| aBoard  effects aRandomBoardGenerator |
 
-	self generatePlayersWithNames: #('Fran' 'Maia' 'Martu').
+	self generatePlayerNames: #('Fran' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
@@ -145,7 +145,7 @@ RandomBoardGenertorTest >> test07ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePl
 	
 	| aBoard  effects aRandomBoardGenerator |
 
-	self generatePlayersWithNames: #('Fran' 'Maia' 'Martu').
+	self generatePlayerNames: #('Fran' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 3 usedBy: players playingWith: diceCup applying: effects.
@@ -160,7 +160,7 @@ RandomBoardGenertorTest >> test08ABoardOfSizeTwentyAndThreeLapHasTwentySquaresAn
 	
 	| aBoard effects aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran').
+	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 3 usedBy: players playingWith: diceCup applying: effects.
@@ -174,7 +174,7 @@ RandomBoardGenertorTest >> test09GenerateABoardOfSizeTwentyWithAGivenProbability
 
 	| aBoard effects boardDistribution aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: { NoEffect -> 0.48 . WormHoleEffect -> 0.20 . SpeedUpEffect -> 0.20 . MoonWalkEffect -> 0.10 . AtomicBombEffect  -> 0.02 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
@@ -191,7 +191,7 @@ RandomBoardGenertorTest >> test10ABoardWithNoEffectsIsGenerated [
 
 	| aBoard effects boardDistribution aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
@@ -207,7 +207,7 @@ RandomBoardGenertorTest >> test11ABoardWithSpeedUpEffectsIsGenerated [
 
 	| aBoard effects boardDistribution aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: { SpeedUpEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
@@ -223,7 +223,7 @@ RandomBoardGenertorTest >> test12ABoardWithWormHoleEffectsIsGenerated [
 
 	| aBoard effects boardDistribution aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: { WormHoleEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
@@ -239,7 +239,7 @@ RandomBoardGenertorTest >> test13ABoardWithAtomicBombEffectsIsGenerated [
 
 	| aBoard effects boardDistribution aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: { AtomicBombEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
@@ -255,7 +255,7 @@ RandomBoardGenertorTest >> test14ABoardWithMoonWalkEffectsIsGenerated [
 
 	| aBoard effects boardDistribution aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: { MoonWalkEffect -> 1 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
@@ -271,7 +271,7 @@ RandomBoardGenertorTest >> test15ABoardIsGeneratedWithSizeFive [
 
 	| aBoard effects boardDistribution aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: { NoEffect -> 0.48 . WormHoleEffect -> 0.20 . SpeedUpEffect -> 0.20 . MoonWalkEffect -> 0.10 . AtomicBombEffect  -> 0.02 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 5 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
@@ -288,7 +288,7 @@ RandomBoardGenertorTest >> test16ABoardIsGeneratedWithSizeHundred [
 
 	| aBoard effects boardDistribution aRandomBoardGenerator |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: { NoEffect -> 0.48 . WormHoleEffect -> 0.20 . SpeedUpEffect -> 0.20 . MoonWalkEffect -> 0.10 . AtomicBombEffect  -> 0.02 }.
 	aRandomBoardGenerator := RandomBoardGenerator ofSize: 100 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
@@ -301,11 +301,11 @@ RandomBoardGenertorTest >> test16ABoardIsGeneratedWithSizeHundred [
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test17ABoardMustBeGeneratedWithTheSumOfEffectsProbabilityEqualToOne [
+RandomBoardGenertorTest >> test17ABoardMustBeGeneratedWithTheSumOfEffectsProbabilityLessThanOneCannotBeGenerated [
 
 	|  effects |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: {(NoEffect -> 0.3). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	self 
@@ -315,11 +315,11 @@ RandomBoardGenertorTest >> test17ABoardMustBeGeneratedWithTheSumOfEffectsProbabi
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test18ABoardMustBeGeneratedWithTheSumOfEffectsProbabilityEqualToOne [
+RandomBoardGenertorTest >> test18ABoardMustBeGeneratedWithTheSumOfEffectsProbabilityMoreThanOneCannotBeGenerated [
 
 	|  effects |
 	
-	self generatePlayersWithNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	effects := Dictionary newFrom: {(NoEffect -> 0.5). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	self 

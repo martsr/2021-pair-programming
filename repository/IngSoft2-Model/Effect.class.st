@@ -6,7 +6,7 @@ Class {
 
 { #category : #'instance creation' }
 Effect class >> applyingValue: aNumber [
- ^ self new initialize.
+ ^ self new.
 ]
 
 { #category : #action }

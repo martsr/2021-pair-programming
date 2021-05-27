@@ -3,15 +3,14 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'playerPositions',
-		'laps',
 		'boardSize'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-PositionsTracker class >> of: aGroupOfPlayers inBoardOf: size requiring: aNumberOfLaps [
-	^ self new initializeOf: aGroupOfPlayers inBoardOf: size requiring: aNumberOfLaps
+{ #category : #'as yet unclassified' }
+PositionsTracker class >> of: aGroupOfPlayers inBoardOf: size [
+	^ self new initializeOf: aGroupOfPlayers inBoardOf: size.
 ]
 
 { #category : #accessing }
@@ -23,9 +22,10 @@ PositionsTracker >> absolutePositionOf: player [
 ]
 
 { #category : #initialization }
-PositionsTracker >> initializeOf: aGroupOfPlayers inBoardOf: size requiring: aNumberOfLaps [
+PositionsTracker >> initializeOf: aGroupOfPlayers inBoardOf: size [
+
 	| positions playersName |
-	laps := aNumberOfLaps.
+	
 	boardSize := size.
 	positions := OrderedCollection new.
 	playersName := OrderedCollection new.
@@ -75,8 +75,8 @@ PositionsTracker >> relativePositions [
 ]
 
 { #category : #action }
-PositionsTracker >> update: player withNew: calculatedPlayerPosition [
+PositionsTracker >> update: player withNew: position [
 	| playerName |
 	playerName := player name.
-	playerPositions at: playerName put: calculatedPlayerPosition
+	playerPositions at: playerName put: position
 ]

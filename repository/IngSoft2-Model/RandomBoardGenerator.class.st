@@ -2,8 +2,6 @@ Class {
 	#name : #RandomBoardGenerator,
 	#superclass : #Object,
 	#instVars : [
-		'sequence',
-		'index',
 		'laps',
 		'players',
 		'diceCup',
@@ -75,7 +73,7 @@ RandomBoardGenerator >> createNew [
 	remainingSquaresNumber := boardSize - (squares size).
 	squares add: (BoardSquare applying: (mostProbableEffect applyingValue: (effectValues  atRandom))) withOccurrences: remainingSquaresNumber.
 	squares shuffle. 
-	^ Board consistingOf: squares requiring: laps usedBy: players playingWith: diceCup.
+	^ Board having: squares requiring: laps usedBy: players throwing: diceCup.
 ]
 
 { #category : #accessing }
