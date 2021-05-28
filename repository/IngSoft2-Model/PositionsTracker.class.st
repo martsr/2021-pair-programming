@@ -78,10 +78,12 @@ PositionsTracker >> playerLaps [
 
 { #category : #generation }
 PositionsTracker >> playerRanking [
-	| playerRanking playerNames |
-	playerNames := playerPositions keys.
-	playerRanking := playerNames sort: [ :playerOneName :playerTwoName | (playerPositions at: playerOneName) > (playerPositions at: playerTwoName)].
-	^ playerRanking
+	
+	| playerRanking playerRankingNames |
+	
+	playerRanking := playerPositions sort: [ :positionOne :positionTwo | positionOne > positionTwo ].
+	playerRankingNames := playerRanking collect: [ :position | position currentPlayer ].
+	^ playerRankingNames.
 ]
 
 { #category : #action }

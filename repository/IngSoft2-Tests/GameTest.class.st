@@ -307,7 +307,7 @@ GameTest >> test15AGameIsPlayedByASinglePlayerWhoWinsAndFinishesOnFirstPlaceInTh
 	aGame := GameMandM playedOn: aBoard.
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 1}.
-	nameRanking := #('Fran').
+	nameRanking := OrderedCollection newFrom: {'Fran'}.
 	self assert: aGame playerPositions equals: playerPositions.
 	self assert: aGame playerRanking equals: nameRanking. 
 ]
@@ -325,7 +325,7 @@ GameTest >> test16AGameIsPlayedByThreePlayersAndWhenTheGameFinishesTheFinalRanki
 	aGame := GameMandM playedOn: aBoard.
 	self throwDiceCupTimes: 3 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' ->7 . 'Martu'->3 . 'Mango'->1}.
-	nameRanking := #('Mango' 'Martu' 'Fran').
+	nameRanking := OrderedCollection newFrom: {'Mango' . 'Martu' . 'Fran'}.
 	self assert: aGame playerPositions equals: playerPositions.
 	self assert: aGame playerRanking equals: nameRanking.
 ]
@@ -457,7 +457,7 @@ GameTest >> test23MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectTheirPositions
 	self assert: aGame playerPositions equals: playerPositions.
 	playerLaps := Dictionary newFrom: {'Fran' ->0 . 'Martu'->0 . 'Maia'->1}.
 	self assert: aGame playerLaps equals: playerLaps.
-	nameRanking := #('Maia' 'Martu' 'Fran').
+	nameRanking := OrderedCollection newFrom: {'Maia' . 'Martu' . 'Fran'}.
 	self assert: aGame playerRanking equals: nameRanking.
 	self assert: aGame winner equals: ((players at: 3) name).
 ]

@@ -14,6 +14,11 @@ Position class >> of: playerName at: squareNumber in: lapNumber [
 	^ self new initializeOf: playerName at: squareNumber in: lapNumber
 ]
 
+{ #category : #comparing }
+Position >> > aPosition [
+	^ (square) > (aPosition currentPosition).
+]
+
 { #category : #'as yet unclassified' }
 Position >> currentLap [
 	^ laps.
