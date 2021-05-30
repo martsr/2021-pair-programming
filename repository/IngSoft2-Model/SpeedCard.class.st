@@ -1,5 +1,10 @@
 Class {
 	#name : #SpeedCard,
-	#superclass : #Object,
+	#superclass : #Card,
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #testing }
+SpeedCard >> isPermanent [
+	^ true.
+]

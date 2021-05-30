@@ -2,7 +2,8 @@ Class {
 	#name : #Deck,
 	#superclass : #Object,
 	#instVars : [
-		'gameCards'
+		'gameCards',
+		'nextCard'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,12 +21,21 @@ Deck class >> validatesItHasAtLeastOneCard: cards [
 
 { #category : #action }
 Deck >> draw [
-	^ gameCards first.
+	| drawnCard |
+	drawnCard := gameCards at: nextCard.
+	self incrementCardCount.	
+	^drawnCard.
+]
+
+{ #category : #action }
+Deck >> incrementCardCount [
+	nextCard := (nextCard rem: (self size)) + 1
 ]
 
 { #category : #initialization }
 Deck >> initializeHaving: cards [
 	gameCards := cards.
+	nextCard := 1.
 ]
 
 { #category : #accessing }
