@@ -27,7 +27,7 @@ GameTest >> generateDeterministicDiceCupWithSequences: sequences [
 GameTest >> generatePlayerNames: playerNames [
 
 	players := OrderedCollection new.
-	players := playerNames collect: [ :name | Player named: name ].
+	players := playerNames.
 ]
 
 { #category : #running }
@@ -115,7 +115,7 @@ GameTest >> test04APlayerThrowsTheDeterministicDiceCupWWithTwoDiceWithTheSameSeq
 	self throwDiceCupTimes: 4 in: aGame.
 	playerPositions := Dictionary newFrom: {('Fran' -> 5)}.
 	self assert: aGame playerPositions equals: playerPositions.
-	self assert: aGame winner equals: ((players at: 1)name).
+	self assert: aGame winner equals: (players at: 1).
 ]
 
 { #category : #tests }
@@ -152,7 +152,7 @@ GameTest >> test06APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 	self throwDiceCupTimes: 4 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 5}.
 	self assert: (aGame playerPositions) equals: playerPositions. 
-	self assert: aGame winner equals: ((players at: 1) name).
+	self assert: aGame winner equals: (players at: 1).
 ]
 
 { #category : #tests }
@@ -183,7 +183,7 @@ GameTest >> test08ThreePlayersPlayTheGameAndPlayerOneWins [
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard.
 	self throwDiceCupTimes: 4 in: aGame.
-	self assert: (aGame winner) equals: (players at: 1) name. 
+	self assert: (aGame winner) equals: (players at: 1). 
 
 ]
 
@@ -200,7 +200,7 @@ GameTest >> test09AGameIsPlayedByThreePlayersAndTheThirdPlayerFinishesOnTheLastS
 	aGame := GameMandM playedOn: aBoard.
 	self throwDiceCupTimes: 6 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 17 . 'Mango' -> 17 . 'Maia' -> 1}.
-	self assert: aGame winner equals:(players at: 3) name .
+	self assert: aGame winner equals: (players at: 3).
 	self assert: aGame playerPositions equals: playerPositions.
 ]
 
@@ -459,7 +459,7 @@ GameTest >> test23MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectTheirPositions
 	self assert: aGame playerLaps equals: playerLaps.
 	nameRanking := OrderedCollection newFrom: {'Maia' . 'Martu' . 'Fran'}.
 	self assert: aGame playerRanking equals: nameRanking.
-	self assert: aGame winner equals: ((players at: 3) name).
+	self assert: aGame winner equals: (players at: 3).
 ]
 
 { #category : #tests }
@@ -497,14 +497,15 @@ GameTest >> test25MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayers
 	playerPositions := aGame playerPositions.
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := aGame playerPositions.
-	self assert: ((playerPositions  at: ((players at: 1) name)) between: 1 and: 8). 
-	self assert: (playerPositions  at: ((players at: 2) name)) equals: 7.
-	self assert: (playerPositions  at: ((players at: 3) name)) equals: 1.
+	self assert: ((playerPositions at: (players at: 1)) between: 1 and: 8). 
+	self assert: (playerPositions  at: (players at: 2)) equals: 7.
+	self assert: (playerPositions  at: (players at: 3)) equals: 1.
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := aGame playerPositions.
-	self assert: ((playerPositions  at: ((players at: 1) name)) between: 1 and: 7). 
-	self assert: ((playerPositions  at: ((players at: 2) name)) between: 1 and: 6).
-	self assert: (playerPositions  at: ((players at: 3) name)) equals: 3.
+	self assert: ((playerPositions  at: (players at: 1)) between: 1 and: 7). 
+	self assert: ((playerPositions  at: (players at: 2)) between: 1 and: 6).
+	self assert: (playerPositions  at: (players at: 3)) equals: 3.
+	
 ]
 
 { #category : #iteration }

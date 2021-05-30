@@ -38,7 +38,7 @@ RandomBoardGenertorTest >> generateDeterministicDiceCupWithSequences: sequences 
 RandomBoardGenertorTest >> generatePlayerNames: playerNames [
 
 	players := OrderedCollection new.
-	players := playerNames collect: [ :name | Player named: name ].
+	players := playerNames.
 ]
 
 { #category : #running }

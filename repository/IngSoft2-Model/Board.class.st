@@ -79,9 +79,9 @@ Board >> moveAllPlayersToFirstSquareOfTheirLap [
 
 	| relativePositions relativePlayerPosition |
 	relativePositions := positionTracker boardPositions.
-	players do: [ :player |
-		relativePlayerPosition := relativePositions at: (player name).
-		self move: player by: ((relativePlayerPosition - 1) * (-1)).
+	players do: [ :playerName |
+		relativePlayerPosition := relativePositions at: playerName.
+		self move: playerName by: ((relativePlayerPosition - 1) * (-1)).
 		 ].
 ]
 
@@ -99,7 +99,7 @@ Board >> movePlayersBack: aNumberOfSpaces except: aPlayer [
 Board >> nextPlayerThrowsIn: aGame [
 	| resultOfThrow player |
 	player := players at: turn.
-	resultOfThrow := player throwsWith: diceCup.
+	resultOfThrow := diceCup throw.
 	self move: player by: resultOfThrow.
 	(positionTracker absolutePositionOf: player) > self absoluteSize ifTrue: [ aGame isNotifiedItHasFinished ] ifFalse: [ self incrementTurn ]
 ]

@@ -15,6 +15,7 @@ Class {
 RandomBoardGenerator class >> ofSize: aNumberOfSquareBoards requiringLaps: aNumberOfLaps usedBy: aGroupOfPlayers playingWith: aDiceCup applying: aGroupOfEffects [ 
 	self validateMoreThanFiveSquares: aNumberOfSquareBoards.
 	self validatesItDoesntHavePlayersWithSameName: aGroupOfPlayers.
+	self validatesNamesMustHaveAtLeastOneLetter: aGroupOfPlayers.
 	self validatesItMustHaveAtLeastOnePlayer: aGroupOfPlayers.
 	self validatesItNeedsAtLeastOneLap: aNumberOfLaps.   
 	self validatesProbabilitiesSumEqualsOne: aGroupOfEffects.
@@ -32,8 +33,7 @@ RandomBoardGenerator class >> validatesItDoesntHavePlayersWithSameName: players 
 
 	| playerNames |
 	
-	playerNames := players collect: [ :player | player name ].
-	playerNames := playerNames asSet.
+	playerNames := players asSet.
 	(players size) > (playerNames size) ifTrue: [ Error signal: 'A board cannot be generated having players with repeated names.' ]
 ]
 
@@ -47,6 +47,12 @@ RandomBoardGenerator class >> validatesItMustHaveAtLeastOnePlayer: aPlayer [
 RandomBoardGenerator class >> validatesItNeedsAtLeastOneLap: amountOfLaps [
 	amountOfLaps < 1
 		ifTrue: [ Error signal: 'A board requires at least one lap to be generated.' ]
+]
+
+{ #category : #validation }
+RandomBoardGenerator class >> validatesNamesMustHaveAtLeastOneLetter: players [ 
+
+	players detect: [ :playerName | playerName size < 1] ifFound: [ Error signal: 'Player name must have at least one letter' ].
 ]
 
 { #category : #validation }
