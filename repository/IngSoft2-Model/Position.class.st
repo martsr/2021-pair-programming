@@ -9,7 +9,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 Position class >> of: playerName at: squareNumber in: lapNumber [
 	^ self new initializeOf: playerName at: squareNumber in: lapNumber
 ]
@@ -19,17 +19,17 @@ Position >> > aPosition [
 	^ (square) > (aPosition currentPosition).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Position >> currentLap [
 	^ laps.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Position >> currentPlayer [
 	^ name.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Position >> currentPosition [
 	^ square.
 ]

@@ -8,7 +8,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 PositionsTracker class >> of: aGroupOfPlayers inBoardOf: size [
 	^ self new initializeOf: aGroupOfPlayers inBoardOf: size.
 ]
@@ -16,20 +16,22 @@ PositionsTracker class >> of: aGroupOfPlayers inBoardOf: size [
 { #category : #accessing }
 PositionsTracker >> absolutePositionOf: player [
 	| playerName playerPosition |
-	playerName := player name.
+	playerName := player.
 	playerPosition := playerPositions detect: [ :position | position currentPlayer = playerName ].
 	^ playerPosition currentPosition.
 ]
 
 { #category : #accessing }
 PositionsTracker >> boardPositionOf: player [
-	| playerRelativePositions playerBoardPosition |
+	| playerRelativePositions playerBoardPosition playerName |
+	
+	playerName := player.
 	playerRelativePositions := self boardPositions.
-	playerBoardPosition := playerRelativePositions at: player name.
+	playerBoardPosition := playerRelativePositions at: playerName.
 	^ playerBoardPosition.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PositionsTracker >> boardPositions [
 	| relativePositions playerNames boardPositions |
 	playerNames := playerPositions collect: [ :position | position currentPlayer ].
@@ -38,7 +40,7 @@ PositionsTracker >> boardPositions [
 	^ boardPositions.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #utility }
 PositionsTracker >> calculateBoardPositionFrom: position [ 
 	| boardPosition |
 	boardPosition := (position rem: boardSize) = 0 ifTrue: [ boardSize ] ifFalse: [ position rem: boardSize ]. 
@@ -56,14 +58,9 @@ PositionsTracker >> calculateLapFrom: position [
 
 { #category : #initialization }
 PositionsTracker >> initializeOf: aGroupOfPlayers inBoardOf: size [
-
-	| playersName |
 	
 	boardSize := size.
-	playersName := OrderedCollection new.
-	playersName := aGroupOfPlayers collect: [ :player | player name ].
-	"playerPositions := Dictionary newFromKeys: playersName andValues: positions"
-	playerPositions := (playersName collect: [ :player | Position of: player at: 1 in: 0 ]) asOrderedCollection.
+	playerPositions := (aGroupOfPlayers collect: [ :playerName | Position of: playerName at: 1 in: 0 ]) asOrderedCollection.
 ]
 
 { #category : #accessing }
@@ -91,7 +88,7 @@ PositionsTracker >> update: player withNew: position [
 	
 	| playerName lap oldPosition oldPositionIndex |
 	
-	playerName := player name.
+	playerName := player.
 	lap := self calculateLapFrom: position.
 	oldPosition := playerPositions detect: [ :playerPosition | playerPosition currentPlayer = playerName ].
 	oldPositionIndex := playerPositions indexOf: oldPosition.

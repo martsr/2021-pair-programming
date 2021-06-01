@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'board',
-		'isFinished'
+		'isFinished',
+		'diceCup'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -13,10 +14,24 @@ GameMandM class >> playedOn: aBoard [
 	^self new initializePlayedOn: aBoard.
 ]
 
+{ #category : #'instance creation' }
+GameMandM class >> playedOn: aBoard using: aDiceCup [
+	^self new initializePlayedOn: aBoard using: aDiceCup.
+]
+
 { #category : #initialization }
 GameMandM >> initializePlayedOn: aBoard [
 	board := aBoard.
 	isFinished := false
+]
+
+{ #category : #initialization }
+GameMandM >> initializePlayedOn: aBoard using: aDiceCup [
+	
+	diceCup := aDiceCup.
+	board := aBoard.
+	isFinished := false
+
 ]
 
 { #category : #notification }
@@ -26,8 +41,11 @@ GameMandM >> isNotifiedItHasFinished [
 
 { #category : #action }
 GameMandM >> nextTurn [
+	| resultOfThrow |
+	
 	self verifyItisFinished.
-	board nextPlayerThrowsIn: self
+	resultOfThrow := diceCup throw.
+	board nextPlayerThrows: resultOfThrow in: self.
 ]
 
 { #category : #testing }

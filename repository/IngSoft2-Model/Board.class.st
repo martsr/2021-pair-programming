@@ -8,14 +8,15 @@ Class {
 		'diceCup',
 		'turn',
 		'positionTracker',
-		'laps'
+		'laps',
+		'deck'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-Board class >> having: squares  requiring: aNumberOfLaps  usedBy: aGroupOfPlayers  throwing: aDiceCup [ 
-	^self new initializeHaving: squares  requiring: aNumberOfLaps  usedBy: aGroupOfPlayers  throwing: aDiceCup 
+Board class >> having: squares requiring: aNumberOfLaps containing: aDeck usedBy: aGroupOfPlayers [  
+	^self new initializeHaving: squares requiring: aNumberOfLaps containing: aDeck usedBy: aGroupOfPlayers  
 ]
 
 { #category : #accessing }
@@ -51,8 +52,9 @@ Board >> incrementTurn [
 ]
 
 { #category : #initialization }
-Board >> initializeHaving: boardSquares requiring: aNumberOfLaps usedBy: aGroupOfPlayers throwing: aDiceCup [ 
-	diceCup := aDiceCup.
+Board >> initializeHaving: boardSquares requiring: aNumberOfLaps containing: aDeck usedBy: aGroupOfPlayers [  
+	
+	deck := aDeck.
 	players := aGroupOfPlayers.
 	size := boardSquares size.
 	turn := 1.
@@ -79,9 +81,9 @@ Board >> moveAllPlayersToFirstSquareOfTheirLap [
 
 	| relativePositions relativePlayerPosition |
 	relativePositions := positionTracker boardPositions.
-	players do: [ :player |
-		relativePlayerPosition := relativePositions at: (player name).
-		self move: player by: ((relativePlayerPosition - 1) * (-1)).
+	players do: [ :playerName |
+		relativePlayerPosition := relativePositions at: playerName.
+		self move: playerName by: ((relativePlayerPosition - 1) * (-1)).
 		 ].
 ]
 
@@ -96,10 +98,20 @@ Board >> movePlayersBack: aNumberOfSpaces except: aPlayer [
 ]
 
 { #category : #action }
+Board >> nextPlayerThrows: resultOfThrow in: aGame [ 
+	
+	| player |
+	
+	player := players at: turn.
+	self move: player by: resultOfThrow.
+	(positionTracker absolutePositionOf: player) > self absoluteSize ifTrue: [ aGame isNotifiedItHasFinished ] ifFalse: [ self incrementTurn ]
+]
+
+{ #category : #action }
 Board >> nextPlayerThrowsIn: aGame [
 	| resultOfThrow player |
 	player := players at: turn.
-	resultOfThrow := player throwsWith: diceCup.
+	resultOfThrow := diceCup throw.
 	self move: player by: resultOfThrow.
 	(positionTracker absolutePositionOf: player) > self absoluteSize ifTrue: [ aGame isNotifiedItHasFinished ] ifFalse: [ self incrementTurn ]
 ]

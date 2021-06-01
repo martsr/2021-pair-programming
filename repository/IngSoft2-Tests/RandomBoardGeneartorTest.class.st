@@ -1,15 +1,16 @@
 Class {
-	#name : #RandomBoardGenertorTest,
+	#name : #RandomBoardGeneartorTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'players',
-		'diceCup'
+		'diceCup',
+		'deck'
 	],
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #'as yet unclassified' }
-RandomBoardGenertorTest >> calculateDistributionOf: aBoard [ 
+RandomBoardGeneartorTest >> calculateDistributionOf: aBoard [ 
 
 	| boardSquaresType boardSquareType noEffects wormHoleEffects speedUpEffects moonWalkEffects atomicBombEffects boardSquaresDistribution |
 	boardSquaresType := OrderedCollection new.
@@ -24,8 +25,14 @@ RandomBoardGenertorTest >> calculateDistributionOf: aBoard [
 	^ boardSquaresDistribution.
 ]
 
+{ #category : #'as yet unclassified' }
+RandomBoardGeneartorTest >> generateDeckWith: gameCards [
+	
+	deck := Deck having: gameCards.
+]
+
 { #category : #generators }
-RandomBoardGenertorTest >> generateDeterministicDiceCupWithSequences: sequences [
+RandomBoardGeneartorTest >> generateDeterministicDiceCupWithSequences: sequences [
 
 	| dice |
 	
@@ -35,21 +42,21 @@ RandomBoardGenertorTest >> generateDeterministicDiceCupWithSequences: sequences 
 ]
 
 { #category : #generators }
-RandomBoardGenertorTest >> generatePlayerNames: playerNames [
+RandomBoardGeneartorTest >> generatePlayerNames: playerNames [
 
 	players := OrderedCollection new.
-	players := playerNames collect: [ :name | Player named: name ].
+	players := playerNames.
 ]
 
 { #category : #running }
-RandomBoardGenertorTest >> setUp [
+RandomBoardGeneartorTest >> setUp [
 
 	super setUp. 
 	players := OrderedCollection new.
 ]
 
 { #category : #asserting }
-RandomBoardGenertorTest >> should: errorBlock raise: exceptionClass withMessage: expectedErrorMessage [
+RandomBoardGeneartorTest >> should: errorBlock raise: exceptionClass withMessage: expectedErrorMessage [
 
 	self
 		should: errorBlock
@@ -59,96 +66,110 @@ RandomBoardGenertorTest >> should: errorBlock raise: exceptionClass withMessage:
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test01ABoardMustContainAtLeast5SquareBoardsToBeGenerated [
+RandomBoardGeneartorTest >> test01ABoardMustContainAtLeast5SquareBoardsToBeGenerated [
 
-	| effects |
+	| effects cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	self
-		should: [ RandomBoardGenerator ofSize: 4 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects  ]
+		should: [ RandomBoardGenerator ofSize: 4 requiringLaps: 1 usedBy: players playingWith: deck applying: effects  ]
 		raise: Error
 		withMessage: 'A board must contain at least 5 square boards to satisfy the effects distribution.'.
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test02ABoardMustHavePlayersWithDifferentNamesToBeGenerated [
+RandomBoardGeneartorTest >> test02ABoardMustHavePlayersWithDifferentNamesToBeGenerated [
 
-	|  effects |
+	|  effects cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	self 
-		should: [ RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects ]
+		should: [ RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects ]
 		raise: Error
 		withMessage: 'A board cannot be generated having players with repeated names.'
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test03ABoardMustHaveAtLeastOnePlayerToBeGenerated [
+RandomBoardGeneartorTest >> test03ABoardMustHaveAtLeastOnePlayerToBeGenerated [
 
-	| effects |
+	| effects cards |
 	
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	self
-		should: [ RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects ]
+		should: [ RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects ]
 		raise: Error
 		withMessage: 'A board  must have at least 1 player in order to be generated.'
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test04ABoarOfSizeTwentyAnd1LapHasTwentySquares [
+RandomBoardGeneartorTest >> test04ABoarOfSizeTwentyAnd1LapHasTwentySquares [
 	
-	| aBoard effects aRandomBoardGenerator |
+	| aBoard effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
+	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	self assert: (aBoard size) equals: 20.
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test05ABoardRequiresAtLeast1LapToBeGenerated [
+RandomBoardGeneartorTest >> test05ABoardRequiresAtLeast1LapToBeGenerated [
 
-	| effects |
+	| effects cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	self
-		should: [ RandomBoardGenerator ofSize: 20 requiringLaps: 0 usedBy: players playingWith: diceCup applying: effects.]
+		should: [ RandomBoardGenerator ofSize: 20 requiringLaps: 0 usedBy: players playingWith: deck applying: effects.]
 		raise: Error
 		withMessage: 'A board requires at least one lap to be generated.'.
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test06ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePlayers [
+RandomBoardGeneartorTest >> test06ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePlayers [
 	
-	| aBoard  effects aRandomBoardGenerator |
+	| aBoard  effects aRandomBoardGenerator cards |
 
 	self generatePlayerNames: #('Fran' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects.
+	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	self assert: (aBoard size) equals: 20.
 	self assert: (aBoard amountOfPlayers) equals: 3.
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test07ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePlayersAndADeterminsticDiceCup [
+RandomBoardGeneartorTest >> test07ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePlayersAndADeterminsticDiceCup [
 	
-	| aBoard  effects aRandomBoardGenerator |
+	| aBoard  effects aRandomBoardGenerator cards |
 
 	self generatePlayerNames: #('Fran' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 3 usedBy: players playingWith: diceCup applying: effects.
+	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 3 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	self assert: (aBoard size) equals: 20.
 	self assert: (aBoard amountOfPlayers) equals: 3.
@@ -156,28 +177,32 @@ RandomBoardGenertorTest >> test07ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePl
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test08ABoardOfSizeTwentyAndThreeLapHasTwentySquaresAnd3Laps [
+RandomBoardGeneartorTest >> test08ABoardOfSizeTwentyAndThreeLapHasTwentySquaresAnd3Laps [
 	
-	| aBoard effects aRandomBoardGenerator |
+	| aBoard effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 3 usedBy: players playingWith: diceCup applying: effects.
+	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 3 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	self assert: (aBoard size) equals: 20.
 	self assert: (aBoard amountOfLaps) equals: 3.
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test09GenerateABoardOfSizeTwentyWithAGivenProbabilityDistribution [
+RandomBoardGeneartorTest >> test09GenerateABoardOfSizeTwentyWithAGivenProbabilityDistribution [
 
-	| aBoard effects boardDistribution aRandomBoardGenerator |
+	| aBoard effects boardDistribution aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 0.48 . WormHoleEffect -> 0.20 . SpeedUpEffect -> 0.20 . MoonWalkEffect -> 0.10 . AtomicBombEffect  -> 0.02 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
+	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	self assert: aBoard size equals: 20.
 	boardDistribution := Dictionary newFrom: { 'Speed Up' -> 4 . 'Worm Hole' -> 4 . 'Moon Walk' -> 2 . 'Atomic Bomb' -> 1 . 'No Effect' -> 9 }.
@@ -187,14 +212,16 @@ RandomBoardGenertorTest >> test09GenerateABoardOfSizeTwentyWithAGivenProbability
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test10ABoardWithNoEffectsIsGenerated [
+RandomBoardGeneartorTest >> test10ABoardWithNoEffectsIsGenerated [
 
-	| aBoard effects boardDistribution aRandomBoardGenerator |
+	| aBoard effects boardDistribution aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
+	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	self assert: aBoard size equals: 20.
 	boardDistribution := Dictionary newFrom: { 'Speed Up'-> 0 . 'Worm Hole'-> 0 . 'Moon Walk'-> 0 . 'Atomic Bomb'-> 0 . 'No Effect'-> 20 }.
@@ -203,14 +230,16 @@ RandomBoardGenertorTest >> test10ABoardWithNoEffectsIsGenerated [
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test11ABoardWithSpeedUpEffectsIsGenerated [
+RandomBoardGeneartorTest >> test11ABoardWithSpeedUpEffectsIsGenerated [
 
-	| aBoard effects boardDistribution aRandomBoardGenerator |
+	| aBoard effects boardDistribution aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { SpeedUpEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
+	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	self assert: aBoard size equals: 20.
 	boardDistribution := Dictionary newFrom: { 'Speed Up'-> 20 . 'Worm Hole'-> 0 . 'Moon Walk'-> 0 . 'Atomic Bomb'-> 0 . 'No Effect'-> 0 }.
@@ -219,14 +248,16 @@ RandomBoardGenertorTest >> test11ABoardWithSpeedUpEffectsIsGenerated [
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test12ABoardWithWormHoleEffectsIsGenerated [
+RandomBoardGeneartorTest >> test12ABoardWithWormHoleEffectsIsGenerated [
 
-	| aBoard effects boardDistribution aRandomBoardGenerator |
+	| aBoard effects boardDistribution aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { WormHoleEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
+	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	self assert: aBoard size equals: 20.
 	boardDistribution := Dictionary newFrom: { 'Speed Up'-> 0 . 'Worm Hole'-> 20 . 'Moon Walk'-> 0 . 'Atomic Bomb'-> 0 . 'No Effect'-> 0 }.
@@ -235,14 +266,16 @@ RandomBoardGenertorTest >> test12ABoardWithWormHoleEffectsIsGenerated [
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test13ABoardWithAtomicBombEffectsIsGenerated [
+RandomBoardGeneartorTest >> test13ABoardWithAtomicBombEffectsIsGenerated [
 
-	| aBoard effects boardDistribution aRandomBoardGenerator |
+	| aBoard effects boardDistribution aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { AtomicBombEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
+	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	self assert: aBoard size equals: 20.
 	boardDistribution := Dictionary newFrom: { 'Speed Up'-> 0 . 'Worm Hole'-> 0 . 'Moon Walk'-> 0 . 'Atomic Bomb'-> 20 . 'No Effect'-> 0 }.
@@ -251,14 +284,16 @@ RandomBoardGenertorTest >> test13ABoardWithAtomicBombEffectsIsGenerated [
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test14ABoardWithMoonWalkEffectsIsGenerated [
+RandomBoardGeneartorTest >> test14ABoardWithMoonWalkEffectsIsGenerated [
 
-	| aBoard effects boardDistribution aRandomBoardGenerator |
+	| aBoard effects boardDistribution aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { MoonWalkEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
+	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	self assert: aBoard size equals: 20.
 	boardDistribution := Dictionary newFrom: { 'Speed Up'-> 0 . 'Worm Hole'-> 0 . 'Moon Walk'-> 20 . 'Atomic Bomb'-> 0 . 'No Effect'-> 0 }.
@@ -267,14 +302,16 @@ RandomBoardGenertorTest >> test14ABoardWithMoonWalkEffectsIsGenerated [
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test15ABoardIsGeneratedWithSizeFive [
+RandomBoardGeneartorTest >> test15ABoardIsGeneratedWithSizeFive [
 
-	| aBoard effects boardDistribution aRandomBoardGenerator |
+	| aBoard effects boardDistribution aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 0.48 . WormHoleEffect -> 0.20 . SpeedUpEffect -> 0.20 . MoonWalkEffect -> 0.10 . AtomicBombEffect  -> 0.02 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 5 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
+	aRandomBoardGenerator := RandomBoardGenerator ofSize: 5 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	self assert: aBoard size equals: 5.
 	boardDistribution := Dictionary newFrom: { 'Speed Up' -> 1 . 'Worm Hole' -> 1 . 'Moon Walk' -> 1 . 'Atomic Bomb' -> 1 . 'No Effect' -> 1 }.
@@ -284,14 +321,16 @@ RandomBoardGenertorTest >> test15ABoardIsGeneratedWithSizeFive [
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test16ABoardIsGeneratedWithSizeHundred [
+RandomBoardGeneartorTest >> test16ABoardIsGeneratedWithSizeHundred [
 
-	| aBoard effects boardDistribution aRandomBoardGenerator |
+	| aBoard effects boardDistribution aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 0.48 . WormHoleEffect -> 0.20 . SpeedUpEffect -> 0.20 . MoonWalkEffect -> 0.10 . AtomicBombEffect  -> 0.02 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 100 requiringLaps: 2 usedBy: players playingWith: diceCup applying: effects.
+	aRandomBoardGenerator := RandomBoardGenerator ofSize: 100 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	self assert: aBoard size equals: 100.
 	boardDistribution := Dictionary newFrom: { 'Speed Up' -> 20 . 'Worm Hole' -> 20 . 'Moon Walk' -> 10 . 'Atomic Bomb' -> 2 . 'No Effect' -> 48 }.
@@ -301,29 +340,33 @@ RandomBoardGenertorTest >> test16ABoardIsGeneratedWithSizeHundred [
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test17ABoardMustBeGeneratedWithTheSumOfEffectsProbabilityLessThanOneCannotBeGenerated [
+RandomBoardGeneartorTest >> test17ABoardMustBeGeneratedWithTheSumOfEffectsProbabilityLessThanOneCannotBeGenerated [
 
-	|  effects |
+	|  effects cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: {(NoEffect -> 0.3). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	self 
-		should: [ RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects ]
+		should: [ RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects ]
 		raise: Error
 		withMessage: 'A board cannot be generated with a sum of probabilities not equal to 1.'
 ]
 
 { #category : #tests }
-RandomBoardGenertorTest >> test18ABoardMustBeGeneratedWithTheSumOfEffectsProbabilityMoreThanOneCannotBeGenerated [
+RandomBoardGeneartorTest >> test18ABoardMustBeGeneratedWithTheSumOfEffectsProbabilityMoreThanOneCannotBeGenerated [
 
-	|  effects |
+	|  effects cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
 	effects := Dictionary newFrom: {(NoEffect -> 0.5). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
 	self 
-		should: [ RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: diceCup applying: effects ]
+		should: [ RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects ]
 		raise: Error
 		withMessage: 'A board cannot be generated with a sum of probabilities not equal to 1.'
 ]

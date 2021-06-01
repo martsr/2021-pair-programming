@@ -4,21 +4,22 @@ Class {
 	#instVars : [
 		'laps',
 		'players',
-		'diceCup',
 		'effects',
-		'boardSize'
+		'boardSize',
+		'deck'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-RandomBoardGenerator class >> ofSize: aNumberOfSquareBoards requiringLaps: aNumberOfLaps usedBy: aGroupOfPlayers playingWith: aDiceCup applying: aGroupOfEffects [ 
+RandomBoardGenerator class >> ofSize: aNumberOfSquareBoards requiringLaps: aNumberOfLaps usedBy: aGroupOfPlayers playingWith: aDeck applying: aGroupOfEffects [ 
 	self validateMoreThanFiveSquares: aNumberOfSquareBoards.
 	self validatesItDoesntHavePlayersWithSameName: aGroupOfPlayers.
+	self validatesNamesMustHaveAtLeastOneLetter: aGroupOfPlayers.
 	self validatesItMustHaveAtLeastOnePlayer: aGroupOfPlayers.
 	self validatesItNeedsAtLeastOneLap: aNumberOfLaps.   
 	self validatesProbabilitiesSumEqualsOne: aGroupOfEffects.
-	^self new initializeOfSize: aNumberOfSquareBoards requiringLaps: aNumberOfLaps usedBy: aGroupOfPlayers playingWith: aDiceCup applying: aGroupOfEffects. 
+	^self new initializeOfSize: aNumberOfSquareBoards requiringLaps: aNumberOfLaps usedBy: aGroupOfPlayers playingWith: aDeck applying: aGroupOfEffects. 
 ]
 
 { #category : #validation }
@@ -32,8 +33,7 @@ RandomBoardGenerator class >> validatesItDoesntHavePlayersWithSameName: players 
 
 	| playerNames |
 	
-	playerNames := players collect: [ :player | player name ].
-	playerNames := playerNames asSet.
+	playerNames := players asSet.
 	(players size) > (playerNames size) ifTrue: [ Error signal: 'A board cannot be generated having players with repeated names.' ]
 ]
 
@@ -47,6 +47,12 @@ RandomBoardGenerator class >> validatesItMustHaveAtLeastOnePlayer: aPlayer [
 RandomBoardGenerator class >> validatesItNeedsAtLeastOneLap: amountOfLaps [
 	amountOfLaps < 1
 		ifTrue: [ Error signal: 'A board requires at least one lap to be generated.' ]
+]
+
+{ #category : #validation }
+RandomBoardGenerator class >> validatesNamesMustHaveAtLeastOneLetter: players [ 
+
+	players detect: [ :playerName | playerName size < 1] ifFound: [ Error signal: 'Player name must have at least one letter' ].
 ]
 
 { #category : #validation }
@@ -73,7 +79,7 @@ RandomBoardGenerator >> createNew [
 	remainingSquaresNumber := boardSize - (squares size).
 	squares add: (BoardSquare applying: (mostProbableEffect applyingValue: (effectValues  atRandom))) withOccurrences: remainingSquaresNumber.
 	squares shuffle. 
-	^ Board having: squares requiring: laps usedBy: players throwing: diceCup.
+	^ Board having: squares requiring: laps containing: deck usedBy: players.
 ]
 
 { #category : #accessing }
@@ -88,11 +94,11 @@ RandomBoardGenerator >> generateEffectValues [
 ]
 
 { #category : #initialization }
-RandomBoardGenerator >> initializeOfSize: aNumberOfSquareBoards requiringLaps: aNumberOfLaps usedBy: aGroupOfPlayers playingWith: aDiceCup applying: aGroupOfEffects [
+RandomBoardGenerator >> initializeOfSize: aNumberOfSquareBoards requiringLaps: aNumberOfLaps usedBy: aGroupOfPlayers playingWith: aDeck applying: aGroupOfEffects [
 	
 	boardSize := aNumberOfSquareBoards.
 	laps := aNumberOfLaps.
 	players := aGroupOfPlayers.
-	diceCup := aDiceCup.
+	deck := aDeck.
 	effects := aGroupOfEffects.
 ]
