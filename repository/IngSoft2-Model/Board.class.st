@@ -5,11 +5,11 @@ Class {
 		'squares',
 		'size',
 		'players',
-		'diceCup',
 		'turn',
 		'positionTracker',
 		'laps',
-		'deck'
+		'deck',
+		'cardManager'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -40,10 +40,20 @@ Board >> atSquare: aSquareBoardNumber [
 ]
 
 { #category : #action }
+Board >> dealsCardTo: aPlayer [
+	cardManager dealsCardTo: aPlayer.
+]
+
+{ #category : #action }
 Board >> disableEffectsDuring: anAction [
 	self notifySquaresToNotApplyEffect.
 	anAction value.
 	self notifySquaresToApplyEffect.
+]
+
+{ #category : #accessing }
+Board >> handOf: aPlayer [
+	^ cardManager handOf: aPlayer.
 ]
 
 { #category : #action }
@@ -61,6 +71,7 @@ Board >> initializeHaving: boardSquares requiring: aNumberOfLaps containing: aDe
 	squares := boardSquares.
 	laps := aNumberOfLaps.
 	positionTracker := PositionsTracker of: aGroupOfPlayers inBoardOf: size.
+	cardManager := CardManager using: aDeck dealsTo: aGroupOfPlayers.
 ]
 
 { #category : #action }
@@ -103,15 +114,6 @@ Board >> nextPlayerThrows: resultOfThrow in: aGame [
 	| player |
 	
 	player := players at: turn.
-	self move: player by: resultOfThrow.
-	(positionTracker absolutePositionOf: player) > self absoluteSize ifTrue: [ aGame isNotifiedItHasFinished ] ifFalse: [ self incrementTurn ]
-]
-
-{ #category : #action }
-Board >> nextPlayerThrowsIn: aGame [
-	| resultOfThrow player |
-	player := players at: turn.
-	resultOfThrow := diceCup throw.
 	self move: player by: resultOfThrow.
 	(positionTracker absolutePositionOf: player) > self absoluteSize ifTrue: [ aGame isNotifiedItHasFinished ] ifFalse: [ self incrementTurn ]
 ]

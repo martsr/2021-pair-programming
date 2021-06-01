@@ -56,3 +56,23 @@ CardManagerTest >> test03CardManagerDealsTwoCardsTwoEachPlayerAtTheStart [
 	
 	
 ]
+
+{ #category : #tests }
+CardManagerTest >> test04APlayerIsDealtItsInitialHandAndAnExtraCard [
+
+	| cards aDeck cardManager overloadCard speedCard accelerationCard cancellationCard redoCard repeatCard players |
+	players := OrderedCollection newFrom: { 'Fran' }.
+	overloadCard := OverloadCard new.
+	speedCard := SpeedCard new.
+	accelerationCard := AccelerationCard new.
+	cancellationCard := CancellationCard new.
+	redoCard := RedoCard new.
+	repeatCard := RepeatCard new.
+	cards := OrderedCollection newFrom: { overloadCard . speedCard . accelerationCard . cancellationCard . redoCard . repeatCard }.
+	aDeck := Deck having: cards.
+	cardManager := CardManager using: aDeck dealsTo: players.
+	self assert: (cardManager handOf: 'Fran') equals: (OrderedCollection newFrom: { overloadCard . speedCard }).
+	cardManager dealsCardTo: (players at: 1).
+	self assert: (cardManager handOf: 'Fran') equals: (OrderedCollection newFrom: { overloadCard . speedCard . accelerationCard }).
+	 
+]

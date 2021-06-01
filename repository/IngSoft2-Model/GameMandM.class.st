@@ -19,6 +19,11 @@ GameMandM class >> playedOn: aBoard using: aDiceCup [
 	^self new initializePlayedOn: aBoard using: aDiceCup.
 ]
 
+{ #category : #accessing }
+GameMandM >> handOf: aPlayer [
+	^ board handOf: aPlayer.
+]
+
 { #category : #initialization }
 GameMandM >> initializePlayedOn: aBoard [
 	board := aBoard.

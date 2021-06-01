@@ -8,8 +8,7 @@ Class {
 	#instVars : [
 		'players',
 		'diceCup',
-		'deck',
-		'cards'
+		'deck'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -17,7 +16,7 @@ Class {
 { #category : #'as yet unclassified' }
 GameTest >> generateDeckWith: gameCards [
 
-	deck := Deck having: cards.
+	deck := Deck having: gameCards.
 ]
 
 { #category : #generators }
@@ -58,7 +57,7 @@ GameTest >> should: errorBlock raise: exceptionClass withMessage: expectedErrorM
 { #category : #tests }
 GameTest >> test01AtTheStartOfTheGameAllPlayersArePlacedOnTheFirstBoardSquare [
 	
-	| aBoard aGame playerPositions effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 8 6 3) #(5 8 6 3)).
@@ -75,7 +74,7 @@ GameTest >> test01AtTheStartOfTheGameAllPlayersArePlacedOnTheFirstBoardSquare [
 { #category : #tests }
 GameTest >> test02APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequenceAndLandsOnSquare11 [
 	
-	| aBoard aGame playerPositions  effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions  effects aRandomBoardGenerator cards | 
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 8 6 3) #(5 8 6 3)).
@@ -93,7 +92,7 @@ GameTest >> test02APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 { #category : #tests }
 GameTest >> test03APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequenceFourTimesExceedsTheBoardSizeAndItWon [
 	
-	| aBoard aGame playerPositions playerLaps effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions playerLaps effects aRandomBoardGenerator cards |
 	
 
 	self generatePlayerNames: #('Fran').
@@ -118,7 +117,7 @@ GameTest >> test03APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 { #category : #tests }
 GameTest >> test04APlayerThrowsTheDeterministicDiceCupWWithTwoDiceWithTheSameSequenceFourTimesWinningTheGameAndNowTheGameCanInformThatPlayerIsTheWinner [
 	
-	| aBoard aGame playerPositions  effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions  effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 8 6 3) #(5 8 6 3)).
@@ -137,7 +136,7 @@ GameTest >> test04APlayerThrowsTheDeterministicDiceCupWWithTwoDiceWithTheSameSeq
 { #category : #tests }
 GameTest >> test05APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequenceOneTimeButTheGameCannotDetermineTheWinnerBecauseTheGameIsInProgress [
 	
-	| aBoard aGame playerPositions  effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions  effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 8 6 3) #(5 8 6 3)).
@@ -159,7 +158,7 @@ GameTest >> test05APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 { #category : #tests }
 GameTest >> test06APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequenceFourTimesWinningTheGameAndNowTheGameCanInformThePlayerFinalPosition [
 	
-	| aBoard aGame playerPositions effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 8 6 3) #(5 8 6 3)).
@@ -178,7 +177,7 @@ GameTest >> test06APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 { #category : #tests }
 GameTest >> test07ThreePlayersThrowTheDiceCupOfTheGameAndAllLandOnSquareSeven [
 
-	| aBoard aGame playerPositions  effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(5 8 6 3) #(5 8 6 3)).
@@ -196,7 +195,7 @@ GameTest >> test07ThreePlayersThrowTheDiceCupOfTheGameAndAllLandOnSquareSeven [
 { #category : #tests }
 GameTest >> test08ThreePlayersPlayTheGameAndPlayerOneWins [
 
-	| aBoard aGame  effects aRandomBoardGenerator |
+	| aBoard aGame  effects aRandomBoardGenerator cards |
 	 
 	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
@@ -214,7 +213,7 @@ GameTest >> test08ThreePlayersPlayTheGameAndPlayerOneWins [
 { #category : #tests }
 GameTest >> test09AGameIsPlayedByThreePlayersAndTheThirdPlayerFinishesOnTheLastSquareAndTheRemainingOnesFourSquaresBehind [
 
-	|  aBoard aGame playerPositions  effects aRandomBoardGenerator |
+	|  aBoard aGame playerPositions effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(4 4 5 ) #(4 4 5)).
@@ -233,7 +232,7 @@ GameTest >> test09AGameIsPlayedByThreePlayersAndTheThirdPlayerFinishesOnTheLastS
 { #category : #tests }
 GameTest >> test10AGameIsPlayedAndTheDiceCupCannotBeThrownAfterTheGameHasFinished [
 	
-	| aBoard aGame effects aRandomBoardGenerator |
+	| aBoard aGame effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(4 4 5) #(4 4 5)).
@@ -253,7 +252,7 @@ GameTest >> test10AGameIsPlayedAndTheDiceCupCannotBeThrownAfterTheGameHasFinishe
 { #category : #tests }
 GameTest >> test11AGameIsInProgressAndTheWinnerCannotBeDeterminedBecauseTheGameIsStillInProgress [
 	
-	| aBoard aGame effects aRandomBoardGenerator |
+	| aBoard aGame effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(4 4 4) #(4 4 4)).
@@ -273,7 +272,7 @@ GameTest >> test11AGameIsInProgressAndTheWinnerCannotBeDeterminedBecauseTheGameI
 { #category : #tests }
 GameTest >> test12APlayerPlaysTheGameAndCompletesTwoLapsOfTheThreeLapsRequiredToWin [
 	
-	| aBoard aGame playerPositions playerLaps effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions playerLaps effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(10 11 6 3) #(10 11 6 3)).
@@ -293,7 +292,7 @@ GameTest >> test12APlayerPlaysTheGameAndCompletesTwoLapsOfTheThreeLapsRequiredTo
 { #category : #tests }
 GameTest >> test13APlayerPlaysTheGameAndCompletesTheAmountOfLapsRequiredMakingHimTheWinnerAndIsPositionedOnTheFirstSquare [
 	
-	| aBoard aGame playerPositions playerLaps effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions playerLaps effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(10 8 6 3) #(10 8 6 3)).
@@ -313,7 +312,7 @@ GameTest >> test13APlayerPlaysTheGameAndCompletesTheAmountOfLapsRequiredMakingHi
 { #category : #tests }
 GameTest >> test14PlayersPlayTheGameOneWinsAndTheRestFinishWithDifferentLapsDone [
 	
-	| aBoard aGame playerPositions playerLaps effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions playerLaps effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Martu' 'Mango').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 20) #(3 11 20)).
@@ -333,7 +332,7 @@ GameTest >> test14PlayersPlayTheGameOneWinsAndTheRestFinishWithDifferentLapsDone
 { #category : #tests }
 GameTest >> test15AGameIsPlayedByASinglePlayerWhoWinsAndFinishesOnFirstPlaceInTheRanking [
 	
-	| aBoard aGame playerPositions nameRanking effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions nameRanking effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(10 8 6 3) #(10 8 6 3)).
@@ -353,7 +352,7 @@ GameTest >> test15AGameIsPlayedByASinglePlayerWhoWinsAndFinishesOnFirstPlaceInTh
 { #category : #tests }
 GameTest >> test16AGameIsPlayedByThreePlayersAndWhenTheGameFinishesTheFinalRankingIsCalculated [
 	
-	| aBoard aGame playerPositions nameRanking effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions nameRanking effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Martu' 'Mango').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 20) #(3 11 20)).
@@ -373,7 +372,7 @@ GameTest >> test16AGameIsPlayedByThreePlayersAndWhenTheGameFinishesTheFinalRanki
 { #category : #tests }
 GameTest >> test17APlayerLandsOnASquareWithNoEffectAndItsPositionDoesntChange [
 	
-	| effects aBoard aGame playerPositions aRandomBoardGenerator |
+	| effects aBoard aGame playerPositions aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
@@ -391,7 +390,7 @@ GameTest >> test17APlayerLandsOnASquareWithNoEffectAndItsPositionDoesntChange [
 { #category : #tests }
 GameTest >> test18PlayerLandsOnASquareWithSpeedUpEffectAndItsPositionIncreasesByFour [
 	
-	| effects aBoard aGame playerPositions aRandomBoardGenerator |
+	| effects aBoard aGame playerPositions aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
@@ -409,7 +408,7 @@ GameTest >> test18PlayerLandsOnASquareWithSpeedUpEffectAndItsPositionIncreasesBy
 { #category : #tests }
 GameTest >> test19APlayerLandsOnASquareWithAtomicBombffectAndAllPlayersAreMovedToTheFirstSquareWithoutModifyingTheirLaps [
 
-	| effects aBoard aGame playerPositions playerLaps aRandomBoardGenerator |
+	| effects aBoard aGame playerPositions playerLaps aRandomBoardGenerator cards |
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(12) #(12)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
@@ -428,7 +427,7 @@ GameTest >> test19APlayerLandsOnASquareWithAtomicBombffectAndAllPlayersAreMovedT
 { #category : #tests }
 GameTest >> test20APlayerLandsOnASquareWithAtomicBombffectAndItsPositionTheFirstSquare [
 	
-	| effects aBoard aGame playerPositions playerLaps aRandomBoardGenerator |
+	| effects aBoard aGame playerPositions playerLaps aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Martu' 'Mango').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 21) #(3 11 21 )).
@@ -458,7 +457,7 @@ GameTest >> test20APlayerLandsOnASquareWithAtomicBombffectAndItsPositionTheFirst
 { #category : #tests }
 GameTest >> test21APlayerLandsOnASquareWithWormHoleEffectAndItsPositionDecreasesByFour [
 	
-	| aBoard aGame playerPositions effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
@@ -476,7 +475,7 @@ GameTest >> test21APlayerLandsOnASquareWithWormHoleEffectAndItsPositionDecreases
 { #category : #tests }
 GameTest >> test22MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectAndTheirPositionsAreIncreasedByFour [
 	
-	| effects aBoard aGame playerPositions playerLaps aRandomBoardGenerator |
+	| effects aBoard aGame playerPositions playerLaps aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 15) #(3 11 15)).
@@ -496,7 +495,7 @@ GameTest >> test22MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectAndTheirPositi
 { #category : #tests }
 GameTest >> test23MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectTheirPositionsAreIncreasedByFourAndOneOfThemWonBecauseItFinishedTheAmoutOflapsRequired [
 	
-	| effects aBoard aGame playerPositions playerLaps nameRanking aRandomBoardGenerator |
+	| effects aBoard aGame playerPositions playerLaps nameRanking aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(3 7 9) #(3 7 9)).
@@ -519,7 +518,7 @@ GameTest >> test23MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectTheirPositions
 { #category : #tests }
 GameTest >> test24MoreThanOnePlayerLandsOnASquareWithWormHoleEffectAndTheirPositionsAreDecreasedByFour [
 	
-	| effects aBoard aGame playerPositions playerLaps aRandomBoardGenerator |
+	| effects aBoard aGame playerPositions playerLaps aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(1 11 15) #(1 11 15)).
@@ -539,7 +538,7 @@ GameTest >> test24MoreThanOnePlayerLandsOnASquareWithWormHoleEffectAndTheirPosit
 { #category : #tests }
 GameTest >> test25MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayersReturnARandomNumberOfspacesBetweenOneandHalfTheBoardSize [
 	
-	| aBoard aGame playerPositions effects aRandomBoardGenerator |
+	| aBoard aGame playerPositions effects aRandomBoardGenerator cards |
 	
 	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(4 3 1) #(4 3 1)).
@@ -563,6 +562,25 @@ GameTest >> test25MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayers
 	self assert: ((playerPositions  at: (players at: 1)) between: 1 and: 7). 
 	self assert: ((playerPositions  at: (players at: 2)) between: 1 and: 6).
 	self assert: (playerPositions  at: (players at: 3)) equals: 3.
+	
+]
+
+{ #category : #tests }
+GameTest >> test26ABoardWithOnlyDrawEffectsMakesAPlayerDrawACard [
+
+	| aBoard effects aRandomBoardGenerator cards aGame |
+	
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
+	effects := Dictionary newFrom: { DrawCardEffect -> 1 }.
+	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aBoard := aRandomBoardGenerator createNew.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	self assert: (aGame handOf: 'Fran') equals: (OrderedCollection newFrom: { cards at: 1 . cards at: 2 }).
+	self throwDiceCupTimes: 3 in: aGame.
+	self assert: (aGame handOf: 'Fran') equals: (OrderedCollection newFrom: { cards at: 1 . cards at: 2 . cards at: 3 }).
 	
 ]
 

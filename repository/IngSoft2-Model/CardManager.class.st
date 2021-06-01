@@ -23,6 +23,17 @@ CardManager >> dealStartingCards [
 			playerHands at: player put: playerHand ]
 ]
 
+{ #category : #action }
+CardManager >> dealsCardTo: aPlayer [
+	
+	| playerHand drawnCard |
+	
+	playerHand := playerHands at: aPlayer.
+	drawnCard := deck draw.
+	playerHand add: drawnCard.
+	playerHands at: aPlayer put: playerHand.
+]
+
 { #category : #accessing }
 CardManager >> handOf: aPlayer [
 	

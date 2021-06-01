@@ -11,11 +11,11 @@ Effect class >> applyingValue: aNumber [
 
 { #category : #action }
 Effect >> applyOn: aBoard activatedBy: aPlayer [
-	self subclassResponsibility.
+	aBoard dealsCardTo: aPlayer.
 	
 ]
 
 { #category : #testing }
 Effect >> typeOfEffect [
-	self subclassResponsibility.
+	^'DrawCard effect'.
 ]
