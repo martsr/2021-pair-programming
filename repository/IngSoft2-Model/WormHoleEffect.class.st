@@ -11,6 +11,6 @@ WormHoleEffect >> applyOn: aBoard activatedBy: aPlayer [
 ]
 
 { #category : #testing }
-WormHoleEffect >> typeOfEffect [
+WormHoleEffect >> effect [
 	^ 'Worm Hole'.
 ]

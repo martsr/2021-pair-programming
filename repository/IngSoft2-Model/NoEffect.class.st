@@ -9,6 +9,6 @@ NoEffect >> applyOn: aGame activatedBy: aPlayer [
 ]
 
 { #category : #testing }
-NoEffect >> typeOfEffect [
+NoEffect >> effect [
 	^ 'No Effect'.
 ]

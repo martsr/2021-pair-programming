@@ -16,6 +16,6 @@ Effect >> applyOn: aBoard activatedBy: aPlayer [
 ]
 
 { #category : #testing }
-Effect >> typeOfEffect [
-	^'DrawCard effect'.
+Effect >> effect [
+	self subclassResponsibility.
 ]

@@ -64,7 +64,7 @@ GameTest >> test01AtTheStartOfTheGameAllPlayersArePlacedOnTheFirstBoardSquare [
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 40 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 40 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	playerPositions := Dictionary newFrom: {'Fran' -> 1}.
@@ -81,7 +81,7 @@ GameTest >> test02APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
@@ -100,7 +100,7 @@ GameTest >> test03APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 40 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 40 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 4 in: aGame.
@@ -124,7 +124,7 @@ GameTest >> test04APlayerThrowsTheDeterministicDiceCupWWithTwoDiceWithTheSameSeq
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 40 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 40 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 4 in: aGame.
@@ -143,7 +143,7 @@ GameTest >> test05APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 40 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 40 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
@@ -165,7 +165,7 @@ GameTest >> test06APlayerThrowsTheDeterministicDiceCupWithTwoDiceWithTheSameSequ
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 40 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 40 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 4 in: aGame.
@@ -184,7 +184,7 @@ GameTest >> test07ThreePlayersThrowTheDiceCupOfTheGameAndAllLandOnSquareSeven [
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 40 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 40 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 3 in: aGame.
@@ -202,7 +202,7 @@ GameTest >> test08ThreePlayersPlayTheGameAndPlayerOneWins [
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 4 in: aGame.
@@ -220,7 +220,7 @@ GameTest >> test09AGameIsPlayedByThreePlayersAndTheThirdPlayerFinishesOnTheLastS
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 6 in: aGame.
@@ -239,7 +239,7 @@ GameTest >> test10AGameIsPlayedAndTheDiceCupCannotBeThrownAfterTheGameHasFinishe
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 6 in: aGame.
@@ -259,7 +259,7 @@ GameTest >> test11AGameIsInProgressAndTheWinnerCannotBeDeterminedBecauseTheGameI
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 3 in: aGame.
@@ -279,7 +279,7 @@ GameTest >> test12APlayerPlaysTheGameAndCompletesTwoLapsOfTheThreeLapsRequiredTo
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 3 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 3 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 2 in: aGame.
@@ -299,7 +299,7 @@ GameTest >> test13APlayerPlaysTheGameAndCompletesTheAmountOfLapsRequiredMakingHi
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
@@ -319,7 +319,7 @@ GameTest >> test14PlayersPlayTheGameOneWinsAndTheRestFinishWithDifferentLapsDone
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 3 in: aGame.
@@ -339,7 +339,7 @@ GameTest >> test15AGameIsPlayedByASinglePlayerWhoWinsAndFinishesOnFirstPlaceInTh
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
@@ -359,7 +359,7 @@ GameTest >> test16AGameIsPlayedByThreePlayersAndWhenTheGameFinishesTheFinalRanki
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 3 in: aGame.
@@ -379,7 +379,7 @@ GameTest >> test17APlayerLandsOnASquareWithNoEffectAndItsPositionDoesntChange [
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { NoEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
@@ -397,7 +397,7 @@ GameTest >> test18PlayerLandsOnASquareWithSpeedUpEffectAndItsPositionIncreasesBy
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { SpeedUpEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
@@ -414,7 +414,7 @@ GameTest >> test19APlayerLandsOnASquareWithAtomicBombffectAndAllPlayersAreMovedT
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { AtomicBombEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
@@ -434,7 +434,7 @@ GameTest >> test20APlayerLandsOnASquareWithAtomicBombffectAndItsPositionTheFirst
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { AtomicBombEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 3 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 3 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
@@ -464,7 +464,7 @@ GameTest >> test21APlayerLandsOnASquareWithWormHoleEffectAndItsPositionDecreases
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { WormHoleEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
@@ -482,7 +482,7 @@ GameTest >> test22MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectAndTheirPositi
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { SpeedUpEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 3 in: aGame.
@@ -502,7 +502,7 @@ GameTest >> test23MoreThanOnePlayerLandsOnASquareWithSpeedUpEffectTheirPositions
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { SpeedUpEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 3 in: aGame.
@@ -525,7 +525,7 @@ GameTest >> test24MoreThanOnePlayerLandsOnASquareWithWormHoleEffectAndTheirPosit
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { WormHoleEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 3 in: aGame.
@@ -545,7 +545,7 @@ GameTest >> test25MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayers
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { MoonWalkEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 10 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 10 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
@@ -575,7 +575,7 @@ GameTest >> test26ABoardWithOnlyDrawEffectsMakesAPlayerDrawACard [
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
 	effects := Dictionary newFrom: { DrawCardEffect -> 1 }.
-	aRandomBoardGenerator := RandomBoardGenerator ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
+	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
 	aBoard := aRandomBoardGenerator createNew.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self assert: (aGame handOf: 'Fran') equals: (OrderedCollection newFrom: { cards at: 1 . cards at: 2 }).

@@ -11,6 +11,6 @@ SpeedUpEffect >> applyOn: aBoard activatedBy: aPlayer [
 ]
 
 { #category : #testing }
-SpeedUpEffect >> typeOfEffect [
+SpeedUpEffect >> effect [
 	^ 'Speed Up'.
 ]

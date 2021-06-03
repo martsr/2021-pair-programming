@@ -12,6 +12,6 @@ AtomicBombEffect >> applyOn: aBoard activatedBy: aPlayer [
 ]
 
 { #category : #testing }
-AtomicBombEffect >> typeOfEffect [
+AtomicBombEffect >> effect [
 	^ 'Atomic Bomb'.
 ]

@@ -15,8 +15,46 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> having: squares requiring: aNumberOfLaps containing: aDeck usedBy: aGroupOfPlayers [  
+Board class >> having: squares requiring: aNumberOfLaps containing: aDeck usedBy: aGroupOfPlayers [
+	self validateMoreThanFiveSquares: squares.
+	self validatesItDoesntHavePlayersWithSameName: aGroupOfPlayers.
+	self validatesNamesMustHaveAtLeastOneLetter: aGroupOfPlayers.
+	self validatesItMustHaveAtLeastOnePlayer: aGroupOfPlayers.
+	self validatesItNeedsAtLeastOneLap: aNumberOfLaps.  
 	^self new initializeHaving: squares requiring: aNumberOfLaps containing: aDeck usedBy: aGroupOfPlayers  
+]
+
+{ #category : #validation }
+Board class >> validateMoreThanFiveSquares: squares [
+	(squares size) < 5
+		ifTrue: [ Error signal: 'A board must contain at least 5 square boards to satisfy the effects distribution.' ]
+]
+
+{ #category : #validation }
+Board class >> validatesItDoesntHavePlayersWithSameName: players [
+
+	| playerNames |
+	
+	playerNames := players asSet.
+	(players size) > (playerNames size) ifTrue: [ Error signal: 'A board cannot be generated having players with repeated names.' ]
+]
+
+{ #category : #validation }
+Board class >> validatesItMustHaveAtLeastOnePlayer: aPlayer [
+	aPlayer size < 1
+		ifTrue: [ Error signal: 'A board  must have at least 1 player in order to be generated.' ]
+]
+
+{ #category : #'instance creation' }
+Board class >> validatesItNeedsAtLeastOneLap: amountOfLaps [
+	amountOfLaps < 1
+		ifTrue: [ Error signal: 'A board requires at least one lap to be generated.' ]
+]
+
+{ #category : #validation }
+Board class >> validatesNamesMustHaveAtLeastOneLetter: players [ 
+
+	players detect: [ :playerName | playerName size < 1] ifFound: [ Error signal: 'Player name must have at least one letter' ].
 ]
 
 { #category : #accessing }

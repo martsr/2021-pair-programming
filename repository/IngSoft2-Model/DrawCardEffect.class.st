@@ -14,6 +14,6 @@ DrawCardEffect >> applyOn: aBoard activatedBy: aPlayer [
 ]
 
 { #category : #testing }
-DrawCardEffect >> typeOfEffect [
+DrawCardEffect >> effect [
 	^ 'Draw Card'.
 ]

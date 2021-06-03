@@ -23,6 +23,11 @@ BoardSquare >> doNotApplyEffect [
 applyEffect := false
 ]
 
+{ #category : #testing }
+BoardSquare >> effect [
+	^ effect.
+]
+
 { #category : #initialization }
 BoardSquare >> initializeApplying: anEffect [
 	effect := anEffect.
@@ -35,9 +40,4 @@ BoardSquare >> place: player on: aBoard [
 	applyEffect ifTrue:[ 
 		aBoard disableEffectsDuring: [ effect applyOn: aBoard activatedBy: player ]. 
 		].
-]
-
-{ #category : #testing }
-BoardSquare >> typeOfEffect [
-	^ effect typeOfEffect
 ]
