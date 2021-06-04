@@ -9,24 +9,9 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #'as yet unclassified' }
-BoardTest >> calculateDistributionOf: squares [ 
-
-	| boardSquareType noEffects wormHoleEffects speedUpEffects moonWalkEffects atomicBombEffects boardSquaresDistribution |
-	
-	boardSquareType := squares collect: [ :boardSquare | boardSquare effect ].
-	noEffects := boardSquareType count: [ :boardSquareEffect | boardSquareEffect = 'No Effect'].
-	wormHoleEffects := boardSquareType count: [ :boardSquareEffect | boardSquareEffect = 'Worm Hole'].
-	speedUpEffects := boardSquareType count: [ :boardSquareEffect | boardSquareEffect = 'Speed Up'].
-	moonWalkEffects := boardSquareType count: [ :boardSquareEffect | boardSquareEffect = 'Moon Walk'].
-	atomicBombEffects := boardSquareType count: [ :boardSquareEffect | boardSquareEffect = 'Atomic Bomb'].
-	boardSquaresDistribution := Dictionary newFrom: { 'Speed Up' -> speedUpEffects . 'Worm Hole' -> wormHoleEffects . 'Moon Walk' -> moonWalkEffects . 'Atomic Bomb' -> atomicBombEffects . 'No Effect' -> noEffects }.
-	^ boardSquaresDistribution.
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BoardTest >> calculateDistributionOf: squares using: effectProbabilities [
-	| boardSquaresDistribution totalCount sortedEffectProbabilities mostProbableEffect count |
+	| totalCount sortedEffectProbabilities mostProbableEffect count |
 	totalCount := 0.
 	sortedEffectProbabilities := effectProbabilities sort: [ :effectProbabilityOne :effectProbabilityTwo | effectProbabilityOne < effectProbabilityTwo ].
 	mostProbableEffect := sortedEffectProbabilities asOrderedCollection
@@ -39,33 +24,11 @@ BoardTest >> calculateDistributionOf: squares using: effectProbabilities [
 				ifTrue: [ self assert: count equals: squares size - totalCount ]
 				ifFalse: [ totalCount := totalCount + count.
 					self
-						assert: effectProbability probability * squares size
+						assert: (effectProbability probability * squares size) ceiling
 						equals: count ] ]
-
-
-
-
-	"boardSquaresDistribution := Dictionary new.
-	effects do: [ :effect | boardSquaresDistribution at: effect put: (squares count: [ :square | (square effect) = effect]) ].
-	squares := OrderedCollection new.
-	sortedEffectProbabilities := effectProbabilities sort: [ :effectProbabilityOne :effectProbabilityTwo | (effectProbabilities at: effectProbabilityOne) < (effectProbabilities at: effectProbabilityTwo) ].
-	mostProbableEffect := (sortedEffectProbabilities asOrderedCollection) removeLast.
-	sortedEffectProbabilities do: [ :effectProbability | squares add: (BoardSquare applying:( effectProbability effect)) withOccurrences: ((boardSize * (effectProbability probability)) ceiling) ].
-	remainingSquaresNumber := boardSize - (squares size).
-	squares add: (BoardSquare applying: (mostProbableEffect effect)) withOccurrences: remainingSquaresNumber.
-	squares shuffle. 
-	^ squares.
-	noEffects := boardSquareType count: [ :boardSquareEffect | boardSquareEffect = 'No Effect'].
-	wormHoleEffects := boardSquareType count: [ :boardSquareEffect | boardSquareEffect = 'Worm Hole'].
-	speedUpEffects := boardSquareType count: [ :boardSquareEffect | boardSquareEffect = 'Speed Up'].
-	moonWalkEffects := boardSquareType count: [ :boardSquareEffect | boardSquareEffect = 'Moon Walk'].
-	atomicBombEffects := boardSquareType count: [ :boardSquareEffect | boardSquareEffect = 'Atomic Bomb'].
-	boardSquaresDistribution := Dictionary newFrom: { 'Speed Up' -> speedUpEffects . 'Worm Hole' -> wormHoleEffects . 'Moon Walk' -> moonWalkEffects . 'Atomic Bomb' -> atomicBombEffects . 'No Effect' -> noEffects }.
-	
-	^ boardSquaresDistribution."
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generators }
 BoardTest >> generateDeckWith: gameCards [
 	
 	deck := Deck having: gameCards.
@@ -108,15 +71,17 @@ BoardTest >> should: errorBlock raise: exceptionClass withMessage: expectedError
 { #category : #tests }
 BoardTest >> test01ABoardMustContainAtLeast5SquareBoardsToBeGenerated [
 
-	| effects cards |
+	| cards effectsDistribution effectShuffler squares |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect new 	initializeGoingBack: 3) with: 0.10}.
+	effectShuffler := EffectShuffler ofSize: 4 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
 	self
-		should: [ EffectShuffler ofSize: 4 requiringLaps: 1 usedBy: players playingWith: deck applying: effects  ]
+		should: [ Board having: squares requiring: 2 containing: deck usedBy: players]
 		raise: Error
 		withMessage: 'A board must contain at least 5 square boards to satisfy the effects distribution.'.
 ]
@@ -124,15 +89,17 @@ BoardTest >> test01ABoardMustContainAtLeast5SquareBoardsToBeGenerated [
 { #category : #tests }
 BoardTest >> test02ABoardMustHavePlayersWithDifferentNamesToBeGenerated [
 
-	|  effects cards |
+	| cards effectsDistribution effectShuffler squares |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect new 	initializeGoingBack: 3) with: 0.10}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
 	self 
-		should: [ EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects ]
+		should: [ Board having: squares requiring: 1 containing: deck usedBy: players ]
 		raise: Error
 		withMessage: 'A board cannot be generated having players with repeated names.'
 ]
@@ -140,14 +107,16 @@ BoardTest >> test02ABoardMustHavePlayersWithDifferentNamesToBeGenerated [
 { #category : #tests }
 BoardTest >> test03ABoardMustHaveAtLeastOnePlayerToBeGenerated [
 
-	| effects cards |
+	|cards effectsDistribution effectShuffler squares |
 	
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
-	self
-		should: [ EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects ]
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect new 	initializeGoingBack: 3) with: 0.10}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	self 
+		should: [ Board having: squares requiring: 1 containing: deck usedBy: players ]
 		raise: Error
 		withMessage: 'A board  must have at least 1 player in order to be generated.'
 ]
@@ -155,30 +124,33 @@ BoardTest >> test03ABoardMustHaveAtLeastOnePlayerToBeGenerated [
 { #category : #tests }
 BoardTest >> test04ABoarOfSizeTwentyAnd1LapHasTwentySquares [
 	
-	| aBoard effects aRandomBoardGenerator cards |
+	| aBoard cards effectsDistribution effectShuffler squares |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
-	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
-	aBoard := aRandomBoardGenerator createNew.
-	self assert: (aBoard size) equals: 20.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect new 	initializeGoingBack: 3) with: 0.10}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 2 containing: deck usedBy: players.
+	self assert: aBoard size equals: 20.
+
 ]
 
 { #category : #tests }
 BoardTest >> test05ABoardRequiresAtLeast1LapToBeGenerated [
 
-	| effects cards |
+	| cards effectsDistribution effectShuffler squares |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
-	self
-		should: [ EffectShuffler ofSize: 20 requiringLaps: 0 usedBy: players playingWith: deck applying: effects.]
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect new 	initializeGoingBack: 3) with: 0.10}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	self should: [ Board having: squares requiring: 0 containing: deck usedBy: players]
 		raise: Error
 		withMessage: 'A board requires at least one lap to be generated.'.
 ]
@@ -186,15 +158,16 @@ BoardTest >> test05ABoardRequiresAtLeast1LapToBeGenerated [
 { #category : #tests }
 BoardTest >> test06ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePlayers [
 	
-	| aBoard  effects aRandomBoardGenerator cards |
+	| aBoard cards effectsDistribution effectShuffler squares |
 
 	self generatePlayerNames: #('Fran' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
-	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects.
-	aBoard := aRandomBoardGenerator createNew.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect new 	initializeGoingBack: 3) with: 0.10}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 1 containing: deck usedBy: players.
 	self assert: (aBoard size) equals: 20.
 	self assert: (aBoard amountOfPlayers) equals: 3.
 ]
@@ -202,15 +175,16 @@ BoardTest >> test06ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePlayers [
 { #category : #tests }
 BoardTest >> test07ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePlayersAndADeterminsticDiceCup [
 	
-	| aBoard  effects aRandomBoardGenerator cards |
+	| aBoard  cards effectsDistribution effectShuffler squares |
 
 	self generatePlayerNames: #('Fran' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
-	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 3 usedBy: players playingWith: deck applying: effects.
-	aBoard := aRandomBoardGenerator createNew.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect new 	initializeGoingBack: 3) with: 0.10}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 3 containing: deck usedBy: players.
 	self assert: (aBoard size) equals: 20.
 	self assert: (aBoard amountOfPlayers) equals: 3.
 	self assert: (aBoard amountOfLaps) equals: 3.
@@ -235,15 +209,16 @@ BoardTest >> test07InternalTest [
 { #category : #tests }
 BoardTest >> test08ABoardOfSizeTwentyAndThreeLapHasTwentySquaresAnd3Laps [
 	
-	| aBoard effects aRandomBoardGenerator cards |
+	| aBoard cards effectsDistribution effectShuffler squares |
 	
 	self generatePlayerNames: #('Fran').
 	self generateDeterministicDiceCupWithSequences: #(#(3 11 11 20) #(3 11 11 20)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: {(NoEffect -> 0.48). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
-	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 3 usedBy: players playingWith: deck applying: effects.
-	aBoard := aRandomBoardGenerator createNew.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect new 	initializeGoingBack: 3) with: 0.10}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 3 containing: deck usedBy: players.
 	self assert: (aBoard size) equals: 20.
 	self assert: (aBoard amountOfLaps) equals: 3.
 ]
@@ -251,39 +226,37 @@ BoardTest >> test08ABoardOfSizeTwentyAndThreeLapHasTwentySquaresAnd3Laps [
 { #category : #tests }
 BoardTest >> test09GenerateABoardOfSizeTwentyWithAGivenProbabilityDistribution [
 
-	| aBoard effects boardDistribution aRandomBoardGenerator cards |
+	| aBoard cards effectsDistribution effectShuffler squares |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: { NoEffect -> 0.48 . WormHoleEffect -> 0.20 . SpeedUpEffect -> 0.20 . MoonWalkEffect -> 0.10 . AtomicBombEffect  -> 0.02 }.
-	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
-	aBoard := aRandomBoardGenerator createNew.
-	self assert: aBoard size equals: 20.
-	boardDistribution := Dictionary newFrom: { 'Speed Up' -> 4 . 'Worm Hole' -> 4 . 'Moon Walk' -> 2 . 'Atomic Bomb' -> 1 . 'No Effect' -> 9 }.
-	self assert: (self calculateDistributionOf: aBoard) equals: boardDistribution.
-
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect new 	initializeGoingBack: 3) with: 0.10}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 2 containing: deck usedBy: players.
+	self assert: (aBoard size) equals: 20.
+	self calculateDistributionOf: squares using: effectsDistribution.
+	
 	 
 ]
 
 { #category : #tests }
 BoardTest >> test10ABoardWithNoEffectsIsGenerated [
 
-	| aBoard effects boardDistribution cards effectShuffler squares effectsDistribution |
+	| aBoard cards effectShuffler squares effectsDistribution |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := OrderedCollection newFrom: { NoEffect new }.
-	effectsDistribution := Dictionary newFrom: { (effects at: 1) -> 1 }.
-	effectShuffler := EffectShuffler ofSize: 20 withGiven: effectsDistribution.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 1}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 2 containing: deck usedBy: players. 
+	aBoard := Board having: squares requiring: 2 containing: deck usedBy: players.
 	self assert: aBoard size equals: 20.
-	boardDistribution := Dictionary newFrom: { (effects at: 1) -> 20 }.
-	self assert: (self calculateDistributionOf: squares using: effects) equals: boardDistribution.
+	self calculateDistributionOf: squares using: effectsDistribution.
 
 ]
 
@@ -309,73 +282,75 @@ BoardTest >> test11ABoardWithSpeedUpEffectsIsGenerated [
 { #category : #tests }
 BoardTest >> test12ABoardWithWormHoleEffectsIsGenerated [
 
-	| aBoard effects boardDistribution cards effectShuffler squares |
+	| aBoard cards effectShuffler squares effectsDistribution |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: { WormHoleEffect -> 1 }.
-	effectShuffler := EffectShuffler ofSize: 20 withGiven: effects.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: SpeedUpEffect new with: 1}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
 	aBoard := Board having: squares requiring: 2 containing: deck usedBy: players.
 	self assert: aBoard size equals: 20.
-	boardDistribution := Dictionary newFrom: { 'Speed Up'-> 0 . 'Worm Hole'-> 20 . 'Moon Walk'-> 0 . 'Atomic Bomb'-> 0 . 'No Effect'-> 0 }.
-	self assert: (self calculateDistributionOf: squares ) equals: boardDistribution.
+	self calculateDistributionOf: squares using: effectsDistribution.
+	
 
 ]
 
 { #category : #tests }
 BoardTest >> test13ABoardWithAtomicBombEffectsIsGenerated [
 
-	| aBoard effects boardDistribution aRandomBoardGenerator cards |
+	| aBoard effects boardDistribution aRandomBoardGenerator cards effectsDistribution effectShuffler squares |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: { AtomicBombEffect -> 1 }.
-	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
-	aBoard := aRandomBoardGenerator createNew.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: AtomicBombEffect  new with: 1}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 2 containing: deck usedBy: players.
 	self assert: aBoard size equals: 20.
-	boardDistribution := Dictionary newFrom: { 'Speed Up'-> 0 . 'Worm Hole'-> 0 . 'Moon Walk'-> 0 . 'Atomic Bomb'-> 20 . 'No Effect'-> 0 }.
-	self assert: (self calculateDistributionOf: aBoard) equals: boardDistribution.
-
+	self calculateDistributionOf: squares using: effectsDistribution.
+	
 ]
 
 { #category : #tests }
 BoardTest >> test14ABoardWithMoonWalkEffectsIsGenerated [
 
-	| aBoard effects boardDistribution aRandomBoardGenerator cards |
+	| aBoard  cards effectsDistribution effectShuffler squares |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: { MoonWalkEffect -> 1 }.
-	aRandomBoardGenerator := EffectShuffler ofSize: 20 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
-	aBoard := aRandomBoardGenerator createNew.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (MoonWalkEffect new initializeGoingBack: 3) with: 1}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 2 containing: deck usedBy: players.
 	self assert: aBoard size equals: 20.
-	boardDistribution := Dictionary newFrom: { 'Speed Up'-> 0 . 'Worm Hole'-> 0 . 'Moon Walk'-> 20 . 'Atomic Bomb'-> 0 . 'No Effect'-> 0 }.
-	self assert: (self calculateDistributionOf: aBoard) equals: boardDistribution.
-
+	self calculateDistributionOf: squares using: effectsDistribution.
+	
 ]
 
 { #category : #tests }
 BoardTest >> test15ABoardIsGeneratedWithSizeFive [
 
-	| aBoard effects boardDistribution aRandomBoardGenerator cards |
+	| aBoard  cards effectsDistribution effectShuffler squares |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: { NoEffect -> 0.48 . WormHoleEffect -> 0.20 . SpeedUpEffect -> 0.20 . MoonWalkEffect -> 0.10 . AtomicBombEffect  -> 0.02 }.
-	aRandomBoardGenerator := EffectShuffler ofSize: 5 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
-	aBoard := aRandomBoardGenerator createNew.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect new 	initializeGoingBack: 3) with: 0.10}.
+	effectShuffler := EffectShuffler ofSize: 5 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 2 containing: deck usedBy: players.
 	self assert: aBoard size equals: 5.
-	boardDistribution := Dictionary newFrom: { 'Speed Up' -> 1 . 'Worm Hole' -> 1 . 'Moon Walk' -> 1 . 'Atomic Bomb' -> 1 . 'No Effect' -> 1 }.
-	self assert: (self calculateDistributionOf: aBoard) equals: boardDistribution.
+	self calculateDistributionOf: squares using: effectsDistribution.
+	
+	
 
 	 
 ]
@@ -383,34 +358,34 @@ BoardTest >> test15ABoardIsGeneratedWithSizeFive [
 { #category : #tests }
 BoardTest >> test16ABoardIsGeneratedWithSizeHundred [
 
-	| aBoard effects boardDistribution aRandomBoardGenerator cards |
+	| aBoard cards effectsDistribution effectShuffler squares |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: { NoEffect -> 0.48 . WormHoleEffect -> 0.20 . SpeedUpEffect -> 0.20 . MoonWalkEffect -> 0.10 . AtomicBombEffect  -> 0.02 }.
-	aRandomBoardGenerator := EffectShuffler ofSize: 100 requiringLaps: 2 usedBy: players playingWith: deck applying: effects.
-	aBoard := aRandomBoardGenerator createNew.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect new 	initializeGoingBack: 3) with: 0.10}.
+	effectShuffler := EffectShuffler ofSize: 100 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 2 containing: deck usedBy: players.
 	self assert: aBoard size equals: 100.
-	boardDistribution := Dictionary newFrom: { 'Speed Up' -> 20 . 'Worm Hole' -> 20 . 'Moon Walk' -> 10 . 'Atomic Bomb' -> 2 . 'No Effect' -> 48 }.
-	self assert: (self calculateDistributionOf: aBoard) equals: boardDistribution.
-
+	self calculateDistributionOf: squares using: effectsDistribution.
+	
 	 
 ]
 
 { #category : #tests }
 BoardTest >> test17ABoardMustBeGeneratedWithTheSumOfEffectsProbabilityLessThanOneCannotBeGenerated [
 
-	|  effects cards |
+	|  cards effectsDistribution  |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: {(NoEffect -> 0.3). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.3.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect new 	initializeGoingBack: 3) with: 0.10}.
 	self 
-		should: [ EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects ]
+		should: [ EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy) ]
 		raise: Error
 		withMessage: 'A board cannot be generated with a sum of probabilities not equal to 1.'
 ]
@@ -418,15 +393,15 @@ BoardTest >> test17ABoardMustBeGeneratedWithTheSumOfEffectsProbabilityLessThanOn
 { #category : #tests }
 BoardTest >> test18ABoardMustBeGeneratedWithTheSumOfEffectsProbabilityMoreThanOneCannotBeGenerated [
 
-	|  effects cards |
+	|  cards effectsDistribution |
 	
 	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effects := Dictionary newFrom: {(NoEffect -> 0.5). (WormHoleEffect -> 0.20). (SpeedUpEffect -> 0.20). (MoonWalkEffect -> 0.10). (AtomicBombEffect -> 0.02)}.
+		effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.5.EffectProbability of: WormHoleEffect  new with: 0.20 		.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect new 		initializeGoingBack: 3) with: 0.10}.
 	self 
-		should: [ EffectShuffler ofSize: 20 requiringLaps: 1 usedBy: players playingWith: deck applying: effects ]
+		should: [ EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy) ]
 		raise: Error
 		withMessage: 'A board cannot be generated with a sum of probabilities not equal to 1.'
 ]
