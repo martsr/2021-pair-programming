@@ -72,11 +72,6 @@ Board >> amountOfPlayers [
 	^ players size
 ]
 
-{ #category : #testing }
-Board >> atSquare: aSquareBoardNumber [ 
-	^ squares at: aSquareBoardNumber.
-]
-
 { #category : #action }
 Board >> dealsCardTo: aPlayer [
 	cardManager dealsCardTo: aPlayer.

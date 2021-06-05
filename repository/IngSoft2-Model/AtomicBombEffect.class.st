@@ -10,8 +10,3 @@ AtomicBombEffect >> applyOn: aBoard activatedBy: aPlayer [
 	aBoard moveAllPlayersToFirstSquareOfTheirLap.
 
 ]
-
-{ #category : #testing }
-AtomicBombEffect >> effect [
-	^ 'Atomic Bomb'.
-]

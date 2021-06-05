@@ -23,11 +23,6 @@ MoonWalkEffect >> applyOn: aBoard activatedBy: aPlayer [
 	aBoard movePlayersBack: spaces except: aPlayer.
 ]
 
-{ #category : #testing }
-MoonWalkEffect >> effect [
-	^ 'Moon Walk'.
-]
-
 { #category : #initialization }
 MoonWalkEffect >> initializeGoingBack: aNumberOfSpaces [  
 	spaces := aNumberOfSpaces.

@@ -10,11 +10,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-GameMandM class >> playedOn: aBoard [ 
-	^self new initializePlayedOn: aBoard.
-]
-
-{ #category : #'instance creation' }
 GameMandM class >> playedOn: aBoard using: aDiceCup [
 	^self new initializePlayedOn: aBoard using: aDiceCup.
 ]
@@ -22,12 +17,6 @@ GameMandM class >> playedOn: aBoard using: aDiceCup [
 { #category : #accessing }
 GameMandM >> handOf: aPlayer [
 	^ board handOf: aPlayer.
-]
-
-{ #category : #initialization }
-GameMandM >> initializePlayedOn: aBoard [
-	board := aBoard.
-	isFinished := false
 ]
 
 { #category : #initialization }

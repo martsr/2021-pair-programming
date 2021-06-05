@@ -14,8 +14,3 @@ Effect >> applyOn: aBoard activatedBy: aPlayer [
 	aBoard dealsCardTo: aPlayer.
 	
 ]
-
-{ #category : #testing }
-Effect >> effect [
-	self subclassResponsibility.
-]

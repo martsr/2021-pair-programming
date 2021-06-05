@@ -9,8 +9,3 @@ WormHoleEffect >> applyOn: aBoard activatedBy: aPlayer [
 
 	aBoard move: aPlayer by: (-4).
 ]
-
-{ #category : #testing }
-WormHoleEffect >> effect [
-	^ 'Worm Hole'.
-]

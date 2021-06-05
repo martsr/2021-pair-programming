@@ -17,8 +17,9 @@ BoardSquareTest >> should: errorBlock raise: exceptionClass withMessage: expecte
 { #category : #tests }
 BoardSquareTest >> test01ABoardSquareHasAnEffect [
 	
-	| aBoardSquare |
+	| aBoardSquare effect |
 	
-	aBoardSquare := BoardSquare applying: NoEffect new.
-	self assert:(aBoardSquare effect) class equals: NoEffect.
+	effect := NoEffect new.
+	aBoardSquare := BoardSquare applying: effect.
+	self assert:(aBoardSquare effect) equals: effect.
 ]
