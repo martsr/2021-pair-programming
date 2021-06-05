@@ -330,33 +330,3 @@ BoardTest >> test16ABoardIsGeneratedWithSizeHundred [
 	
 	 
 ]
-
-{ #category : #tests }
-BoardTest >> test17ABoardMustBeGeneratedWithTheSumOfEffectsProbabilityLessThanOneCannotBeGenerated [
-
-	|  cards effectsDistribution  |
-	
-	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
-	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
-	self generateDeckWith: cards.
-	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.3.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect goingBack: 3) with: 0.10}.
-	self 
-		should: [ EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy) ]
-		raise: Error
-		withMessage: 'A board cannot be generated with a sum of probabilities not equal to 1.'
-]
-
-{ #category : #tests }
-BoardTest >> test18ABoardMustBeGeneratedWithTheSumOfEffectsProbabilityMoreThanOneCannotBeGenerated [
-
-	|  cards effectsDistribution |
-	
-	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
-	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
-	self generateDeckWith: cards.
-	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.5.EffectProbability of: WormHoleEffect  new with: 0.20 		.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: 	AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect goingBack: 3) with: 0.10}.
-	self 
-		should: [ EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy) ]
-		raise: Error
-		withMessage: 'A board cannot be generated with a sum of probabilities not equal to 1.'
-]

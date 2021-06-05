@@ -9,9 +9,15 @@ Class {
 }
 
 { #category : #'instance creation' }
-EffectShuffler class >> ofSize: aNumberOfSquares withGiven: effects [
-	self validatesProbabilitiesSumEqualsOne: effects.
-	^ self new initializeOfSize: aNumberOfSquares withGiven: effects	
+EffectShuffler class >> ofSize: aNumberOfSquares withGiven: effectDistributions [
+	self validatesNotEmpty: effectDistributions.
+	self validatesProbabilitiesSumEqualsOne: effectDistributions.
+	^ self new initializeOfSize: aNumberOfSquares withGiven: effectDistributions	
+]
+
+{ #category : #validation }
+EffectShuffler class >> validatesNotEmpty: effectDistributions [
+	((effectDistributions size) < 1) ifTrue: [ Error signal: 'Squares cannot be generated without effect distributions' ]
 ]
 
 { #category : #validation }
@@ -21,7 +27,7 @@ EffectShuffler class >> validatesProbabilitiesSumEqualsOne: effects [
 	
 	probabilites := (effects collect: [ :effect | effect probability ])asOrderedCollection. 
 	sumOfProbabilities := probabilites inject: 0 into: [:sum :probability | sum + probability].
-	(sumOfProbabilities closeTo:1) ifFalse: [ Error signal:'A board cannot be generated with a sum of probabilities not equal to 1.' ]. 
+	(sumOfProbabilities closeTo:1) ifFalse: [ Error signal: 'Sum of effect probabilities must be equal to 1' ]. 
 
 ]
 
