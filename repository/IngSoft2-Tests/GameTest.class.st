@@ -567,7 +567,7 @@ GameTest >> test25MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayers
 	self generateDeterministicDiceCupWithSequences: #(#(4 3 1) #(4 3 1)).
 	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
 	self generateDeckWith: cards.
-	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (MoonWalkEffect new initializeGoingBack: 3) with: 1}.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (MoonWalkEffect goingBack: 3) with: 1}.
 	effectShuffler := EffectShuffler ofSize: 10 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
 	aBoard := Board having: squares requiring: 1 containing: deck usedBy: players.

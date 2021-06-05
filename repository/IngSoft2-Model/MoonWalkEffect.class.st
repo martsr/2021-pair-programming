@@ -8,11 +8,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-MoonWalkEffect class >> applyingValue: aNumber [
- ^ self goingBack: aNumber
-]
-
-{ #category : #'instance creation' }
 MoonWalkEffect class >> goingBack: aNumberOfSpaces [
 	^ self new initializeGoingBack: aNumberOfSpaces
 ]
