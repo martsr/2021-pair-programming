@@ -4,7 +4,13 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
-SpeedCard >> isPermanent [
+{ #category : #accessing }
+SpeedCard >> isPermanent [ 
 	^ true.
+]
+
+{ #category : #action }
+SpeedCard >> targets: aPlayer [
+
+	target := aPlayer.
 ]

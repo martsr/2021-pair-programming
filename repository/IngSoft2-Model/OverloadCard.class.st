@@ -4,7 +4,12 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
+{ #category : #accessing }
 OverloadCard >> isPermanent [
 	^ true.
+]
+
+{ #category : #action }
+OverloadCard >> targets: aPlayer [
+	target := aPlayer.
 ]

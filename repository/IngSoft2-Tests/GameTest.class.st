@@ -609,6 +609,91 @@ GameTest >> test26ABoardWithOnlyDrawEffectsMakesAPlayerDrawACard [
 	
 ]
 
+{ #category : #tests }
+GameTest >> test27 [
+
+	| aBoard cards aGame effectsDistribution effectShuffler squares aCard |
+	
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 1}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 1 containing: deck usedBy: players.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	aCard := cards at: 2.
+	aGame play: aCard by: 'Fran' targeting: 'Maia'.
+	self assert: (aGame handOf: 'Fran') equals: (OrderedCollection newFrom: { cards at: 1 } ).
+	self assert: (aGame activeCards) equals: (OrderedCollection newFrom: { cards at: 2 . } ).	
+]
+
+{ #category : #tests }
+GameTest >> test28 [
+
+	| aBoard cards aGame effectsDistribution effectShuffler squares aCard |
+	
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 1}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 1 containing: deck usedBy: players.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	aCard := cards at: 3.
+	self
+		should: [ aGame play: aCard by: 'Fran' targeting: 'Maia' ]
+		raise: Error
+		withMessage: 'A card must be in the invonking player hand to be played'. 
+]
+
+{ #category : #tests }
+GameTest >> test29 [
+
+	| aBoard cards aGame effectsDistribution effectShuffler squares aCard |
+	
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 1}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 1 containing: deck usedBy: players.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	self throwDiceCupTimes: 1 in: aGame. 
+	aCard := cards at: 3.
+	self
+		should: [ aGame play: aCard by: 'Maia' targeting: 'Fran' ]
+		raise: Error
+		withMessage: 'A card must be in the invonking player hand to be played'. 
+]
+
+{ #category : #tests }
+GameTest >> test30 [
+	
+	| aBoard aGame playerPositions cards effectsDistribution effectShuffler squares aCard |
+	
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
+	self generateDeterministicDiceCupWithSequences: #(#(4 3 1) #(4 3 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeckWith: cards.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (NoEffect new) with: 1}.
+	effectShuffler := EffectShuffler ofSize: 10 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 1 containing: deck usedBy: players.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	playerPositions := Dictionary newFrom: {'Fran' ->1 . 'Martu'->1 . 'Maia'->1}.
+	self assert: aGame playerPositions equals: playerPositions.
+	aCard := cards at: 2.
+	aGame play: aCard by: 'Fran' targeting: 'Maia'.
+	
+	
+]
+
 { #category : #iteration }
 GameTest >> throwDiceCupTimes: anInteger in: aGame [
 	anInteger timesRepeat: [ aGame nextTurn ].

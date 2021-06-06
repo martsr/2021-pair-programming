@@ -63,6 +63,11 @@ Board >> absoluteSize [
 ]
 
 { #category : #accessing }
+Board >> activeCards [
+	^ cardManager activeCards.
+]
+
+{ #category : #accessing }
 Board >> amountOfLaps [
 	^ laps
 ]
@@ -70,6 +75,11 @@ Board >> amountOfLaps [
 { #category : #accessing }
 Board >> amountOfPlayers [
 	^ players size
+]
+
+{ #category : #accessing }
+Board >> currentPlayerThrowing [
+	^ players at: turn.
 ]
 
 { #category : #action }
@@ -159,6 +169,11 @@ Board >> notifySquaresToApplyEffect [
 { #category : #notification }
 Board >> notifySquaresToNotApplyEffect [
 	squares do: [ :square | square doNotApplyEffect ]
+]
+
+{ #category : #action }
+Board >> play: aCard by: invokingPlayer targeting: aPlayer [ 
+	(self currentPlayerThrowing ~= invokingPlayer and: (aCard isPermanent)) ifTrue:[ Error signal: 'A card must be in the invonking player hand to be played' ] ifFalse: [ cardManager activate: aCard by: invokingPlayer targeting: aPlayer ].
 ]
 
 { #category : #testing }

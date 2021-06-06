@@ -17,7 +17,7 @@ EffectProbability class >> of: anEffect with: aProbability [
 { #category : #validation }
 EffectProbability class >> validateIsGreaterThanZeroAndLessThanOne: aProbability [
 
-	(aProbability >= 1 or: aProbability <= 0) ifTrue: [ Error signal: 'Effect probability must be greater than zero and less than one' ].
+	(aProbability > 1 or: aProbability <= 0) ifTrue: [ Error signal: 'Effect probability must be greater than zero and less than one' ].
 ]
 
 { #category : #comparing }

@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
+{ #category : #accessing }
 RedoCard >> isPermanent [
 	^ false.
 	"Pendiente de hablar si la carta es permanente o no y cuando se puede jugar"

@@ -1,10 +1,13 @@
 Class {
 	#name : #Card,
 	#superclass : #Object,
+	#instVars : [
+		'target'
+	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
+{ #category : #accessing }
 Card >> isPermanent [
 	self subclassResponsibility.
 ]

@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'deck',
 		'gamePlayers',
-		'playerHands'
+		'playerHands',
+		'activeCards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -12,6 +13,20 @@ Class {
 { #category : #'as yet unclassified' }
 CardManager class >> using: aDeck dealsTo: aGroupOfPlayers [ 
 	^self new initializeUsing: aDeck dealsTo: aGroupOfPlayers
+]
+
+{ #category : #action }
+CardManager >> activate: aCard by: invokingPlayer targeting: aPlayer [ 
+
+	| appliedCard |
+	appliedCard := self remove: aCard from: invokingPlayer.
+	appliedCard targets: aPlayer.
+	activeCards add: appliedCard.
+]
+
+{ #category : #accessing }
+CardManager >> activeCards [
+	^ activeCards.
 ]
 
 { #category : #action }
@@ -48,5 +63,17 @@ CardManager >> initializeUsing: aDeck dealsTo: players [
 	deck := aDeck.
 	gamePlayers := players.
 	playerHands := Dictionary new.
+	activeCards := OrderedCollection new.
 	self dealStartingCards.
+]
+
+{ #category : #removing }
+CardManager >> remove: aCard from: invokingPlayer [
+	
+	| playedCard invokingPlayerHand |
+	
+	invokingPlayerHand := playerHands at: invokingPlayer.
+	playedCard := invokingPlayerHand remove: aCard ifAbsent: [ Error signal:  'A card must be in the invonking player hand to be played' ].
+	playerHands at: invokingPlayer put: invokingPlayerHand.
+	^ playedCard.
 ]

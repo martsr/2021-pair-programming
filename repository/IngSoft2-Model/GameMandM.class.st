@@ -15,6 +15,11 @@ GameMandM class >> playedOn: aBoard using: aDiceCup [
 ]
 
 { #category : #accessing }
+GameMandM >> activeCards [
+	^ board activeCards.
+]
+
+{ #category : #accessing }
 GameMandM >> handOf: aPlayer [
 	^ board handOf: aPlayer.
 ]
@@ -40,6 +45,11 @@ GameMandM >> nextTurn [
 	self verifyItisFinished.
 	resultOfThrow := diceCup throw.
 	board nextPlayerThrows: resultOfThrow in: self.
+]
+
+{ #category : #action }
+GameMandM >> play: aCard by: invokingPlayer targeting: aPlayer [ 
+	board play: aCard by: invokingPlayer targeting: aPlayer.
 ]
 
 { #category : #testing }

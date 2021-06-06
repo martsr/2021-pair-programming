@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
+{ #category : #accessing }
 CancellationCard >> isPermanent [
 	^ false.
 ]
