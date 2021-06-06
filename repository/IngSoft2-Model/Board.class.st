@@ -77,6 +77,16 @@ Board >> amountOfPlayers [
 	^ players size
 ]
 
+{ #category : #action }
+Board >> applyActiveCards [
+
+	| activeCards currentPlayer |
+	activeCards := cardManager activeCards.
+	currentPlayer := players at: turn.
+	activeCards := activeCards select: [ :card | card target = currentPlayer ].
+	activeCards do: [ :card | self disableEffectsDuring: [ card applyTo: self ] ].
+]
+
 { #category : #accessing }
 Board >> currentPlayerThrowing [
 	^ players at: turn.
@@ -158,6 +168,7 @@ Board >> nextPlayerThrows: resultOfThrow in: aGame [
 	
 	player := players at: turn.
 	self move: player by: resultOfThrow.
+	self applyActiveCards.
 	(positionTracker absolutePositionOf: player) > self absoluteSize ifTrue: [ aGame isNotifiedItHasFinished ] ifFalse: [ self incrementTurn ]
 ]
 
@@ -173,7 +184,7 @@ Board >> notifySquaresToNotApplyEffect [
 
 { #category : #action }
 Board >> play: aCard by: invokingPlayer targeting: aPlayer [ 
-	(self currentPlayerThrowing ~= invokingPlayer and: (aCard isPermanent)) ifTrue:[ Error signal: 'A card must be in the invonking player hand to be played' ] ifFalse: [ cardManager activate: aCard by: invokingPlayer targeting: aPlayer ].
+	(self currentPlayerThrowing ~= invokingPlayer and: (aCard isPermanent)) ifTrue:[ Error signal: 'A permanent card can only played in the turn of the invoking player' ] ifFalse: [ cardManager activate: aCard by: invokingPlayer targeting: aPlayer ].
 ]
 
 { #category : #testing }

@@ -26,7 +26,7 @@ CardManager >> activate: aCard by: invokingPlayer targeting: aPlayer [
 
 { #category : #accessing }
 CardManager >> activeCards [
-	^ activeCards.
+	^ activeCards copy.
 ]
 
 { #category : #action }
@@ -73,7 +73,7 @@ CardManager >> remove: aCard from: invokingPlayer [
 	| playedCard invokingPlayerHand |
 	
 	invokingPlayerHand := playerHands at: invokingPlayer.
-	playedCard := invokingPlayerHand remove: aCard ifAbsent: [ Error signal:  'A card must be in the invonking player hand to be played' ].
+	playedCard := invokingPlayerHand remove: aCard ifAbsent: [ Error signal:  'A card must be in the invoking player hand to be played' ].
 	playerHands at: invokingPlayer put: invokingPlayerHand.
 	^ playedCard.
 ]
