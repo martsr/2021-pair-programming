@@ -88,6 +88,11 @@ Board >> applyActiveCards [
 	applicableCards do: [ :card | self disableEffectsDuring: [ card applyTo: self directedTo: currentPlayer ] ].
 ]
 
+{ #category : #'as yet unclassified' }
+Board >> applyCancellationCardTo: aPermanentCard affecting: aPlayer [
+	cardManager remove: aPermanentCard affecting: aPlayer.
+]
+
 { #category : #accessing }
 Board >> currentPlayerThrowing [
 	^ players at: turn.
@@ -185,12 +190,15 @@ Board >> notifySquaresToNotApplyEffect [
 
 { #category : #action }
 Board >> play: aCard by: invokingPlayer directedTo: aTarget [
-	(aCard isPermanent)
-		ifTrue: [ (self currentPlayerThrowing ~= invokingPlayer)
+	(self currentPlayerThrowing ~= invokingPlayer)
 				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
-				ifFalse: [ cardManager activate: aCard by: invokingPlayer directedTo: aTarget ] ]
-		ifFalse: [ cardManager remove: aCard from: invokingPlayer.
-			aCard applyTo: self directedTo: aTarget ]
+				ifFalse: [ cardManager activate: aCard by: invokingPlayer directedTo: aTarget ].
+]
+
+{ #category : #action }
+Board >> play: aCard by: invokingPlayer directedTo: aTarget affecting: aPlayer [
+	cardManager remove: aCard from: invokingPlayer.
+	aCard applyTo: self directedTo: aTarget affecting: aPlayer.
 ]
 
 { #category : #action }

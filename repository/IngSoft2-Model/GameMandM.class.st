@@ -53,6 +53,11 @@ GameMandM >> play: aCard by: invokingPlayer directedTo: aTarget [
 ]
 
 { #category : #action }
+GameMandM >> play: aCard by: invokingPlayer directedTo: aTarget affecting: aPlayer [ 
+	board play: aCard by: invokingPlayer directedTo: aTarget affecting: aPlayer 
+]
+
+{ #category : #action }
 GameMandM >> play: aCard directedToAllBy: invokingPlayer [ 
 	board play: aCard directedToAllBy: invokingPlayer.
 ]

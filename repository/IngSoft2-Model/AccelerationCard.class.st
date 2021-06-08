@@ -5,9 +5,9 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-AccelerationCard >> applyTo: aBoard directedTo: target [
+AccelerationCard >> applyTo: aBoard directedTo: targetedPlayer [
 
-	aBoard move: target by: 1.
+	aBoard move: targetedPlayer by: 1.
 ]
 
 { #category : #accessing }

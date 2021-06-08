@@ -5,9 +5,9 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-OverloadCard >> applyTo: aBoard directedTo: target [
+OverloadCard >> applyTo: aBoard directedTo: targetedPLayer [
 
-	aBoard move: target by: -2.
+	aBoard move: targetedPLayer by: -2.
 ]
 
 { #category : #accessing }

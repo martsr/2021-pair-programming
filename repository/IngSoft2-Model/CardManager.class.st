@@ -19,11 +19,9 @@ CardManager class >> using: aDeck dealsTo: aGroupOfPlayers [
 CardManager >> activate: aCard by: invokingPlayer directedTo: aTarget [
 
 	| appliedCard aPlay |
-	appliedCard := self remove: aCard from: invokingPlayer.
-	aCard isPermanent ifTrue: [  
+	appliedCard := self remove: aCard from: invokingPlayer. 
 	aPlay := Play madeBy: appliedCard directedTo: aTarget. 
-	activePlays add: aPlay.]
-	ifFalse:[]
+	activePlays add: aPlay.
 	
 ]
 
@@ -81,6 +79,21 @@ CardManager >> initializeUsing: aDeck dealsTo: players [
 ]
 
 { #category : #removing }
+CardManager >> remove: target [
+	self verfiyThereAreActivePermanentCards.
+]
+
+{ #category : #removing }
+CardManager >> remove: aPermanentCard affecting: aPlayer [
+	
+	| targetedPlay |
+	
+	self verfiyThereAreActivePermanentCards.
+	targetedPlay := activePlays detect: [ :aPlay | aPermanentCard first = aPlay card and: (aPlay directedTo: aPlayer) ] ifNone: [ Error signal: 'The targeted card by the cancellation card is not active' ].
+	activePlays remove: targetedPlay.
+]
+
+{ #category : #removing }
 CardManager >> remove: aCard from: invokingPlayer [
 	
 	| playedCard invokingPlayerHand |
@@ -89,4 +102,12 @@ CardManager >> remove: aCard from: invokingPlayer [
 	playedCard := invokingPlayerHand remove: aCard ifAbsent: [ Error signal:  'A card must be in the invoking player hand to be played' ].
 	playerHands at: invokingPlayer put: invokingPlayerHand.
 	^ playedCard.
+]
+
+{ #category : #removing }
+CardManager >> verfiyThereAreActivePermanentCards [
+	activePlays size < 1
+		ifTrue: [ Error
+				signal:
+					'Cancellation cannot be applied when there are no active permanent cards' ]
 ]

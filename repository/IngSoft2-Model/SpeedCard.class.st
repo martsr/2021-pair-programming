@@ -4,10 +4,10 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
-SpeedCard >> applyTo: aBoard directedTo: target [
+{ #category : #action }
+SpeedCard >> applyTo: aBoard directedTo: targetedPlayer [
 
-	aBoard move: target by: 1.
+	aBoard move: targetedPlayer by: 1.
 ]
 
 { #category : #accessing }
