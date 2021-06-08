@@ -48,8 +48,13 @@ GameMandM >> nextTurn [
 ]
 
 { #category : #action }
-GameMandM >> play: aCard by: invokingPlayer targeting: aPlayer [ 
-	board play: aCard by: invokingPlayer targeting: aPlayer.
+GameMandM >> play: aCard by: invokingPlayer directedTo: aTarget [ 
+	board play: aCard by: invokingPlayer directedTo: aTarget.
+]
+
+{ #category : #action }
+GameMandM >> play: aCard directedToAllBy: invokingPlayer [ 
+	board play: aCard directedToAllBy: invokingPlayer.
 ]
 
 { #category : #testing }

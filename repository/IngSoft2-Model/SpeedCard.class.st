@@ -4,8 +4,8 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #operations }
-SpeedCard >> applyTo: aBoard [
+{ #category : #'as yet unclassified' }
+SpeedCard >> applyTo: aBoard directedTo: target [
 
 	aBoard move: target by: 1.
 ]
@@ -13,15 +13,4 @@ SpeedCard >> applyTo: aBoard [
 { #category : #accessing }
 SpeedCard >> isPermanent [ 
 	^ true.
-]
-
-{ #category : #accessing }
-SpeedCard >> target [
-	^ target.
-]
-
-{ #category : #action }
-SpeedCard >> targets: aPlayer [
-
-	target := aPlayer.
 ]

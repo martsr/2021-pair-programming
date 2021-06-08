@@ -4,8 +4,8 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #operations }
-OverloadCard >> applyTo: aBoard [
+{ #category : #'as yet unclassified' }
+OverloadCard >> applyTo: aBoard directedTo: target [
 
 	aBoard move: target by: -2.
 ]
@@ -13,14 +13,4 @@ OverloadCard >> applyTo: aBoard [
 { #category : #accessing }
 OverloadCard >> isPermanent [
 	^ true.
-]
-
-{ #category : #accessing }
-OverloadCard >> target [ 
-	^ target.
-]
-
-{ #category : #action }
-OverloadCard >> targets: aPlayer [
-	target := aPlayer.
 ]

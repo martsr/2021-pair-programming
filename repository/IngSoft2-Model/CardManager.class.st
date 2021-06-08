@@ -5,7 +5,7 @@ Class {
 		'deck',
 		'gamePlayers',
 		'playerHands',
-		'activeCards'
+		'activePlays'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -16,17 +16,30 @@ CardManager class >> using: aDeck dealsTo: aGroupOfPlayers [
 ]
 
 { #category : #action }
-CardManager >> activate: aCard by: invokingPlayer targeting: aPlayer [ 
+CardManager >> activate: aCard by: invokingPlayer directedTo: aTarget [
 
-	| appliedCard |
+	| appliedCard aPlay |
 	appliedCard := self remove: aCard from: invokingPlayer.
-	appliedCard targets: aPlayer.
-	activeCards add: appliedCard.
+	aCard isPermanent ifTrue: [  
+	aPlay := Play madeBy: appliedCard directedTo: aTarget. 
+	activePlays add: aPlay.]
+	ifFalse:[]
+	
 ]
 
 { #category : #accessing }
 CardManager >> activeCards [
+	
+	| activeCards |
+	
+	activeCards := activePlays collect: [ :play | play card ].
 	^ activeCards copy.
+]
+
+{ #category : #accessing }
+CardManager >> activePlays [
+
+	^ activePlays copy.
 ]
 
 { #category : #action }
@@ -63,7 +76,7 @@ CardManager >> initializeUsing: aDeck dealsTo: players [
 	deck := aDeck.
 	gamePlayers := players.
 	playerHands := Dictionary new.
-	activeCards := OrderedCollection new.
+	activePlays := OrderedCollection new.
 	self dealStartingCards.
 ]
 

@@ -80,11 +80,12 @@ Board >> amountOfPlayers [
 { #category : #action }
 Board >> applyActiveCards [
 
-	| activeCards currentPlayer |
-	activeCards := cardManager activeCards.
-	currentPlayer := players at: turn.
-	activeCards := activeCards select: [ :card | card target = currentPlayer ].
-	activeCards do: [ :card | self disableEffectsDuring: [ card applyTo: self ] ].
+	| currentPlayer activePlays applicableCards applicablePlays |
+	activePlays := cardManager activePlays.
+	currentPlayer := self currentPlayerThrowing.
+	applicablePlays := activePlays select: [ :play | play directedTo: currentPlayer ].
+	applicableCards := applicablePlays collect: [ :play | play card ].
+	applicableCards do: [ :card | self disableEffectsDuring: [ card applyTo: self directedTo: currentPlayer ] ].
 ]
 
 { #category : #accessing }
@@ -183,8 +184,19 @@ Board >> notifySquaresToNotApplyEffect [
 ]
 
 { #category : #action }
-Board >> play: aCard by: invokingPlayer targeting: aPlayer [ 
-	(self currentPlayerThrowing ~= invokingPlayer and: (aCard isPermanent)) ifTrue:[ Error signal: 'A permanent card can only played in the turn of the invoking player' ] ifFalse: [ cardManager activate: aCard by: invokingPlayer targeting: aPlayer ].
+Board >> play: aCard by: invokingPlayer directedTo: aTarget [
+	(aCard isPermanent)
+		ifTrue: [ (self currentPlayerThrowing ~= invokingPlayer)
+				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
+				ifFalse: [ cardManager activate: aCard by: invokingPlayer directedTo: aTarget ] ]
+		ifFalse: [ cardManager remove: aCard from: invokingPlayer.
+			aCard applyTo: self directedTo: aTarget ]
+]
+
+{ #category : #action }
+Board >> play: aCard directedToAllBy: invokingPlayer [
+	self play: aCard by: invokingPlayer directedTo: players. 
+	
 ]
 
 { #category : #testing }
