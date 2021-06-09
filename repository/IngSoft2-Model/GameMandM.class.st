@@ -19,6 +19,12 @@ GameMandM >> activeCards [
 	^ board activeCards.
 ]
 
+{ #category : #'as yet unclassified' }
+GameMandM >> apply: aCardPlay [
+
+	self play: AccelerationCard new directedToAllBy: 'Martu'
+]
+
 { #category : #accessing }
 GameMandM >> handOf: aPlayer [
 	^ board handOf: aPlayer.
@@ -39,12 +45,22 @@ GameMandM >> isNotifiedItHasFinished [
 ]
 
 { #category : #action }
+GameMandM >> make: aPlay by: invokingPlayer [
+	board make: aPlay by: invokingPlayer.
+]
+
+{ #category : #action }
 GameMandM >> nextTurn [
 	| resultOfThrow |
 	
 	self verifyItisFinished.
 	resultOfThrow := diceCup throw.
 	board nextPlayerThrows: resultOfThrow in: self.
+]
+
+{ #category : #action }
+GameMandM >> play: aCard by: invokingPlayer affecting: targetedPlayer [ 
+	board play: aCard by: invokingPlayer affecting: targetedPlayer .
 ]
 
 { #category : #action }

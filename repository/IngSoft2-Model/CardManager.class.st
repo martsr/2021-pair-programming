@@ -19,7 +19,7 @@ CardManager class >> using: aDeck dealsTo: aGroupOfPlayers [
 CardManager >> activate: aCard by: invokingPlayer directedTo: aTarget [
 
 	| appliedCard aPlay |
-	appliedCard := self remove: aCard from: invokingPlayer. 
+	appliedCard := self remove: aCard fromHandOf: invokingPlayer. 
 	aPlay := Play madeBy: appliedCard directedTo: aTarget. 
 	activePlays add: aPlay.
 	
@@ -79,22 +79,19 @@ CardManager >> initializeUsing: aDeck dealsTo: players [
 ]
 
 { #category : #removing }
-CardManager >> remove: target [
-	self verfiyThereAreActivePermanentCards.
-]
-
-{ #category : #removing }
 CardManager >> remove: aPermanentCard affecting: aPlayer [
 	
-	| targetedPlay |
+	| targetedPlay temporaryPlay |
 	
 	self verfiyThereAreActivePermanentCards.
-	targetedPlay := activePlays detect: [ :aPlay | aPermanentCard first = aPlay card and: (aPlay directedTo: aPlayer) ] ifNone: [ Error signal: 'The targeted card by the cancellation card is not active' ].
+	temporaryPlay := Play madeBy: aPermanentCard directedTo: aPlayer.
+	targetedPlay := activePlays detect: [ :aPlay | aPlay = temporaryPlay ] ifNone: [ Error signal: 'The targeted card by the cancellation card is not active' ]. 
+	"targetedPlay := activePlays detect: [ :aPlay | aPermanentCard = (aPlay card) and: (aPlay directedTo: aPlayer) ] ifNone: [ Error signal: 'The targeted card by the cancellation card is not active' ]."
 	activePlays remove: targetedPlay.
 ]
 
 { #category : #removing }
-CardManager >> remove: aCard from: invokingPlayer [
+CardManager >> remove: aCard fromHandOf: invokingPlayer [
 	
 	| playedCard invokingPlayerHand |
 	

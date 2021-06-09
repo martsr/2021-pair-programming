@@ -5,8 +5,13 @@ Class {
 }
 
 { #category : #action }
-CancellationCard >> applyTo: aBoard directedTo: aPermanentCard affecting: aPlayer [.
-	aBoard applyCancellationCardTo: aPermanentCard affecting: aPlayer.
+CancellationCard >> applyTo: aBoard directedTo: additionalTarget affecting: aTarget [.
+	aBoard applyCancellationCardTo: additionalTarget affecting: aTarget.
+]
+
+{ #category : #converting }
+CancellationCard >> asPlayAffecting: aPlayer directedTo: target [
+	^ Play madeBy: self affecting: aPlayer directedTo: target.
 ]
 
 { #category : #accessing }

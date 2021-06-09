@@ -10,6 +10,11 @@ SpeedCard >> applyTo: aBoard directedTo: targetedPlayer [
 	aBoard move: targetedPlayer by: 1.
 ]
 
+{ #category : #converting }
+SpeedCard >> asPlayAffecting: target [
+	^ Play madeBy: self directedTo: target.
+]
+
 { #category : #accessing }
 SpeedCard >> isPermanent [ 
 	^ true.

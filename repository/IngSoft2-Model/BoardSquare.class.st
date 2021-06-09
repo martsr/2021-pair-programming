@@ -38,6 +38,8 @@ BoardSquare >> initializeApplying: anEffect [
 BoardSquare >> place: player on: aBoard [
 
 	applyEffect ifTrue:[ 
-		aBoard disableEffectsDuring: [ effect applyOn: aBoard activatedBy: player ]. 
+		aBoard disableEffectsDuring: [ 
+			effect applyOn: aBoard activatedBy: player. 
+			aBoard updateLastApplied: effect ]. 
 		].
 ]

@@ -9,7 +9,8 @@ Class {
 		'positionTracker',
 		'laps',
 		'deck',
-		'cardManager'
+		'cardManager',
+		'lastAppliedEffect'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -88,9 +89,14 @@ Board >> applyActiveCards [
 	applicableCards do: [ :card | self disableEffectsDuring: [ card applyTo: self directedTo: currentPlayer ] ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Board >> applyCancellationCardTo: aPermanentCard affecting: aPlayer [
 	cardManager remove: aPermanentCard affecting: aPlayer.
+]
+
+{ #category : #action }
+Board >> applyRepeatCardTo: aPermanentCard affecting: aPlayer [
+	self disableEffectsDuring: [ lastAppliedEffect applyOn: self activatedBy: aPlayer ]. 
 ]
 
 { #category : #accessing }
@@ -131,6 +137,18 @@ Board >> initializeHaving: boardSquares requiring: aNumberOfLaps containing: aDe
 	laps := aNumberOfLaps.
 	positionTracker := PositionsTracker of: aGroupOfPlayers inBoardOf: size.
 	cardManager := CardManager using: aDeck dealsTo: aGroupOfPlayers.
+	lastAppliedEffect := NoEffect new.
+]
+
+{ #category : #action }
+Board >> make: aPlay by: invokingPlayer [
+	
+	(aPlay card) isPermanent
+		ifTrue: [ self currentPlayerThrowing ~= invokingPlayer
+				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
+				ifFalse: [ cardManager activate: aPlay card by: invokingPlayer directedTo: aPlay target ] ]
+		ifFalse: [ cardManager remove: (aPlay card) fromHandOf: invokingPlayer.
+			(aPlay card) applyTo: self directedTo: (aPlay additionalTarget) affecting: (aPlay target) ]
 ]
 
 { #category : #action }
@@ -189,6 +207,12 @@ Board >> notifySquaresToNotApplyEffect [
 ]
 
 { #category : #action }
+Board >> play: aCard by: invokingPlayer affecting: targetedPlayer [  
+	cardManager remove: aCard fromHandOf: invokingPlayer.
+	aCard applyTo: self directedTo: lastAppliedEffect affecting: targetedPlayer.
+]
+
+{ #category : #action }
 Board >> play: aCard by: invokingPlayer directedTo: aTarget [
 	(self currentPlayerThrowing ~= invokingPlayer)
 				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
@@ -197,7 +221,7 @@ Board >> play: aCard by: invokingPlayer directedTo: aTarget [
 
 { #category : #action }
 Board >> play: aCard by: invokingPlayer directedTo: aTarget affecting: aPlayer [
-	cardManager remove: aCard from: invokingPlayer.
+	cardManager remove: aCard fromHandOf: invokingPlayer.
 	aCard applyTo: self directedTo: aTarget affecting: aPlayer.
 ]
 
@@ -230,4 +254,9 @@ Board >> positionOf: aPlayer [
 { #category : #accessing }
 Board >> size [
 	^size
+]
+
+{ #category : #action }
+Board >> updateLastApplied: effect [
+	lastAppliedEffect := effect.
 ]

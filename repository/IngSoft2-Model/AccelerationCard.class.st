@@ -10,6 +10,11 @@ AccelerationCard >> applyTo: aBoard directedTo: targetedPlayer [
 	aBoard move: targetedPlayer by: 1.
 ]
 
+{ #category : #converting }
+AccelerationCard >> asPlayAffecting: target [
+	^ Play madeBy: self directedTo: target.
+]
+
 { #category : #accessing }
 AccelerationCard >> isPermanent [
 	^ true.
