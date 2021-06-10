@@ -15,20 +15,13 @@ Play class >> madeBy: aCard affecting: aPlayer directedTo: target [
 ]
 
 { #category : #'instance creation' }
-Play class >> madeBy: aCard directedTo: aTarget [ 
-	self validateTargetIsNotEmpty: aTarget.
+Play class >> madeBy: aCard directedTo: aTarget [
 	^ self new initializeMadeBy: aCard directedTo: aTarget .
-]
-
-{ #category : #validation }
-Play class >> validateTargetIsNotEmpty: aTarget [
-	
-	(aTarget size) < 1 ifTrue: [ Error signal: 'A play can not be created with no targets' ].
 ]
 
 { #category : #comparing }
 Play >> = aPlay [ 
-	^ (card = aPlay card) and: ((target = aPlay target) and: additionalTarget = (aPlay additionalTarget)).
+	^ (card = aPlay card) and: (self directedTo: (aPlay target)).
 ]
 
 { #category : #accessing }
@@ -43,7 +36,7 @@ Play >> card [
 
 { #category : #'as yet unclassified' }
 Play >> directedTo: aTarget [
-	^target includes: aTarget.
+	^target includesAll: aTarget.
 ]
 
 { #category : #initialization }

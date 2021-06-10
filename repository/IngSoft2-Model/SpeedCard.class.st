@@ -11,8 +11,8 @@ SpeedCard >> applyTo: aBoard directedTo: targetedPlayer [
 ]
 
 { #category : #converting }
-SpeedCard >> asPlayAffecting: target [
-	^ Play madeBy: self directedTo: target.
+SpeedCard >> asPlayAffecting: aTarget [
+	^ Play madeBy: self directedTo: aTarget.
 ]
 
 { #category : #accessing }

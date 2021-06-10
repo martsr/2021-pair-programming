@@ -84,14 +84,28 @@ Board >> applyActiveCards [
 	| currentPlayer activePlays applicableCards applicablePlays |
 	activePlays := cardManager activePlays.
 	currentPlayer := self currentPlayerThrowing.
-	applicablePlays := activePlays select: [ :play | play directedTo: currentPlayer ].
+	applicablePlays := activePlays select: [ :play | (play target) includes: currentPlayer ].
 	applicableCards := applicablePlays collect: [ :play | play card ].
 	applicableCards do: [ :card | self disableEffectsDuring: [ card applyTo: self directedTo: currentPlayer ] ].
 ]
 
 { #category : #action }
+Board >> applyCancellationCardTo: aPlay [ 
+	cardManager removeFromActivePlays: aPlay.
+]
+
+{ #category : #action }
 Board >> applyCancellationCardTo: aPermanentCard affecting: aPlayer [
 	cardManager remove: aPermanentCard affecting: aPlayer.
+]
+
+{ #category : #action }
+Board >> applyRepeatCardTo: aTarget [ 
+	
+	| targetedPlayer |
+	
+	targetedPlayer := aTarget first.
+	self disableEffectsDuring: [ lastAppliedEffect applyOn: self activatedBy: targetedPlayer ]. 
 ]
 
 { #category : #action }
@@ -148,7 +162,7 @@ Board >> make: aPlay by: invokingPlayer [
 				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
 				ifFalse: [ cardManager activate: aPlay card by: invokingPlayer directedTo: aPlay target ] ]
 		ifFalse: [ cardManager remove: (aPlay card) fromHandOf: invokingPlayer.
-			(aPlay card) applyTo: self directedTo: (aPlay additionalTarget) affecting: (aPlay target) ]
+			(aPlay card) applyTo: self directedTo: (aPlay target) ]
 ]
 
 { #category : #action }

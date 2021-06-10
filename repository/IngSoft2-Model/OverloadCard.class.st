@@ -11,8 +11,8 @@ OverloadCard >> applyTo: aBoard directedTo: targetedPLayer [
 ]
 
 { #category : #converting }
-OverloadCard >> asPlayAffecting: target [
-	^ Play madeBy: self directedTo: target.
+OverloadCard >> asPlayAffecting: aTarget [
+	^ Play madeBy: self directedTo: aTarget.
 ]
 
 { #category : #accessing }

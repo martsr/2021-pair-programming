@@ -101,6 +101,16 @@ CardManager >> remove: aCard fromHandOf: invokingPlayer [
 	^ playedCard.
 ]
 
+{ #category : #action }
+CardManager >> removeFromActivePlays: targetedPlay [ 
+
+	| foundPlay |
+	
+	self verfiyThereAreActivePermanentCards.
+	foundPlay := activePlays detect: [ :aPlay | ((aPlay card) = (targetedPlay card)) and:((aPlay target) includesAll: (targetedPlay target)) ] ifNone: [ Error signal: 'The targeted card by the cancellation card is not active' ]. 
+	activePlays remove: foundPlay.
+]
+
 { #category : #removing }
 CardManager >> verfiyThereAreActivePermanentCards [
 	activePlays size < 1
