@@ -4,6 +4,16 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #action }
+RedoCard >> applyTo: aBoard directedTo: aTarget [
+	aBoard applyRedoCardTo: aTarget.
+]
+
+{ #category : #action }
+RedoCard >> asPlayAffecting: aTarget [
+	^Play madeBy: self directedTo: aTarget. 
+]
+
 { #category : #accessing }
 RedoCard >> isPermanent [
 	^ false.

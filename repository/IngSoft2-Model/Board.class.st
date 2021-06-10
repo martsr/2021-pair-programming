@@ -100,6 +100,12 @@ Board >> applyCancellationCardTo: aPermanentCard affecting: aPlayer [
 ]
 
 { #category : #action }
+Board >> applyRedoCardTo: aTarget [
+
+	
+]
+
+{ #category : #action }
 Board >> applyRepeatCardTo: aTarget [ 
 	
 	| targetedPlayer |
@@ -166,6 +172,19 @@ Board >> make: aPlay by: invokingPlayer [
 ]
 
 { #category : #action }
+Board >> make: aPlay by: invokingPlayer in: aGame [
+	
+	(aPlay card) isPermanent
+		ifTrue: [ self currentPlayerThrowing ~= invokingPlayer
+				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
+				ifFalse: [ cardManager activate: aPlay card by: invokingPlayer directedTo: aPlay target ] ]
+		ifFalse: [ cardManager remove: (aPlay card) fromHandOf: invokingPlayer.
+			(aPlay card) applyTo: self directedTo: (aPlay target) ].
+		
+	self verifyThereIsAWinner ifTrue: [ aGame isNotifiedItHasFinished ].
+]
+
+{ #category : #action }
 Board >> move: player by: amountPlaces [
 
 	| playerPosition calculatedPlayerPosition |
@@ -174,7 +193,7 @@ Board >> move: player by: amountPlaces [
 	calculatedPlayerPosition := playerPosition + amountPlaces.
 	calculatedPlayerPosition <= 0	ifTrue: [ calculatedPlayerPosition := 1 ].
 	positionTracker update: player withNew: calculatedPlayerPosition.
-	(calculatedPlayerPosition > (self absoluteSize )) ifFalse: [ (squares at: (self positionOf: player)) place: player on: self ].
+	"(calculatedPlayerPosition > (self absoluteSize )) ifFalse: ["(squares at: (self positionOf: player)) place: player on: self "]."
 	
 ]
 
@@ -207,7 +226,7 @@ Board >> nextPlayerThrows: resultOfThrow in: aGame [
 	player := players at: turn.
 	self move: player by: resultOfThrow.
 	self applyActiveCards.
-	(positionTracker absolutePositionOf: player) > self absoluteSize ifTrue: [ aGame isNotifiedItHasFinished ] ifFalse: [ self incrementTurn ]
+	"(positionTracker absolutePositionOf: player) > self absoluteSize" self verifyThereIsAWinner ifTrue: [ aGame isNotifiedItHasFinished ] ifFalse: [ self incrementTurn ]
 ]
 
 { #category : #notification }
@@ -273,4 +292,9 @@ Board >> size [
 { #category : #action }
 Board >> updateLastApplied: effect [
 	lastAppliedEffect := effect.
+]
+
+{ #category : #'as yet unclassified' }
+Board >> verifyThereIsAWinner [
+	^ players anySatisfy: [ :player | (positionTracker absolutePositionOf: player) > self absoluteSize ].
 ]

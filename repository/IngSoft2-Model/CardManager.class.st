@@ -5,7 +5,8 @@ Class {
 		'deck',
 		'gamePlayers',
 		'playerHands',
-		'activePlays'
+		'activePlays',
+		'cardHistory'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -75,6 +76,7 @@ CardManager >> initializeUsing: aDeck dealsTo: players [
 	gamePlayers := players.
 	playerHands := Dictionary new.
 	activePlays := OrderedCollection new.
+	cardHistory := OrderedCollection newFrom: { NoEffectCard new }.
 	self dealStartingCards.
 ]
 
@@ -98,6 +100,7 @@ CardManager >> remove: aCard fromHandOf: invokingPlayer [
 	invokingPlayerHand := playerHands at: invokingPlayer.
 	playedCard := invokingPlayerHand remove: aCard ifAbsent: [ Error signal:  'A card must be in the invoking player hand to be played' ].
 	playerHands at: invokingPlayer put: invokingPlayerHand.
+	cardHistory add: playedCard.
 	^ playedCard.
 ]
 

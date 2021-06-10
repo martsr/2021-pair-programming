@@ -19,12 +19,6 @@ GameMandM >> activeCards [
 	^ board activeCards.
 ]
 
-{ #category : #'as yet unclassified' }
-GameMandM >> apply: aCardPlay [
-
-	self play: AccelerationCard new directedToAllBy: 'Martu'
-]
-
 { #category : #accessing }
 GameMandM >> handOf: aPlayer [
 	^ board handOf: aPlayer.
@@ -46,7 +40,8 @@ GameMandM >> isNotifiedItHasFinished [
 
 { #category : #action }
 GameMandM >> make: aPlay by: invokingPlayer [
-	board make: aPlay by: invokingPlayer.
+	self verifyItisFinished.
+	board make: aPlay by: invokingPlayer in: self.
 ]
 
 { #category : #action }
@@ -106,7 +101,7 @@ GameMandM >> verifyItIsInProgress [
 
 { #category : #private }
 GameMandM >> verifyItisFinished [
-	isFinished ifTrue: [ Error signal: 'The game has finished, dice cannot be rolled anymore' ]
+	isFinished ifTrue: [ Error signal: 'The game has finished, dice cannot be rolled anymore nor cards can be played' ]
 ]
 
 { #category : #accesing }
