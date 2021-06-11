@@ -11,11 +11,6 @@ AccelerationCard >> applyTo: aBoard directedTo: aTarget [
 ]
 
 { #category : #converting }
-AccelerationCard >> asPlayAffecting: aTarget [
-	^ Play madeBy: self directedTo: aTarget.
-]
-
-{ #category : #converting }
 AccelerationCard >> asPlayAffecting: aTarget by: invokingPlayer [
 	^ Play madeBy: self directedTo: aTarget calledBy: invokingPlayer.
 	
