@@ -41,13 +41,16 @@ CardManager >> activePlays [
 	^ activePlays copy.
 ]
 
+{ #category : #initialization }
+CardManager >> cardHistory [
+	^ cardHistory copy.
+]
+
 { #category : #action }
 CardManager >> dealStartingCards [
 	| playerHand |
 	gamePlayers
-		do: [ :player | 
-			playerHand := OrderedCollection newFrom: { deck draw . deck draw }.
-			playerHands at: player put: playerHand ]
+		do: [ :player | playerHand := OrderedCollection newFrom: { deck draw . deck draw }. playerHands at: player put: playerHand ]
 ]
 
 { #category : #action }

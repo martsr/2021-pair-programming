@@ -101,6 +101,8 @@ Board >> applyCancellationCardTo: aPermanentCard affecting: aPlayer [
 
 { #category : #action }
 Board >> applyRedoCardTo: aTarget [
+	| reversedCardHistory |
+	reversedCardHistory := (cardManager cardHistory)
 
 	
 ]
