@@ -6,7 +6,7 @@ Class {
 		'gamePlayers',
 		'playerHands',
 		'activePlays',
-		'cardHistory'
+		'playHistory'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -14,6 +14,14 @@ Class {
 { #category : #'as yet unclassified' }
 CardManager class >> using: aDeck dealsTo: aGroupOfPlayers [ 
 	^self new initializeUsing: aDeck dealsTo: aGroupOfPlayers
+]
+
+{ #category : #action }
+CardManager >> activate: aPlay [ 
+	
+	self removeFromPlayerHandCardOf: aPlay.  
+	activePlays add: aPlay.
+	
 ]
 
 { #category : #action }
@@ -41,9 +49,14 @@ CardManager >> activePlays [
 	^ activePlays copy.
 ]
 
-{ #category : #initialization }
-CardManager >> cardHistory [
-	^ cardHistory copy.
+{ #category : #'as yet unclassified' }
+CardManager >> deal: aCard to: invokingPlayer [
+	
+	| playerHand |
+	
+	playerHand := playerHands at: invokingPlayer .
+	playerHand add: aCard.
+	playerHands at: invokingPlayer put: playerHand.
 ]
 
 { #category : #action }
@@ -79,8 +92,13 @@ CardManager >> initializeUsing: aDeck dealsTo: players [
 	gamePlayers := players.
 	playerHands := Dictionary new.
 	activePlays := OrderedCollection new.
-	cardHistory := OrderedCollection newFrom: { NoEffectCard new }.
+	playHistory := OrderedCollection newFrom: { Play madeBy: (NoEffectCard new) directedTo: players calledBy: (players first) }.
 	self dealStartingCards.
+]
+
+{ #category : #initialization }
+CardManager >> playHistory [
+	^ playHistory copy.
 ]
 
 { #category : #removing }
@@ -93,6 +111,7 @@ CardManager >> remove: aPermanentCard affecting: aPlayer [
 	targetedPlay := activePlays detect: [ :aPlay | aPlay = temporaryPlay ] ifNone: [ Error signal: 'The targeted card by the cancellation card is not active' ]. 
 	"targetedPlay := activePlays detect: [ :aPlay | aPermanentCard = (aPlay card) and: (aPlay directedTo: aPlayer) ] ifNone: [ Error signal: 'The targeted card by the cancellation card is not active' ]."
 	activePlays remove: targetedPlay.
+	"deprecated"
 ]
 
 { #category : #removing }
@@ -103,7 +122,7 @@ CardManager >> remove: aCard fromHandOf: invokingPlayer [
 	invokingPlayerHand := playerHands at: invokingPlayer.
 	playedCard := invokingPlayerHand remove: aCard ifAbsent: [ Error signal:  'A card must be in the invoking player hand to be played' ].
 	playerHands at: invokingPlayer put: invokingPlayerHand.
-	cardHistory add: playedCard.
+	playHistory add: playedCard.
 	^ playedCard.
 ]
 
@@ -113,8 +132,20 @@ CardManager >> removeFromActivePlays: targetedPlay [
 	| foundPlay |
 	
 	self verfiyThereAreActivePermanentCards.
-	foundPlay := activePlays detect: [ :aPlay | ((aPlay card) = (targetedPlay card)) and:((aPlay target) includesAll: (targetedPlay target)) ] ifNone: [ Error signal: 'The targeted card by the cancellation card is not active' ]. 
+	foundPlay := activePlays detect: [ :aPlay | aPlay = targetedPlay ] ifNone: [ Error signal: 'The targeted card by the cancellation card is not active' ]. 
 	activePlays remove: foundPlay.
+]
+
+{ #category : #removing }
+CardManager >> removeFromPlayerHandCardOf: aPlay [
+
+	| playedCard invokingPlayerHand |
+	
+	invokingPlayerHand := playerHands at: (aPlay invokingPlayer).
+	playedCard := invokingPlayerHand remove: (aPlay card) ifAbsent: [ Error signal:  'A card must be in the invoking player hand to be played' ].
+	playerHands at: (aPlay invokingPlayer) put: invokingPlayerHand.
+	playHistory add: aPlay.
+	^ playedCard.
 ]
 
 { #category : #removing }

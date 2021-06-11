@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'target',
 		'card',
-		'additionalTarget'
+		'additionalTarget',
+		'invokingPlayer'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -19,14 +20,14 @@ Play class >> madeBy: aCard directedTo: aTarget [
 	^ self new initializeMadeBy: aCard directedTo: aTarget .
 ]
 
-{ #category : #comparing }
-Play >> = aPlay [ 
-	^ (card = aPlay card) and: (self directedTo: (aPlay target)).
+{ #category : #'instance creation' }
+Play class >> madeBy: aCard directedTo: aTarget calledBy: invokingPlayer [ 
+	^ self new initializeMadeBy: aCard directedTo: aTarget by: invokingPlayer.
 ]
 
-{ #category : #accessing }
-Play >> additionalTarget [
-	^ additionalTarget.
+{ #category : #comparing }
+Play >> = aPlay [ 
+	^((aPlay card) = (self card)) and:(((aPlay target) includesAll: (self target)) and: (aPlay invokingPlayer) = (self invokingPlayer))
 ]
 
 { #category : #accessing }
@@ -52,6 +53,20 @@ Play >> initializeMadeBy: aCard affecting: aPlayer directedTo: aTarget [
 Play >> initializeMadeBy: aCard directedTo: aTarget [
 	target := aTarget.
 	card := aCard.
+]
+
+{ #category : #initialization }
+Play >> initializeMadeBy: aCard directedTo: aTarget by: anInvokingPlayer [
+
+	card := aCard.
+	target := aTarget.
+	invokingPlayer := anInvokingPlayer. 
+	
+]
+
+{ #category : #accessing }
+Play >> invokingPlayer [
+	^invokingPlayer.
 ]
 
 { #category : #accessing }

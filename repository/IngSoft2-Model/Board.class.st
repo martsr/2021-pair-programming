@@ -81,12 +81,12 @@ Board >> amountOfPlayers [
 { #category : #action }
 Board >> applyActiveCards [
 
-	| currentPlayer activePlays applicableCards applicablePlays |
+	| currentPlayer activePlays applicablePlays |
+	
 	activePlays := cardManager activePlays.
 	currentPlayer := self currentPlayerThrowing.
 	applicablePlays := activePlays select: [ :play | (play target) includes: currentPlayer ].
-	applicableCards := applicablePlays collect: [ :play | play card ].
-	applicableCards do: [ :card | self disableEffectsDuring: [ card applyTo: self directedTo: currentPlayer ] ].
+	applicablePlays do: [ :play | self disableEffectsDuring: [ (play card) applyTo: self directedTo: currentPlayer ] ].
 ]
 
 { #category : #action }
@@ -99,12 +99,23 @@ Board >> applyCancellationCardTo: aPermanentCard affecting: aPlayer [
 	cardManager remove: aPermanentCard affecting: aPlayer.
 ]
 
-{ #category : #action }
-Board >> applyRedoCardTo: aTarget [
-	| reversedCardHistory |
-	reversedCardHistory := (cardManager cardHistory)
-
+{ #category : #'as yet unclassified' }
+Board >> applyRedoCardTo: aTarget by: invokingPlayer [
 	
+	| reversedPlayHistory redoCard lastPlayApplied newPlay |
+	
+	reversedPlayHistory := (cardManager playHistory) reverse.
+	redoCard := (reversedPlayHistory first) card.
+	lastPlayApplied := reversedPlayHistory detect: [ :play | play card ~= redoCard ].
+	newPlay := Play madeBy: (lastPlayApplied card) directedTo: aTarget calledBy: invokingPlayer.
+	cardManager deal: (lastPlayApplied card) to: invokingPlayer.
+	(newPlay card) isPermanent
+		ifTrue: [ (self currentPlayerThrowing ~= invokingPlayer) 
+				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
+				ifFalse: [ cardManager activate: newPlay ] ]
+		ifFalse: [ cardManager removeFromPlayerHandCardOf: newPlay.
+			(newPlay card) applyTo: self directedTo: newPlay ].
+	 
 ]
 
 { #category : #action }
@@ -163,27 +174,15 @@ Board >> initializeHaving: boardSquares requiring: aNumberOfLaps containing: aDe
 ]
 
 { #category : #action }
-Board >> make: aPlay by: invokingPlayer [
-	
-	(aPlay card) isPermanent
-		ifTrue: [ self currentPlayerThrowing ~= invokingPlayer
-				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
-				ifFalse: [ cardManager activate: aPlay card by: invokingPlayer directedTo: aPlay target ] ]
-		ifFalse: [ cardManager remove: (aPlay card) fromHandOf: invokingPlayer.
-			(aPlay card) applyTo: self directedTo: (aPlay target) ]
-]
+Board >> make: aPlay in: aGame [
 
-{ #category : #action }
-Board >> make: aPlay by: invokingPlayer in: aGame [
-	
 	(aPlay card) isPermanent
-		ifTrue: [ self currentPlayerThrowing ~= invokingPlayer
+		ifTrue: [ (self currentPlayerThrowing ~= aPlay invokingPlayer) 
 				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
-				ifFalse: [ cardManager activate: aPlay card by: invokingPlayer directedTo: aPlay target ] ]
-		ifFalse: [ cardManager remove: (aPlay card) fromHandOf: invokingPlayer.
-			(aPlay card) applyTo: self directedTo: (aPlay target) ].
-		
-	self verifyThereIsAWinner ifTrue: [ aGame isNotifiedItHasFinished ].
+				ifFalse: [ cardManager activate: aPlay ] ]
+		ifFalse: [ cardManager removeFromPlayerHandCardOf: aPlay.
+			(aPlay card) applyTo: self directedTo: aPlay ].
+		self verifyThereIsAWinner ifTrue: [ aGame isNotifiedItHasFinished ].
 ]
 
 { #category : #action }

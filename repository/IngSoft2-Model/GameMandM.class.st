@@ -39,9 +39,9 @@ GameMandM >> isNotifiedItHasFinished [
 ]
 
 { #category : #action }
-GameMandM >> make: aPlay by: invokingPlayer [
+GameMandM >> make: aPlay [
 	self verifyItisFinished.
-	board make: aPlay by: invokingPlayer in: self.
+	board make: aPlay in: self.
 ]
 
 { #category : #action }
@@ -51,26 +51,6 @@ GameMandM >> nextTurn [
 	self verifyItisFinished.
 	resultOfThrow := diceCup throw.
 	board nextPlayerThrows: resultOfThrow in: self.
-]
-
-{ #category : #action }
-GameMandM >> play: aCard by: invokingPlayer affecting: targetedPlayer [ 
-	board play: aCard by: invokingPlayer affecting: targetedPlayer .
-]
-
-{ #category : #action }
-GameMandM >> play: aCard by: invokingPlayer directedTo: aTarget [ 
-	board play: aCard by: invokingPlayer directedTo: aTarget.
-]
-
-{ #category : #action }
-GameMandM >> play: aCard by: invokingPlayer directedTo: aTarget affecting: aPlayer [ 
-	board play: aCard by: invokingPlayer directedTo: aTarget affecting: aPlayer 
-]
-
-{ #category : #action }
-GameMandM >> play: aCard directedToAllBy: invokingPlayer [ 
-	board play: aCard directedToAllBy: invokingPlayer.
 ]
 
 { #category : #testing }

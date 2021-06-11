@@ -5,14 +5,14 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-OverloadCard >> applyTo: aBoard directedTo: targetedPLayer [
+OverloadCard >> applyTo: aBoard directedTo: aTarget [
 
-	aBoard move: targetedPLayer by: -2.
+	aBoard move: aTarget by: -2.
 ]
 
 { #category : #converting }
-OverloadCard >> asPlayAffecting: aTarget [
-	^ Play madeBy: self directedTo: aTarget.
+OverloadCard >> asPlayAffecting: aTarget by: invokingPlayer [
+	^ Play madeBy: self directedTo: aTarget calledBy: invokingPlayer.
 ]
 
 { #category : #accessing }

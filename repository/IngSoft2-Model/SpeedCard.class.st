@@ -4,15 +4,16 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #action }
-SpeedCard >> applyTo: aBoard directedTo: targetedPlayer [
+{ #category : #'as yet unclassified' }
+SpeedCard >> applyTo: aBoard directedTo: aTarget [
 
-	aBoard move: targetedPlayer by: 1.
+	aBoard move: aTarget by: 1.
 ]
 
-{ #category : #converting }
-SpeedCard >> asPlayAffecting: aTarget [
-	^ Play madeBy: self directedTo: aTarget.
+{ #category : #'instance creation' }
+SpeedCard >> asPlayAffecting: aTarget by: invokingPlayer [
+	^ Play madeBy: self directedTo: aTarget calledBy: invokingPlayer.
+	
 ]
 
 { #category : #accessing }
