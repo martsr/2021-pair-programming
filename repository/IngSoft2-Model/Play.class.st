@@ -10,19 +10,9 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
-Play class >> madeBy: aCard affecting: aPlayer directedTo: target [
-	^self new initializeMadeBy: aCard affecting: aPlayer directedTo: target
-]
-
-{ #category : #'instance creation' }
-Play class >> madeBy: aCard directedTo: aTarget [
-	^ self new initializeMadeBy: aCard directedTo: aTarget .
-]
-
 { #category : #'instance creation' }
 Play class >> madeBy: aCard directedTo: aTarget calledBy: invokingPlayer [ 
-	^ self new initializeMadeBy: aCard directedTo: aTarget by: invokingPlayer.
+	^ self new initializeMadeBy: aCard directedTo: aTarget calledBy: invokingPlayer.
 ]
 
 { #category : #comparing }
@@ -35,28 +25,8 @@ Play >> card [
 	^ card.
 ]
 
-{ #category : #'as yet unclassified' }
-Play >> directedTo: aTarget [
-	^target includesAll: aTarget.
-]
-
 { #category : #initialization }
-Play >> initializeMadeBy: aCard affecting: aPlayer directedTo: aTarget [
-
-	card := aCard.
-	target := aPlayer.
-	additionalTarget := aTarget. 
-	
-]
-
-{ #category : #initialization }
-Play >> initializeMadeBy: aCard directedTo: aTarget [
-	target := aTarget.
-	card := aCard.
-]
-
-{ #category : #initialization }
-Play >> initializeMadeBy: aCard directedTo: aTarget by: anInvokingPlayer [
+Play >> initializeMadeBy: aCard directedTo: aTarget calledBy: anInvokingPlayer [
 
 	card := aCard.
 	target := aTarget.

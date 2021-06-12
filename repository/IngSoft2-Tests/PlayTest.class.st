@@ -20,7 +20,8 @@ PlayTest >> test01APlayIsCreatedWithACardAndATargetedPlayer [
 	| aCard  target aPlay |
 	aCard := SpeedCard new.
 	target := OrderedCollection newFrom: { 'Fran' }.
-	aPlay := Play madeBy: aCard directedTo: target.
+	aPlay := Play madeBy: aCard directedTo: target calledBy: 'Fran'.
 	self assert: (aPlay card) equals: aCard.
 	self assert: (aPlay target) equals: target.
+	self assert: (aPlay invokingPlayer) equals: 'Fran'.
 ]
