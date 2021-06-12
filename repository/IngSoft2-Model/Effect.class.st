@@ -6,6 +6,6 @@ Class {
 
 { #category : #action }
 Effect >> applyOn: aBoard activatedBy: aPlayer [
-	aBoard dealsCardTo: aPlayer.
+	self subclassResponsibility.
 	
 ]
