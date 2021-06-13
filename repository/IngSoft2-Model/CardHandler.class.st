@@ -24,16 +24,6 @@ CardHandler >> activate: aPlay [
 	
 ]
 
-{ #category : #action }
-CardHandler >> activate: aCard by: invokingPlayer directedTo: aTarget [
-
-	| appliedCard aPlay |
-	appliedCard := self remove: aCard fromHandOf: invokingPlayer. 
-	aPlay := Play madeBy: appliedCard directedTo: aTarget calledBy: invokingPlayer. 
-	activePlays add: aPlay.
-	
-]
-
 { #category : #accessing }
 CardHandler >> activeCards [
 	
@@ -99,18 +89,6 @@ CardHandler >> initializeUsing: aDeck dealsTo: players [
 { #category : #initialization }
 CardHandler >> playHistory [
 	^ playHistory copy.
-]
-
-{ #category : #removing }
-CardHandler >> remove: aCard fromHandOf: invokingPlayer [
-	
-	| playedCard invokingPlayerHand |
-	
-	invokingPlayerHand := playerHands at: invokingPlayer.
-	playedCard := invokingPlayerHand remove: aCard ifAbsent: [ Error signal:  'A card must be in the invoking player hand to be played' ].
-	playerHands at: invokingPlayer put: invokingPlayerHand.
-	playHistory add: playedCard.
-	^ playedCard.
 ]
 
 { #category : #action }
