@@ -1,26 +1,26 @@
 Class {
-	#name : #Deck,
+	#name : #DeterministicDeck,
 	#superclass : #Object,
 	#instVars : [
 		'gameCards',
 		'nextCard'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Tests'
 }
 
 { #category : #'instance creation' }
-Deck class >> having: cards [
+DeterministicDeck class >> having: cards [
 	self validatesItHasAtLeastOneCard: cards.
 	^ self new initializeHaving: cards.
 ]
 
 { #category : #validation }
-Deck class >> validatesItHasAtLeastOneCard: cards [
+DeterministicDeck class >> validatesItHasAtLeastOneCard: cards [
 	(cards size) < 1 ifTrue: [ Error signal: 'A least must contain at least one card to be created' ].
 ]
 
 { #category : #action }
-Deck >> draw [
+DeterministicDeck >> draw [
 	| drawnCard |
 	drawnCard := gameCards at: nextCard.
 	self incrementCardCount.	
@@ -28,17 +28,17 @@ Deck >> draw [
 ]
 
 { #category : #action }
-Deck >> incrementCardCount [
+DeterministicDeck >> incrementCardCount [
 	nextCard := (nextCard rem: (self size)) + 1
 ]
 
 { #category : #initialization }
-Deck >> initializeHaving: cards [
+DeterministicDeck >> initializeHaving: cards [
 	gameCards := cards.
 	nextCard := 1.
 ]
 
 { #category : #accessing }
-Deck >> size [ 
+DeterministicDeck >> size [ 
 	^ gameCards size.
 ]

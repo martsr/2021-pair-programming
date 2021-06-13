@@ -1,11 +1,11 @@
 Class {
-	#name : #DeckTest,
+	#name : #DeterministicDeckTest,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #asserting }
-DeckTest >> should: errorBlock raise: exceptionClass withMessage: expectedErrorMessage [
+DeterministicDeckTest >> should: errorBlock raise: exceptionClass withMessage: expectedErrorMessage [
 
 	self
 		should: errorBlock
@@ -15,34 +15,24 @@ DeckTest >> should: errorBlock raise: exceptionClass withMessage: expectedErrorM
 ]
 
 { #category : #tests }
-DeckTest >> test01ADeckIsCreatedWithTheSixPossibleCardsAndReturnsItsSize [
-	
-	| cards deck |
-	
-	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
-	deck := Deck having: cards.
-	self assert: (deck size) equals: 6.
-]
-
-{ #category : #tests }
-DeckTest >> test02ADeckMustContainAtLeastOneCard [
+DeterministicDeckTest >> test02ADeckMustContainAtLeastOneCard [
 	
 	| cards |
 	
 	cards := OrderedCollection new.
 	self
-		should: [ Deck having: cards ]
+		should: [ DeterministicDeck having: cards ]
 		raise: Error
 		withMessage: 'A least must contain at least one card to be created'.
 ]
 
 { #category : #tests }
-DeckTest >> test03ADeckIsCreatedWithTheSixPossibleCardsAndTheOverloadCardIsDrawn [
+DeterministicDeckTest >> test03ADeckIsCreatedWithTheSixPossibleCardsAndTheOverloadCardIsDrawn [
 	
 	| cards deck overloadCard |
 	
 	overloadCard := OverloadCard new.
 	cards := OrderedCollection newFrom: { overloadCard . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
-	deck := Deck having: cards.
+	deck := DeterministicDeck having: cards.
 	self assert: (deck draw) equals: overloadCard.
 ]

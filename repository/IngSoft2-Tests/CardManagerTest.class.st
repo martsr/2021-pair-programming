@@ -20,7 +20,7 @@ CardManagerTest >> test01ADeckIsCreatedWithTheSixPossibleCardsAndReturnsItsSize 
 	| cards deck |
 	
 	cards := OrderedCollection newFrom: {OverloadCard new. SpeedCard new. AccelerationCard new. CancellationCard new. RedoCard new. RepeatCard new}.
-	deck := Deck having: cards.
+	deck := DeterministicDeck having: cards.
 	self assert: deck size equals: 6
 ]
 
@@ -31,7 +31,7 @@ CardManagerTest >> test02ADeckMustContainAtLeastOneCard [
 	
 	cards := OrderedCollection new.
 	self
-		should: [ Deck having: cards ]
+		should: [ DeterministicDeck having: cards ]
 		raise: Error
 		withMessage: 'A least must contain at least one card to be created'
 ]
@@ -48,7 +48,7 @@ CardManagerTest >> test03CardManagerDealsTwoCardsTwoEachPlayerAtTheStart [
 	redoCard := RedoCard new.
 	repeatCard := RepeatCard new.
 	cards := OrderedCollection newFrom: { overloadCard . speedCard . accelerationCard . cancellationCard . redoCard . repeatCard }.
-	deck := Deck having: cards.
+	deck := DeterministicDeck having: cards.
 	cardManager := CardHandler using: deck dealsTo: players.
 	self assert: (cardManager handOf: 'Fran') equals: (OrderedCollection newFrom: { overloadCard . speedCard }).
 	self assert: (cardManager handOf: 'Martu') equals: (OrderedCollection newFrom: { accelerationCard . cancellationCard }).
@@ -69,7 +69,7 @@ CardManagerTest >> test04APlayerIsDealtItsInitialHandAndAnExtraCard [
 	redoCard := RedoCard new.
 	repeatCard := RepeatCard new.
 	cards := OrderedCollection newFrom: { overloadCard . speedCard . accelerationCard . cancellationCard . redoCard . repeatCard }.
-	aDeck := Deck having: cards.
+	aDeck := DeterministicDeck having: cards.
 	cardManager := CardHandler using: aDeck dealsTo: players.
 	self assert: (cardManager handOf: 'Fran') equals: (OrderedCollection newFrom: { overloadCard . speedCard }).
 	cardManager dealsCardTo: (players at: 1).
