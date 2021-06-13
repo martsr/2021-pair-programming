@@ -19,3 +19,8 @@ CancellationCard >> asPlayAffecting: aTarget by: invokingPlayer [
 CancellationCard >> isPermanent [
 	^ false.
 ]
+
+{ #category : #'as yet unclassified' }
+CancellationCard >> retargetedBy: invokingPlayer using: aTarget [ 
+	^ self asPlayAffecting: aTarget by: invokingPlayer
+]

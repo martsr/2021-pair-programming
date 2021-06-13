@@ -19,3 +19,8 @@ OverloadCard >> asPlayAffecting: aTarget by: invokingPlayer [
 OverloadCard >> isPermanent [
 	^ true.
 ]
+
+{ #category : #'as yet unclassified' }
+OverloadCard >> retargetedBy: invokingPlayer using: aTarget [
+	^ self asPlayAffecting: aTarget by: invokingPlayer.
+]

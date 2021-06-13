@@ -20,3 +20,8 @@ SpeedCard >> asPlayAffecting: aTarget by: invokingPlayer [
 SpeedCard >> isPermanent [ 
 	^ true.
 ]
+
+{ #category : #'as yet unclassified' }
+SpeedCard >> retargetedBy: invokingPlayer using: aTarget [
+	^ self asPlayAffecting: aTarget by: invokingPlayer.
+]

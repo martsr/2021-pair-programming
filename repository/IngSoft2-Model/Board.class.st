@@ -17,7 +17,7 @@ Class {
 
 { #category : #'instance creation' }
 Board class >> having: squares requiring: aNumberOfLaps containing: aDeck usedBy: aGroupOfPlayers [
-	self validateMoreThanFiveSquares: squares.
+	self validateMoreThanEightSquares: squares.
 	self validatesItDoesntHavePlayersWithSameName: aGroupOfPlayers.
 	self validatesNamesMustHaveAtLeastOneLetter: aGroupOfPlayers.
 	self validatesItMustHaveAtLeastOnePlayer: aGroupOfPlayers.
@@ -26,9 +26,9 @@ Board class >> having: squares requiring: aNumberOfLaps containing: aDeck usedBy
 ]
 
 { #category : #validation }
-Board class >> validateMoreThanFiveSquares: squares [
-	(squares size) < 5
-		ifTrue: [ Error signal: 'A board must contain at least 5 square boards to satisfy the effects distribution.' ]
+Board class >> validateMoreThanEightSquares: squares [
+	(squares size) < 8
+		ifTrue: [ Error signal: 'A board must contain at least 8 square boards to satisfy the effects distribution.' ]
 ]
 
 { #category : #validation }
@@ -37,19 +37,19 @@ Board class >> validatesItDoesntHavePlayersWithSameName: players [
 	| playerNames |
 	
 	playerNames := players asSet.
-	(players size) > (playerNames size) ifTrue: [ Error signal: 'A board cannot be generated having players with repeated names.' ]
+	(players size) > (playerNames size) ifTrue: [ Error signal: 'A board cannot be created having players with repeated names.' ]
 ]
 
 { #category : #validation }
 Board class >> validatesItMustHaveAtLeastOnePlayer: aPlayer [
 	aPlayer size < 1
-		ifTrue: [ Error signal: 'A board  must have at least 1 player in order to be generated.' ]
+		ifTrue: [ Error signal: 'A board must have at least 1 player in order to be created.' ]
 ]
 
 { #category : #'instance creation' }
 Board class >> validatesItNeedsAtLeastOneLap: amountOfLaps [
 	amountOfLaps < 1
-		ifTrue: [ Error signal: 'A board requires at least one lap to be generated.' ]
+		ifTrue: [ Error signal: 'A board requires at least one lap to be created.' ]
 ]
 
 { #category : #validation }
@@ -99,18 +99,13 @@ Board >> applyRedoCardTo: aTarget by: invokingPlayer [
 	
 	| reversedPlayHistory redoCard lastPlayApplied newPlay |
 	
-	reversedPlayHistory := (cardManager playHistory) reverse.
-	redoCard := (reversedPlayHistory first) card.
-	lastPlayApplied := reversedPlayHistory detect: [ :play | play card ~= redoCard ].
-	newPlay := Play madeBy: (lastPlayApplied card) directedTo: aTarget calledBy: invokingPlayer.
-	cardManager deal: (lastPlayApplied card) to: invokingPlayer.
-	(newPlay card) isPermanent
-		ifTrue: [ (self currentPlayerThrowing ~= invokingPlayer) 
-				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
-				ifFalse: [ cardManager activate: newPlay ] ]
-		ifFalse: [ cardManager removeFromPlayerHandCardOf: newPlay.
-			(newPlay card) applyTo: self directedTo: newPlay ].
-	 
+	reversedPlayHistory := cardManager playHistory reverse.
+	redoCard := reversedPlayHistory first card.
+	lastPlayApplied := reversedPlayHistory detect: [ :play | play card ~= redoCard ] ifNone: [Error signal: 'A Redo card can not be played if no previous cards were played'].
+	"newPlay := Play madeBy: (lastPlayApplied card) directedTo: aTarget calledBy: invokingPlayer."
+	newPlay := lastPlayApplied card retargetedBy: invokingPlayer using: aTarget.
+	cardManager deal: lastPlayApplied card to: invokingPlayer.
+	self resolvePlayabilityOf: newPlay
 ]
 
 { #category : #action }
@@ -159,20 +154,15 @@ Board >> initializeHaving: boardSquares requiring: aNumberOfLaps containing: aDe
 	squares := boardSquares.
 	laps := aNumberOfLaps.
 	positionTracker := PositionsTracker of: aGroupOfPlayers inBoardOf: size.
-	cardManager := CardManager using: aDeck dealsTo: aGroupOfPlayers.
+	cardManager := CardHandler using: aDeck dealsTo: aGroupOfPlayers.
 	lastAppliedEffect := NoEffect new.
 ]
 
 { #category : #action }
 Board >> make: aPlay in: aGame [
-
-	(aPlay card) isPermanent
-		ifTrue: [ (self currentPlayerThrowing ~= aPlay invokingPlayer) 
-				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
-				ifFalse: [ cardManager activate: aPlay ] ]
-		ifFalse: [ cardManager removeFromPlayerHandCardOf: aPlay.
-			(aPlay card) applyTo: self directedTo: aPlay ].
-		self verifyThereIsAWinner ifTrue: [ aGame isNotifiedItHasFinished ].
+	
+	self resolvePlayabilityOf: aPlay.
+	self verifyThereIsAWinner ifTrue: [ aGame isNotifiedItHasFinished ].
 ]
 
 { #category : #action }
@@ -250,9 +240,20 @@ Board >> positionOf: aPlayer [
 	^ positionTracker boardPositionOf: aPlayer
 ]
 
+{ #category : #'as yet unclassified' }
+Board >> resolvePlayabilityOf: newPlay [
+	newPlay card isPermanent
+		ifTrue: [ self currentPlayerThrowing ~= newPlay invokingPlayer
+				ifTrue: [ Error
+						signal: 'A permanent card can only played in the turn of the invoking player' ]
+				ifFalse: [ cardManager activate: newPlay ] ]
+		ifFalse: [ cardManager removeFromPlayerHandCardOf: newPlay.
+			newPlay card applyTo: self directedTo: newPlay ]
+]
+
 { #category : #accessing }
 Board >> size [
-	^size
+	^ size
 ]
 
 { #category : #action }

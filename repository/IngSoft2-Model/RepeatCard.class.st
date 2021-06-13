@@ -19,3 +19,8 @@ RepeatCard >> asPlayAffecting: aTarget by: invokingPlayer [
 RepeatCard >> isPermanent [
 	^ false.
 ]
+
+{ #category : #'as yet unclassified' }
+RepeatCard >> retargetedBy: invokingPlayer using: aTarget [
+	^ self asPlayAffecting: aTarget by: invokingPlayer.
+]

@@ -20,3 +20,8 @@ AccelerationCard >> asPlayAffecting: aTarget by: invokingPlayer [
 AccelerationCard >> isPermanent [
 	^ true.
 ]
+
+{ #category : #'as yet unclassified' }
+AccelerationCard >> retargetedBy: invokingPlayer using: aTarget [
+	^ self asPlayAffecting: aTarget by: invokingPlayer.
+]

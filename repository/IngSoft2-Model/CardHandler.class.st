@@ -1,5 +1,5 @@
 Class {
-	#name : #CardManager,
+	#name : #CardHandler,
 	#superclass : #Object,
 	#instVars : [
 		'deck',
@@ -12,12 +12,12 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-CardManager class >> using: aDeck dealsTo: aGroupOfPlayers [ 
+CardHandler class >> using: aDeck dealsTo: aGroupOfPlayers [ 
 	^self new initializeUsing: aDeck dealsTo: aGroupOfPlayers
 ]
 
 { #category : #action }
-CardManager >> activate: aPlay [ 
+CardHandler >> activate: aPlay [ 
 	
 	self removeFromPlayerHandCardOf: aPlay.  
 	activePlays add: aPlay.
@@ -25,7 +25,7 @@ CardManager >> activate: aPlay [
 ]
 
 { #category : #action }
-CardManager >> activate: aCard by: invokingPlayer directedTo: aTarget [
+CardHandler >> activate: aCard by: invokingPlayer directedTo: aTarget [
 
 	| appliedCard aPlay |
 	appliedCard := self remove: aCard fromHandOf: invokingPlayer. 
@@ -35,7 +35,7 @@ CardManager >> activate: aCard by: invokingPlayer directedTo: aTarget [
 ]
 
 { #category : #accessing }
-CardManager >> activeCards [
+CardHandler >> activeCards [
 	
 	| activeCards |
 	
@@ -44,13 +44,13 @@ CardManager >> activeCards [
 ]
 
 { #category : #accessing }
-CardManager >> activePlays [
+CardHandler >> activePlays [
 
 	^ activePlays copy.
 ]
 
 { #category : #'as yet unclassified' }
-CardManager >> deal: aCard to: invokingPlayer [
+CardHandler >> deal: aCard to: invokingPlayer [
 	
 	| playerHand |
 	
@@ -60,14 +60,14 @@ CardManager >> deal: aCard to: invokingPlayer [
 ]
 
 { #category : #action }
-CardManager >> dealStartingCards [
+CardHandler >> dealStartingCards [
 	| playerHand |
 	gamePlayers
 		do: [ :player | playerHand := OrderedCollection newFrom: { deck draw . deck draw }. playerHands at: player put: playerHand ]
 ]
 
 { #category : #action }
-CardManager >> dealsCardTo: aPlayer [
+CardHandler >> dealsCardTo: aPlayer [
 	
 	| playerHand drawnCard |
 	
@@ -78,7 +78,7 @@ CardManager >> dealsCardTo: aPlayer [
 ]
 
 { #category : #accessing }
-CardManager >> handOf: aPlayer [
+CardHandler >> handOf: aPlayer [
 	
 	| playerHand |
 	
@@ -87,22 +87,22 @@ CardManager >> handOf: aPlayer [
 ]
 
 { #category : #initialization }
-CardManager >> initializeUsing: aDeck dealsTo: players [
+CardHandler >> initializeUsing: aDeck dealsTo: players [
 	deck := aDeck.
 	gamePlayers := players.
 	playerHands := Dictionary new.
 	activePlays := OrderedCollection new.
-	playHistory := OrderedCollection newFrom: { Play madeBy: (NoEffectCard new) directedTo: players calledBy: (players first) }.
+	playHistory := OrderedCollection new.
 	self dealStartingCards.
 ]
 
 { #category : #initialization }
-CardManager >> playHistory [
+CardHandler >> playHistory [
 	^ playHistory copy.
 ]
 
 { #category : #removing }
-CardManager >> remove: aCard fromHandOf: invokingPlayer [
+CardHandler >> remove: aCard fromHandOf: invokingPlayer [
 	
 	| playedCard invokingPlayerHand |
 	
@@ -114,7 +114,7 @@ CardManager >> remove: aCard fromHandOf: invokingPlayer [
 ]
 
 { #category : #action }
-CardManager >> removeFromActivePlays: targetedPlay [ 
+CardHandler >> removeFromActivePlays: targetedPlay [ 
 
 	| foundPlay |
 	
@@ -124,7 +124,7 @@ CardManager >> removeFromActivePlays: targetedPlay [
 ]
 
 { #category : #removing }
-CardManager >> removeFromPlayerHandCardOf: aPlay [
+CardHandler >> removeFromPlayerHandCardOf: aPlay [
 
 	| playedCard invokingPlayerHand |
 	
@@ -136,7 +136,7 @@ CardManager >> removeFromPlayerHandCardOf: aPlay [
 ]
 
 { #category : #removing }
-CardManager >> verfiyThereAreActivePermanentCards [
+CardHandler >> verfiyThereAreActivePermanentCards [
 	activePlays size < 1
 		ifTrue: [ Error
 				signal:
