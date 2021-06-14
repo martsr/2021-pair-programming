@@ -100,7 +100,8 @@ Board >> applyRedoCardTo: aTarget by: invokingPlayer [
 	
 	reversedPlayHistory := cardHandler playHistory reverse.
 	redoCard := reversedPlayHistory first card.
-	lastPlayApplied := reversedPlayHistory detect: [ :play | play card ~= redoCard ] ifNone: [Error signal: 'A Redo card can not be played if no previous cards were 	played'].
+	lastPlayApplied := reversedPlayHistory detect: [ :play | play card ~= redoCard ] 
+	ifNone: [Error signal: 'A Redo card can not be played if no previous cards were played'].
 	newPlay := lastPlayApplied card retargetedBy: invokingPlayer using: aTarget.
 	cardHandler deal: lastPlayApplied card to: invokingPlayer.
 	self resolvePlayabilityOf: newPlay
