@@ -25,15 +25,15 @@ RandomDeck >> draw [
 	
 	self shuffle.
 	drawnCard := gameCards first.
-	^ drawnCard.
+	^ drawnCard
 ]
 
 { #category : #initialization }
 RandomDeck >> initializeHaving: cards [
-	gameCards := cards.
+	gameCards := cards
 ]
 
 { #category : #shuffling }
 RandomDeck >> shuffle [
-	^ gameCards shuffle.
+	^ gameCards shuffle
 ]

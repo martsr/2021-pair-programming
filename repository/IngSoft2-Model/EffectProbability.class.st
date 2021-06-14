@@ -22,22 +22,22 @@ EffectProbability class >> validateIsGreaterThanZeroAndLessOrEqualThanOne: aProb
 
 { #category : #comparing }
 EffectProbability >> < anEffectProbability [
-	^ probability < (anEffectProbability probability). 
+	^ probability < (anEffectProbability probability)
 ]
 
 { #category : #accessing }
 EffectProbability >> effect [
-	^effect.
+	^effect
 ]
 
 { #category : #initialization }
 EffectProbability >> initializeOf: anEffect with: aProbability [
 
 	effect := anEffect.
-	probability := aProbability.
+	probability := aProbability
 ]
 
 { #category : #accessing }
 EffectProbability >> probability [
-	^probability.
+	^probability
 ]

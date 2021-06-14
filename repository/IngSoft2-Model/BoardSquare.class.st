@@ -25,7 +25,7 @@ applyEffect := false
 
 { #category : #testing }
 BoardSquare >> effect [
-	^ effect.
+	^ effect
 ]
 
 { #category : #initialization }
@@ -40,6 +40,5 @@ BoardSquare >> place: player on: aBoard [
 	applyEffect ifTrue:[ 
 		aBoard disableEffectsDuring: [ 
 			effect applyOn: aBoard activatedBy: player. 
-			aBoard updateLastApplied: effect ]. 
-		].
+			aBoard updateLastApplied: effect ]. ]
 ]

@@ -21,7 +21,7 @@ Play >> = aPlay [
 
 { #category : #accessing }
 Play >> card [
-	^ card.
+	^ card
 ]
 
 { #category : #initialization }
@@ -29,16 +29,16 @@ Play >> initializeMadeBy: aCard directedTo: aTarget calledBy: anInvokingPlayer [
 
 	card := aCard.
 	target := aTarget.
-	invokingPlayer := anInvokingPlayer. 
+	invokingPlayer := anInvokingPlayer
 	
 ]
 
 { #category : #accessing }
 Play >> invokingPlayer [
-	^invokingPlayer.
+	^invokingPlayer
 ]
 
 { #category : #accessing }
 Play >> target [
-	^ target copy.
+	^ target copy
 ]

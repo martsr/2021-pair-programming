@@ -6,6 +6,5 @@ Class {
 
 { #category : #action }
 WormHoleEffect >> applyOn: aBoard activatedBy: aPlayer [
-
-	aBoard move: aPlayer by: (-4).
+	aBoard move: aPlayer by: (-4)
 ]

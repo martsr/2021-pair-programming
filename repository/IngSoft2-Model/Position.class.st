@@ -16,22 +16,22 @@ Position class >> of: playerName at: squareNumber in: lapNumber [
 
 { #category : #comparing }
 Position >> > aPosition [
-	^ (square) > (aPosition currentPosition).
+	^ (square) > (aPosition currentPosition)
 ]
 
 { #category : #accessing }
 Position >> currentLap [
-	^ laps.
+	^ laps
 ]
 
 { #category : #accessing }
 Position >> currentPlayer [
-	^ name.
+	^ name
 ]
 
 { #category : #accessing }
 Position >> currentPosition [
-	^ square.
+	^ square
 ]
 
 { #category : #initialization }

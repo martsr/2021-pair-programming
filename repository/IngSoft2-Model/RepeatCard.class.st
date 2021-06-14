@@ -6,21 +6,21 @@ Class {
 
 { #category : #action }
 RepeatCard >> applyTo: aBoard directedTo: aTarget [
-	aBoard applyRepeatCardTo: (aTarget target) .
+	aBoard applyRepeatCardTo: (aTarget target)
 	
 ]
 
 { #category : #action }
 RepeatCard >> asPlayAffecting: aTarget by: invokingPlayer [ 
-	^ Play madeBy: self directedTo: aTarget calledBy: invokingPlayer.
+	^ Play madeBy: self directedTo: aTarget calledBy: invokingPlayer
 ]
 
 { #category : #accessing }
 RepeatCard >> isPermanent [
-	^ false.
+	^ false
 ]
 
 { #category : #'as yet unclassified' }
 RepeatCard >> retargetedBy: invokingPlayer using: aTarget [
-	^ self asPlayAffecting: aTarget by: invokingPlayer.
+	^ self asPlayAffecting: aTarget by: invokingPlayer
 ]

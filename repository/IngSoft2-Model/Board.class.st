@@ -8,8 +8,8 @@ Class {
 		'turn',
 		'positionTracker',
 		'laps',
-		'cardManager',
-		'lastAppliedEffect'
+		'lastAppliedEffect',
+		'cardHandler'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -64,7 +64,7 @@ Board >> absoluteSize [
 
 { #category : #accessing }
 Board >> activeCards [
-	^ cardManager activeCards.
+	^ cardHandler activeCards
 ]
 
 { #category : #accessing }
@@ -82,15 +82,15 @@ Board >> applyActiveCards [
 
 	| currentPlayer activePlays applicablePlays |
 	
-	activePlays := cardManager activePlays.
+	activePlays := cardHandler activePlays.
 	currentPlayer := self currentPlayerThrowing.
 	applicablePlays := activePlays select: [ :play | (play target) includes: currentPlayer ].
-	applicablePlays do: [ :play | self disableEffectsDuring: [ (play card) applyTo: self directedTo: currentPlayer ] ].
+	applicablePlays do: [ :play | self disableEffectsDuring: [ (play card) applyTo: self directedTo: currentPlayer ] ]
 ]
 
 { #category : #action }
 Board >> applyCancellationCardTo: aPlay [ 
-	cardManager removeFromActivePlays: aPlay.
+	cardHandler removeFromActivePlays: aPlay
 ]
 
 { #category : #'as yet unclassified' }
@@ -98,11 +98,11 @@ Board >> applyRedoCardTo: aTarget by: invokingPlayer [
 	
 	| reversedPlayHistory redoCard lastPlayApplied newPlay |
 	
-	reversedPlayHistory := cardManager playHistory reverse.
+	reversedPlayHistory := cardHandler playHistory reverse.
 	redoCard := reversedPlayHistory first card.
 	lastPlayApplied := reversedPlayHistory detect: [ :play | play card ~= redoCard ] ifNone: [Error signal: 'A Redo card can not be played if no previous cards were 	played'].
 	newPlay := lastPlayApplied card retargetedBy: invokingPlayer using: aTarget.
-	cardManager deal: lastPlayApplied card to: invokingPlayer.
+	cardHandler deal: lastPlayApplied card to: invokingPlayer.
 	self resolvePlayabilityOf: newPlay
 ]
 
@@ -112,29 +112,29 @@ Board >> applyRepeatCardTo: aTarget [
 	| targetedPlayer |
 	
 	targetedPlayer := aTarget first.
-	self disableEffectsDuring: [ lastAppliedEffect applyOn: self activatedBy: targetedPlayer ]. 
+	self disableEffectsDuring: [ lastAppliedEffect applyOn: self activatedBy: targetedPlayer ]
 ]
 
 { #category : #accessing }
 Board >> currentPlayerThrowing [
-	^ players at: turn.
+	^ players at: turn
 ]
 
 { #category : #action }
 Board >> dealsCardTo: aPlayer [
-	cardManager dealsCardTo: aPlayer.
+	cardHandler dealsCardTo: aPlayer
 ]
 
 { #category : #action }
 Board >> disableEffectsDuring: anAction [
 	self notifySquaresToNotApplyEffect.
 	anAction value.
-	self notifySquaresToApplyEffect.
+	self notifySquaresToApplyEffect
 ]
 
 { #category : #accessing }
 Board >> handOf: aPlayer [
-	^ cardManager handOf: aPlayer.
+	^ cardHandler handOf: aPlayer
 ]
 
 { #category : #action }
@@ -151,15 +151,15 @@ Board >> initializeHaving: boardSquares requiring: aNumberOfLaps containing: aDe
 	squares := boardSquares.
 	laps := aNumberOfLaps.
 	positionTracker := PositionsTracker of: aGroupOfPlayers inBoardOf: size.
-	cardManager := CardHandler using: aDeck dealsTo: aGroupOfPlayers.
-	lastAppliedEffect := NoEffect new.
+	cardHandler := CardHandler using: aDeck dealsTo: aGroupOfPlayers.
+	lastAppliedEffect := NoEffect new
 ]
 
 { #category : #action }
 Board >> makes: aPlay in: aGame [
 	
 	self resolvePlayabilityOf: aPlay.
-	self verifyThereIsAWinner ifTrue: [ aGame isNotifiedItHasFinished ].
+	self verifyThereIsAWinner ifTrue: [ aGame isNotifiedItHasFinished ]
 ]
 
 { #category : #action }
@@ -179,10 +179,11 @@ Board >> move: player by: amountPlaces [
 Board >> moveAllPlayersToFirstSquareOfTheirLap [
 
 	| relativePositions relativePlayerPosition |
+	
 	relativePositions := positionTracker boardPositions.
 	players do: [ :playerName |
 		relativePlayerPosition := relativePositions at: playerName.
-		self move: playerName by: ((relativePlayerPosition - 1) * (-1)). ].
+		self move: playerName by: ((relativePlayerPosition - 1) * (-1)). ]
 ]
 
 { #category : #action }
@@ -241,8 +242,8 @@ Board >> resolvePlayabilityOf: newPlay [
 	(newPlay card)isPermanent
 		ifTrue: [ self currentPlayerThrowing ~= newPlay invokingPlayer
 				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
-				ifFalse: [ cardManager activate: newPlay ] ]
-		ifFalse: [ cardManager removeFromPlayerHandCardOf: newPlay.
+				ifFalse: [ cardHandler activate: newPlay ] ]
+		ifFalse: [ cardHandler removeFromPlayerHandCardOf: newPlay.
 					newPlay card applyTo: self directedTo: newPlay ]
 ]
 
@@ -253,10 +254,10 @@ Board >> size [
 
 { #category : #action }
 Board >> updateLastApplied: effect [
-	lastAppliedEffect := effect.
+	lastAppliedEffect := effect
 ]
 
 { #category : #'as yet unclassified' }
 Board >> verifyThereIsAWinner [
-	^ players anySatisfy: [ :player | (positionTracker absolutePositionOf: player) > self absoluteSize ].
+	^ players anySatisfy: [ :player | (positionTracker absolutePositionOf: player) > self absoluteSize ]
 ]

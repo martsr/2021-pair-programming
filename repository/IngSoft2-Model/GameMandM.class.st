@@ -16,7 +16,7 @@ GameMandM class >> playedOn: aBoard using: aDiceCup [
 
 { #category : #accessing }
 GameMandM >> activeCards [
-	^ board activeCards.
+	^ board activeCards
 ]
 
 { #category : #accessing }
@@ -26,7 +26,7 @@ GameMandM >> currentPlayerThrowing [
 
 { #category : #accessing }
 GameMandM >> handOf: aPlayer [
-	^ board handOf: aPlayer.
+	^ board handOf: aPlayer
 ]
 
 { #category : #initialization }
@@ -46,35 +46,42 @@ GameMandM >> isNotifiedItHasFinished [
 { #category : #action }
 GameMandM >> make: aPlay [
 	self verifyItisFinished.
-	board makes: aPlay in: self.
+	board makes: aPlay in: self
 ]
 
 { #category : #action }
 GameMandM >> nextTurn [
+
 	| resultOfThrow |
 	
 	self verifyItisFinished.
 	resultOfThrow := diceCup throw.
-	board nextPlayerThrows: resultOfThrow in: self.
+	board nextPlayerThrows: resultOfThrow in: self
 ]
 
 { #category : #testing }
 GameMandM >> playerLaps [
+
 	| playerLaps |
+	
 	playerLaps := board playerLaps.
 	^ playerLaps
 ]
 
 { #category : #accesing }
 GameMandM >> playerPositions [
+
 	| playerPositions |
+	
 	playerPositions := board playerPositions.
 	^ playerPositions
 ]
 
 { #category : #testing }
 GameMandM >> playerRanking [
+
 	| playerRanking |
+	
 	playerRanking := board playerRanking.
 	^ playerRanking
 ]
@@ -91,7 +98,9 @@ GameMandM >> verifyItisFinished [
 
 { #category : #accesing }
 GameMandM >> winner [
+
 	| winner playerRanking |
+	
 	self verifyItIsInProgress.
 	playerRanking := board playerRanking.
 	winner := playerRanking at: 1.

@@ -33,15 +33,17 @@ EffectShuffler class >> validatesProbabilitiesSumEqualsOne: effects [
 
 { #category : #translating }
 EffectShuffler >> generate [ 
+
 	| squares mostProbableEffect remainingSquaresNumber sortedEffectProbabilities |
+	
 	squares := OrderedCollection new.
 	sortedEffectProbabilities := effectProbabilities sort: [ :effectProbabilityOne :effectProbabilityTwo | effectProbabilityOne < effectProbabilityTwo ].
 	mostProbableEffect := (sortedEffectProbabilities asOrderedCollection) removeLast.
-	sortedEffectProbabilities do: [ :effectProbability | squares add: (BoardSquare applying:( effectProbability effect)) withOccurrences: ((boardSize * (effectProbability probability)) ceiling) ].
+	sortedEffectProbabilities do: [ :effectProbability | squares add: (BoardSquare applying:( effectProbability effect)) withOccurrences: ((boardSize * 	(effectProbability probability)) ceiling) ].
 	remainingSquaresNumber := boardSize - (squares size).
 	squares add: (BoardSquare applying: (mostProbableEffect effect)) withOccurrences: remainingSquaresNumber.
 	squares shuffle. 
-	^ squares.
+	^ squares
 ]
 
 { #category : #initialization }

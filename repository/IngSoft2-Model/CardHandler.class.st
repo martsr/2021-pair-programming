@@ -20,7 +20,7 @@ CardHandler class >> using: aDeck dealsTo: aGroupOfPlayers [
 CardHandler >> activate: aPlay [ 
 	
 	self removeFromPlayerHandCardOf: aPlay.  
-	activePlays add: aPlay.
+	activePlays add: aPlay
 	
 ]
 
@@ -30,13 +30,12 @@ CardHandler >> activeCards [
 	| activeCards |
 	
 	activeCards := activePlays collect: [ :play | play card ].
-	^ activeCards copy.
+	^ activeCards copy
 ]
 
 { #category : #accessing }
 CardHandler >> activePlays [
-
-	^ activePlays copy.
+	^ activePlays copy
 ]
 
 { #category : #'as yet unclassified' }
@@ -44,16 +43,17 @@ CardHandler >> deal: aCard to: invokingPlayer [
 	
 	| playerHand |
 	
-	playerHand := playerHands at: invokingPlayer .
+	playerHand := playerHands at: invokingPlayer.
 	playerHand add: aCard.
-	playerHands at: invokingPlayer put: playerHand.
+	playerHands at: invokingPlayer put: playerHand
 ]
 
 { #category : #action }
 CardHandler >> dealStartingCards [
 	| playerHand |
 	gamePlayers
-		do: [ :player | playerHand := OrderedCollection newFrom: { deck draw . deck draw }. playerHands at: player put: playerHand ]
+		do: [ :player | playerHand := OrderedCollection newFrom: { deck draw . deck draw }. 
+			 playerHands at: player put: playerHand ]
 ]
 
 { #category : #action }
@@ -64,7 +64,7 @@ CardHandler >> dealsCardTo: aPlayer [
 	playerHand := playerHands at: aPlayer.
 	drawnCard := deck draw.
 	playerHand add: drawnCard.
-	playerHands at: aPlayer put: playerHand.
+	playerHands at: aPlayer put: playerHand
 ]
 
 { #category : #accessing }
@@ -73,22 +73,23 @@ CardHandler >> handOf: aPlayer [
 	| playerHand |
 	
 	playerHand := (playerHands at: aPlayer) asOrderedCollection.
-	^ playerHand.
+	^ playerHand
 ]
 
 { #category : #initialization }
 CardHandler >> initializeUsing: aDeck dealsTo: players [
+
 	deck := aDeck.
 	gamePlayers := players.
 	playerHands := Dictionary new.
 	activePlays := OrderedCollection new.
 	playHistory := OrderedCollection new.
-	self dealStartingCards.
+	self dealStartingCards
 ]
 
 { #category : #initialization }
 CardHandler >> playHistory [
-	^ playHistory copy.
+	^ playHistory copy
 ]
 
 { #category : #action }
@@ -98,7 +99,7 @@ CardHandler >> removeFromActivePlays: targetedPlay [
 	
 	self verfiyThereAreActivePermanentCards.
 	foundPlay := activePlays detect: [ :aPlay | aPlay = targetedPlay ] ifNone: [ Error signal: 'The targeted card by the cancellation card is not active' ]. 
-	activePlays remove: foundPlay.
+	activePlays remove: foundPlay
 ]
 
 { #category : #removing }
@@ -110,13 +111,10 @@ CardHandler >> removeFromPlayerHandCardOf: aPlay [
 	playedCard := invokingPlayerHand remove: (aPlay card) ifAbsent: [ Error signal:  'A card must be in the invoking player hand to be played' ].
 	playerHands at: (aPlay invokingPlayer) put: invokingPlayerHand.
 	playHistory add: aPlay.
-	^ playedCard.
+	^ playedCard
 ]
 
 { #category : #removing }
 CardHandler >> verfiyThereAreActivePermanentCards [
-	activePlays size < 1
-		ifTrue: [ Error
-				signal:
-					'Cancellation cannot be applied when there are no active permanent cards' ]
+	activePlays size < 1 ifTrue: [ Error signal: 'Cancellation cannot be applied when there are no active permanent cards' ]
 ]

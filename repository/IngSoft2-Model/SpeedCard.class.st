@@ -6,22 +6,21 @@ Class {
 
 { #category : #'as yet unclassified' }
 SpeedCard >> applyTo: aBoard directedTo: aTarget [
-
-	aBoard move: aTarget by: 1.
+	aBoard move: aTarget by: 1
 ]
 
 { #category : #'instance creation' }
 SpeedCard >> asPlayAffecting: aTarget by: invokingPlayer [
-	^ Play madeBy: self directedTo: aTarget calledBy: invokingPlayer.
+	^ Play madeBy: self directedTo: aTarget calledBy: invokingPlayer
 	
 ]
 
 { #category : #accessing }
 SpeedCard >> isPermanent [ 
-	^ true.
+	^ true
 ]
 
 { #category : #'as yet unclassified' }
 SpeedCard >> retargetedBy: invokingPlayer using: aTarget [
-	^ self asPlayAffecting: aTarget by: invokingPlayer.
+	^ self asPlayAffecting: aTarget by: invokingPlayer
 ]

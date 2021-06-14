@@ -6,16 +6,16 @@ Class {
 
 { #category : #action }
 RedoCard >> applyTo: aBoard directedTo: aTarget [
-	aBoard applyRedoCardTo: (aTarget target) by: (aTarget invokingPlayer).
+	aBoard applyRedoCardTo: (aTarget target) by: (aTarget invokingPlayer)
 ]
 
 { #category : #converting }
 RedoCard >> asPlayAffecting: aTarget by: invokingPlayer [
-	^ Play madeBy: self directedTo: aTarget calledBy: invokingPlayer.
+	^ Play madeBy: self directedTo: aTarget calledBy: invokingPlayer
 ]
 
 { #category : #accessing }
 RedoCard >> isPermanent [
-	^ false.
-	"Pendiente de hablar si la carta es permanente o no y cuando se puede jugar"
+	^ false
+
 ]

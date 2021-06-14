@@ -6,6 +6,5 @@ Class {
 
 { #category : #action }
 SpeedUpEffect >> applyOn: aBoard activatedBy: aPlayer [
-
-	aBoard move: aPlayer by: 4.
+	aBoard move: aPlayer by: 4
 ]

@@ -6,6 +6,5 @@ Class {
 
 { #category : #action }
 DrawCardEffect >> applyOn: aBoard activatedBy: aPlayer [
-	
-	aBoard dealsCardTo: aPlayer.
+	aBoard dealsCardTo: aPlayer
 ]

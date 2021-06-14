@@ -14,8 +14,7 @@ MoonWalkEffect class >> goingBack: aNumberOfSpaces [
 
 { #category : #action }
 MoonWalkEffect >> applyOn: aBoard activatedBy: aPlayer [
-	
-	aBoard movePlayersBack: spaces except: aPlayer.
+	aBoard movePlayersBack: spaces except: aPlayer
 ]
 
 { #category : #initialization }
