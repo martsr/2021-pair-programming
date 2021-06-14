@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'target',
 		'card',
-		'additionalTarget',
 		'invokingPlayer'
 	],
 	#category : #'IngSoft2-Model'

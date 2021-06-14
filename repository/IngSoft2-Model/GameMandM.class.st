@@ -20,6 +20,11 @@ GameMandM >> activeCards [
 ]
 
 { #category : #accessing }
+GameMandM >> currentPlayerThrowing [
+ ^ board currentPlayerThrowing 
+]
+
+{ #category : #accessing }
 GameMandM >> handOf: aPlayer [
 	^ board handOf: aPlayer.
 ]
@@ -41,7 +46,7 @@ GameMandM >> isNotifiedItHasFinished [
 { #category : #action }
 GameMandM >> make: aPlay [
 	self verifyItisFinished.
-	board make: aPlay in: self.
+	board makes: aPlay in: self.
 ]
 
 { #category : #action }

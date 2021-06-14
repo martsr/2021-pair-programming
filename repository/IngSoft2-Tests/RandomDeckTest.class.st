@@ -27,7 +27,7 @@ RandomDeckTest >> test01ADeckMustContainAtLeastOneCard [
 ]
 
 { #category : #tests }
-RandomDeckTest >> test03ADeckIsCreatedWithTheSixPossibleCardsAndTheOverloadCardIsDrawn [
+RandomDeckTest >> test02ADeckIsCreatedWithTheSixPossibleCardsAndTheOverloadCardIsDrawn [
 	
 	| cards randomDeck result |
 	

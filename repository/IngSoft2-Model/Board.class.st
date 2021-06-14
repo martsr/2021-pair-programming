@@ -8,7 +8,6 @@ Class {
 		'turn',
 		'positionTracker',
 		'laps',
-		'deck',
 		'cardManager',
 		'lastAppliedEffect'
 	],
@@ -101,8 +100,7 @@ Board >> applyRedoCardTo: aTarget by: invokingPlayer [
 	
 	reversedPlayHistory := cardManager playHistory reverse.
 	redoCard := reversedPlayHistory first card.
-	lastPlayApplied := reversedPlayHistory detect: [ :play | play card ~= redoCard ] ifNone: [Error signal: 'A Redo card can not be played if no previous cards were played'].
-	"newPlay := Play madeBy: (lastPlayApplied card) directedTo: aTarget calledBy: invokingPlayer."
+	lastPlayApplied := reversedPlayHistory detect: [ :play | play card ~= redoCard ] ifNone: [Error signal: 'A Redo card can not be played if no previous cards were 	played'].
 	newPlay := lastPlayApplied card retargetedBy: invokingPlayer using: aTarget.
 	cardManager deal: lastPlayApplied card to: invokingPlayer.
 	self resolvePlayabilityOf: newPlay
@@ -147,7 +145,6 @@ Board >> incrementTurn [
 { #category : #initialization }
 Board >> initializeHaving: boardSquares requiring: aNumberOfLaps containing: aDeck usedBy: aGroupOfPlayers [  
 	
-	deck := aDeck.
 	players := aGroupOfPlayers.
 	size := boardSquares size.
 	turn := 1.
@@ -159,7 +156,7 @@ Board >> initializeHaving: boardSquares requiring: aNumberOfLaps containing: aDe
 ]
 
 { #category : #action }
-Board >> make: aPlay in: aGame [
+Board >> makes: aPlay in: aGame [
 	
 	self resolvePlayabilityOf: aPlay.
 	self verifyThereIsAWinner ifTrue: [ aGame isNotifiedItHasFinished ].
@@ -174,7 +171,7 @@ Board >> move: player by: amountPlaces [
 	calculatedPlayerPosition := playerPosition + amountPlaces.
 	calculatedPlayerPosition <= 0	ifTrue: [ calculatedPlayerPosition := 1 ].
 	positionTracker update: player withNew: calculatedPlayerPosition.
-	"(calculatedPlayerPosition > (self absoluteSize )) ifFalse: ["(squares at: (self positionOf: player)) place: player on: self "]."
+	(squares at: (self positionOf: player)) place: player on: self 
 	
 ]
 
@@ -185,8 +182,7 @@ Board >> moveAllPlayersToFirstSquareOfTheirLap [
 	relativePositions := positionTracker boardPositions.
 	players do: [ :playerName |
 		relativePlayerPosition := relativePositions at: playerName.
-		self move: playerName by: ((relativePlayerPosition - 1) * (-1)).
-		 ].
+		self move: playerName by: ((relativePlayerPosition - 1) * (-1)). ].
 ]
 
 { #category : #action }
@@ -195,8 +191,7 @@ Board >> movePlayersBack: aNumberOfSpaces except: aPlayer [
 	| affectedPlayers |
 	
 	affectedPlayers := players reject: [ :player | player = aPlayer ].
-	affectedPlayers
-		do: [ :player | self move: player by: (-1) * aNumberOfSpaces ]
+	affectedPlayers do: [ :player | self move: player by: (-1) * aNumberOfSpaces ]
 ]
 
 { #category : #action }
@@ -207,7 +202,7 @@ Board >> nextPlayerThrows: resultOfThrow in: aGame [
 	player := players at: turn.
 	self move: player by: resultOfThrow.
 	self applyActiveCards.
-	"(positionTracker absolutePositionOf: player) > self absoluteSize" self verifyThereIsAWinner ifTrue: [ aGame isNotifiedItHasFinished ] ifFalse: [ self incrementTurn ]
+	self verifyThereIsAWinner ifTrue: [ aGame isNotifiedItHasFinished ] ifFalse: [ self incrementTurn ]
 ]
 
 { #category : #notification }
@@ -242,13 +237,13 @@ Board >> positionOf: aPlayer [
 
 { #category : #'as yet unclassified' }
 Board >> resolvePlayabilityOf: newPlay [
-	newPlay card isPermanent
+
+	(newPlay card)isPermanent
 		ifTrue: [ self currentPlayerThrowing ~= newPlay invokingPlayer
-				ifTrue: [ Error
-						signal: 'A permanent card can only played in the turn of the invoking player' ]
+				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
 				ifFalse: [ cardManager activate: newPlay ] ]
 		ifFalse: [ cardManager removeFromPlayerHandCardOf: newPlay.
-			newPlay card applyTo: self directedTo: newPlay ]
+					newPlay card applyTo: self directedTo: newPlay ]
 ]
 
 { #category : #accessing }

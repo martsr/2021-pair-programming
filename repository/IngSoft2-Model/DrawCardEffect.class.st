@@ -1,9 +1,6 @@
 Class {
 	#name : #DrawCardEffect,
 	#superclass : #Effect,
-	#instVars : [
-		'spaces'
-	],
 	#category : #'IngSoft2-Model'
 }
 
