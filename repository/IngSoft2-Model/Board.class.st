@@ -93,7 +93,7 @@ Board >> applyCancellationCardTo: aPlay [
 	cardHandler removeFromActivePlays: aPlay
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Board >> applyRedoCardTo: aTarget by: invokingPlayer [
 	
 	| reversedPlayHistory redoCard lastPlayApplied newPlay |
@@ -237,7 +237,7 @@ Board >> positionOf: aPlayer [
 	^ positionTracker boardPositionOf: aPlayer
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Board >> resolvePlayabilityOf: newPlay [
 
 	(newPlay card)isPermanent
@@ -258,7 +258,7 @@ Board >> updateLastApplied: effect [
 	lastAppliedEffect := effect
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #verification }
 Board >> verifyThereIsAWinner [
 	^ players anySatisfy: [ :player | (positionTracker absolutePositionOf: player) > self absoluteSize ]
 ]

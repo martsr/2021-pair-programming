@@ -658,7 +658,7 @@ GameTest >> test28ACardCanOnlyBePlayedWhenItIsInTheHandOfThePlayer [
 { #category : #tests }
 GameTest >> test29APermanentCardCanOnlyPlayedInTheTurnOfTheInvokingPlayer [
 
-	| aBoard cards aGame effectsDistribution effectShuffler squares aCard aPlay currentPlayer |
+	| aBoard cards aGame effectsDistribution effectShuffler squares aCard aPlay  |
 	
 	self generatePlayerNames: #('Fran' 'Maia' 'Martu').
 	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).

@@ -38,7 +38,7 @@ CardHandler >> activePlays [
 	^ activePlays copy
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 CardHandler >> deal: aCard to: invokingPlayer [
 	
 	| playerHand |
@@ -50,7 +50,9 @@ CardHandler >> deal: aCard to: invokingPlayer [
 
 { #category : #action }
 CardHandler >> dealStartingCards [
+
 	| playerHand |
+	
 	gamePlayers
 		do: [ :player | playerHand := OrderedCollection newFrom: { deck draw . deck draw }. 
 			 playerHands at: player put: playerHand ]

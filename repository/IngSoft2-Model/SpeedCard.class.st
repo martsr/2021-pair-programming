@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 SpeedCard >> applyTo: aBoard directedTo: aTarget [
 	aBoard move: aTarget by: 1
 ]
