@@ -2,15 +2,10 @@ Class {
 	#name : #MoonWalkEffect,
 	#superclass : #Effect,
 	#instVars : [
-		'moonWalkSpaces'
+		'spaces'
 	],
 	#category : #'IngSoft2-Model'
 }
-
-{ #category : #'instance creation' }
-MoonWalkEffect class >> applyingValue: aNumber [
- ^ self goingBack: aNumber
-]
 
 { #category : #'instance creation' }
 MoonWalkEffect class >> goingBack: aNumberOfSpaces [
@@ -19,16 +14,10 @@ MoonWalkEffect class >> goingBack: aNumberOfSpaces [
 
 { #category : #action }
 MoonWalkEffect >> applyOn: aBoard activatedBy: aPlayer [
-	
-	aBoard movePlayersBack: moonWalkSpaces except: aPlayer.
+	aBoard movePlayersBack: spaces except: aPlayer
 ]
 
 { #category : #initialization }
 MoonWalkEffect >> initializeGoingBack: aNumberOfSpaces [  
-	moonWalkSpaces := aNumberOfSpaces.
-]
-
-{ #category : #testing }
-MoonWalkEffect >> typeOfEffect [
-	^ 'Moon Walk'.
+	spaces := aNumberOfSpaces.
 ]

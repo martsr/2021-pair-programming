@@ -6,12 +6,6 @@ Class {
 
 { #category : #action }
 AtomicBombEffect >> applyOn: aBoard activatedBy: aPlayer [
+	aBoard moveAllPlayersToFirstSquareOfTheirLap
 
-	aBoard moveAllPlayersToFirstSquareOfTheirLap.
-
-]
-
-{ #category : #testing }
-AtomicBombEffect >> typeOfEffect [
-	^ 'Atomic Bomb'.
 ]
