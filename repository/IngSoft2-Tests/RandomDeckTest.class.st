@@ -35,6 +35,7 @@ RandomDeckTest >> test02ADeckIsCreatedWithTheSixPossibleCardsAndTheOverloadCardI
 	randomDeck := RandomDeck having: cards.
 	result := OrderedCollection new. 
 	100 timesRepeat: [ result add: (randomDeck draw) ]. 
+	
 	self assert: (result anySatisfy:[:aCard | aCard = (cards at: 1)]). 
 	self assert: (result anySatisfy:[:aCard | aCard = (cards at: 2)]).
 	self assert: (result anySatisfy:[:aCard | aCard = (cards at: 3)]).
