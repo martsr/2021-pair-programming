@@ -20,20 +20,10 @@ RandomDeck class >> validatesItHasAtLeastOneCard: cards [
 
 { #category : #drawing }
 RandomDeck >> draw [
-	
-	| drawnCard |
-	
-	self shuffle.
-	drawnCard := gameCards first.
-	^ drawnCard
+	^ gameCards atRandom
 ]
 
 { #category : #initialization }
 RandomDeck >> initializeHaving: cards [
 	gameCards := cards
-]
-
-{ #category : #shuffling }
-RandomDeck >> shuffle [
-	^ gameCards shuffle
 ]

@@ -24,7 +24,7 @@ EffectShufflerTest >> test01EffectShufflerCannotGenerateSquaresWIthoutEffectDist
 ]
 
 { #category : #tests }
-EffectShufflerTest >> test2EffectShufflerCannotGenerateSquaresIfSumOfProbabilitesIsLessThanOne [
+EffectShufflerTest >> test02EffectShufflerCannotGenerateSquaresIfSumOfProbabilitesIsLessThanOne [
 
 	|  effectsDistribution  |
 
@@ -36,7 +36,7 @@ EffectShufflerTest >> test2EffectShufflerCannotGenerateSquaresIfSumOfProbabilite
 ]
 
 { #category : #tests }
-EffectShufflerTest >> test3EffectShufflerCannotGenerateSquaresIfSumOfProbabilitesIsMoreThanOne [
+EffectShufflerTest >> test03EffectShufflerCannotGenerateSquaresIfSumOfProbabilitesIsMoreThanOne [
 
 	| effectsDistribution |
 	
@@ -45,28 +45,4 @@ EffectShufflerTest >> test3EffectShufflerCannotGenerateSquaresIfSumOfProbabilite
 		should: [ EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy) ]
 		raise: Error
 		withMessage: 'Sum of effect probabilities must be equal to 1'.
-]
-
-{ #category : #tests }
-EffectShufflerTest >> test4EffectProbabilityCannotBeGreaterThanOne [
-
-	| effect |
-
-	effect := NoEffect new.
-	self 
-		should: [ EffectProbability of: effect with: 1.01 ]
-		raise: Error
-		withMessage: 'Effect probability must be greater than zero and less than one'.
-]
-
-{ #category : #tests }
-EffectShufflerTest >> test5EffectProbabilityCannotBeLessThanZero [
-
-	| effect |
-
-	effect := NoEffect new.
-	self 
-		should: [ EffectProbability of: effect with: -0.01 ]
-		raise: Error
-		withMessage: 'Effect probability must be greater than zero and less than one'.
 ]

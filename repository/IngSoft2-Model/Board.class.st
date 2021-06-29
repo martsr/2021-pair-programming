@@ -15,7 +15,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> having: squares requiring: aNumberOfLaps containing: aDeck usedBy: aGroupOfPlayers [
+Board class >> having: squares requiring: aNumberOfLaps playingWith: aDeck usedBy: aGroupOfPlayers [
 	self validateMoreThanEightSquares: squares.
 	self validatesItDoesntHavePlayersWithSameName: aGroupOfPlayers.
 	self validatesNamesMustHaveAtLeastOneLetter: aGroupOfPlayers.
@@ -140,6 +140,20 @@ Board >> handOf: aPlayer [
 ]
 
 { #category : #action }
+Board >> handleInstaneousCardFrom: newPlay [
+	cardHandler removeFromPlayerHandCardOf: newPlay.
+	newPlay card applyTo: self directedTo: newPlay
+]
+
+{ #category : #action }
+Board >> handlePermanentCardFrom: newPlay [
+	self currentPlayerThrowing ~= newPlay invokingPlayer
+		ifTrue: [ Error
+				signal: 'A permanent card can only played in the turn of the invoking player' ]
+		ifFalse: [ cardHandler activate: newPlay ]
+]
+
+{ #category : #action }
 Board >> incrementTurn [
 	turn := (turn rem: players size) + 1
 ]
@@ -240,13 +254,9 @@ Board >> positionOf: aPlayer [
 
 { #category : #action }
 Board >> resolvePlayabilityOf: newPlay [
-
-	(newPlay card)isPermanent
-		ifTrue: [ self currentPlayerThrowing ~= newPlay invokingPlayer
-				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
-				ifFalse: [ cardHandler activate: newPlay ] ]
-		ifFalse: [ cardHandler removeFromPlayerHandCardOf: newPlay.
-					newPlay card applyTo: self directedTo: newPlay ]
+	newPlay card isPermanent
+		ifTrue: [ self handlePermanentCardFrom: newPlay ]
+		ifFalse: [ self handleInstaneousCardFrom: newPlay ]
 ]
 
 { #category : #accessing }
