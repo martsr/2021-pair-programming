@@ -10,10 +10,10 @@ AccelerationCard >> applyTo: aBoard directedTo: aTarget [
 ]
 
 { #category : #converting }
-AccelerationCard >> asPlayIn: aGame by: aPlayer [
+AccelerationCard >> asPlayAffecting: aGame by: aPlayer [
 	| players |
 	players := aGame players. 
-	^ self asPlayAffecting: players by: aPlayer. 
+	^ super asPlayAffecting: players by: aPlayer. 
 ]
 
 { #category : #accessing }

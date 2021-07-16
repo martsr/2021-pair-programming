@@ -648,7 +648,7 @@ GameTest >> test28ACardCanOnlyBePlayedWhenItIsInTheHandOfThePlayer [
 	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	anAccelerationCard := cards at: 3.
-	aPlay := anAccelerationCard asPlayAffecting: players by: (aGame currentPlayerThrowing).
+	aPlay := anAccelerationCard asPlayAffecting: aGame by: (aGame currentPlayerThrowing).
 	self
 		should: [ aGame make: aPlay ]
 		raise: Error
@@ -671,7 +671,7 @@ GameTest >> test29APermanentCardCanOnlyPlayedInTheTurnOfTheInvokingPlayer [
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame. 
 	anAccelerationCard:= cards at: 3.
-	aPlay := anAccelerationCard asPlayAffecting: (OrderedCollection newFrom: { 'Fran' }) by: 'Martu'.
+	aPlay := anAccelerationCard asPlayAffecting: aGame by: 'Martu'.
 	self
 		should: [ aGame make: aPlay ]
 		raise: Error
@@ -780,7 +780,7 @@ GameTest >> test33PlayersTargetedByAccelerationCardMoveOneAdditionalSquareAfterT
 	self assert: aGame playerPositions equals: playerPositions.
 	self throwDiceCupTimes: 1 in: aGame.
 	anAccelerationCard := cards at: 3.
-	aPlay := anAccelerationCard asPlayIn: aGame by: (aGame currentPlayerThrowing).
+	aPlay := anAccelerationCard asPlayAffecting: aGame by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 2 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 9 . 'Martu'-> 8 . 'Maia'-> 4}.
@@ -901,7 +901,7 @@ GameTest >> test37APlayerThrowsAnAccelerationCardAndTheNextPlayerThrowsTheCancel
 	self assert: aGame playerPositions equals: playerPositions.
 	self throwDiceCupTimes: 1 in: aGame.
 	anAccelerationCard := cards at: 3.
-	aPlay := anAccelerationCard asPlayIn: aGame by: (aGame currentPlayerThrowing).
+	aPlay := anAccelerationCard asPlayAffecting: aGame by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	targetedPlay := Play madeBy: anAccelerationCard directedTo: players calledBy: 'Martu'.
 	aCancellationCard := cards at: 5.
@@ -930,7 +930,7 @@ GameTest >> test38PlayerThrowsAnAccelerationCardAndThePreviousPlayerThrowsTheCan
 	self assert: aGame playerPositions equals: playerPositions.
 	self throwDiceCupTimes: 1 in: aGame.
 	anAccelerationCard := cards at: 3.
-	aPlay := anAccelerationCard asPlayIn: aGame by: (aGame currentPlayerThrowing).
+	aPlay := anAccelerationCard asPlayAffecting: aGame by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	targetedPlay := Play madeBy: (cards at: 3) directedTo: players calledBy: 'Martu'.
 	aCancellationCard := cards at: 2.
@@ -1142,7 +1142,7 @@ GameTest >> test46ARedoCardIsAppliedAndSinceTheLastPlayedCardWasAnAccelerationCa
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
 	anAccelerationCard := cards at: 3.
-	aPlay := anAccelerationCard asPlayIn: aGame by: (aGame currentPlayerThrowing).
+	aPlay := anAccelerationCard asPlayAffecting: aGame by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	aRedoCard := cards at: 5.
@@ -1199,7 +1199,7 @@ GameTest >> test48ARedoCardIsAppliedAndSinceTheLastPlayedCardWasACancellationCar
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	anAccelerationCard := cards at: 3.
-	aPlay := anAccelerationCard asPlayIn: aGame by: (aGame currentPlayerThrowing).
+	aPlay := anAccelerationCard asPlayAffecting: aGame by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	targetedPlay := Play madeBy: aSpeedCard directedTo: (OrderedCollection newFrom: { 'Fran' }) calledBy: 'Fran'.
 	aCancellationCard := cards at: 4.
