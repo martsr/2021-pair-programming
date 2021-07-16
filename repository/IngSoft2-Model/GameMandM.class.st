@@ -87,6 +87,11 @@ GameMandM >> playerRanking [
 ]
 
 { #category : #private }
+GameMandM >> players [
+	^ board players.
+]
+
+{ #category : #private }
 GameMandM >> verifyItIsInProgress [
 	isFinished ifFalse: [ Error signal: 'A winner cannot be determined, the game is still in progress' ]
 ]

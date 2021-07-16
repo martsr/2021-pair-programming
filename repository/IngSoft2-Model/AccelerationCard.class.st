@@ -9,6 +9,13 @@ AccelerationCard >> applyTo: aBoard directedTo: aTarget [
 	aBoard move: aTarget by: 1
 ]
 
+{ #category : #converting }
+AccelerationCard >> asPlayIn: aGame by: aPlayer [
+	| players |
+	players := aGame players. 
+	^ self asPlayAffecting: players by: aPlayer. 
+]
+
 { #category : #accessing }
 AccelerationCard >> isPermanent [
 	^ true

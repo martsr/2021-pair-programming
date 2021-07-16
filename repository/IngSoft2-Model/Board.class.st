@@ -248,6 +248,11 @@ Board >> playerRanking [
 ]
 
 { #category : #accessing }
+Board >> players [
+	^ players copy.
+]
+
+{ #category : #accessing }
 Board >> positionOf: aPlayer [
 	^ positionTracker boardPositionOf: aPlayer
 ]
