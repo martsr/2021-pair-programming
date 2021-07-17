@@ -17,7 +17,8 @@ RepeatCard >> asPlayAffecting: aPlayer by: invokingPlayer [
 	^ super asPlayAffecting: targetedPlayer by: invokingPlayer. 
 ]
 
-{ #category : #accessing }
-RepeatCard >> isPermanent [
-	^ false
+{ #category : #action }
+RepeatCard >> handle: aBoard for: aPlay [
+
+	aBoard handleInstantaeousCardFrom: aPlay.
 ]

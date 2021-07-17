@@ -16,7 +16,8 @@ AccelerationCard >> asPlayAffecting: aGame by: aPlayer [
 	^ super asPlayAffecting: players by: aPlayer. 
 ]
 
-{ #category : #accessing }
-AccelerationCard >> isPermanent [
-	^ true
+{ #category : #action }
+AccelerationCard >> handle: aBoard for: aPlay [
+
+	aBoard handlePermanentCardFrom: aPlay.
 ]

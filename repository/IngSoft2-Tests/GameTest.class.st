@@ -624,7 +624,7 @@ GameTest >> test27ASpeedCardCardIsPlayedAndItIsRemovedFromTheInvokingPlayerHandT
 	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	aSpeedCard := cards at: 2.
-	aPlay := aSpeedCard asPlayAffecting: (OrderedCollection newFrom: { 'Fran' }) by: (aGame currentPlayerThrowing).
+	aPlay := aSpeedCard asPlayAffecting: 'Fran' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame. 
 	self assert: (aGame handOf: 'Fran') equals: (OrderedCollection newFrom: { cards at: 1 } ).
@@ -1269,6 +1269,28 @@ GameTest >> test50ARedoCardIsAppliedAndSinceTheLastCardAppliedWasRedoCardOfASpee
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 10 . 'Martu'-> 8 . 'Maia'-> 14}.
 	self assert: aGame playerPositions equals: playerPositions.
+]
+
+{ #category : #tests }
+GameTest >> test51ACardCanOnlyBeThrownByAPlayerOfTheGame [
+
+	| aBoard cards aGame effectsDistribution effectShuffler squares aPlay aSpeedCard |
+	
+	self generatePlayerNames: #('Fran' 'Maia' 'Martu').
+	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeterministicDeckWith: cards.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 1}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	aSpeedCard := cards at: 2.
+	aPlay := aSpeedCard asPlayAffecting: 'Fran' by: 'Mirtha'.
+	self
+		should: [ aGame make: aPlay ]
+		raise: Error
+		withMessage: 'The invoking player must be a participant of the game'. 
 ]
 
 { #category : #iteration }

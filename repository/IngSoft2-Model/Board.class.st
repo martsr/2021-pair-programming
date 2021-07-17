@@ -140,7 +140,7 @@ Board >> handOf: aPlayer [
 ]
 
 { #category : #action }
-Board >> handleInstaneousCardFrom: newPlay [
+Board >> handleInstantaeousCardFrom: newPlay [
 	cardHandler removeFromPlayerHandCardOf: newPlay.
 	newPlay card applyTo: self directedTo: newPlay
 ]
@@ -173,7 +173,7 @@ Board >> initializeHaving: boardSquares requiring: aNumberOfLaps containing: aDe
 
 { #category : #action }
 Board >> makes: aPlay in: aGame [
-	
+	self verifyIsInGame: (aPlay invokingPlayer).
 	self resolvePlayabilityOf: aPlay.
 	self verifyThereIsAWinner ifTrue: [ aGame isNotifiedItHasFinished ]
 ]
@@ -259,9 +259,7 @@ Board >> positionOf: aPlayer [
 
 { #category : #action }
 Board >> resolvePlayabilityOf: newPlay [
-	newPlay card isPermanent
-		ifTrue: [ self handlePermanentCardFrom: newPlay ]
-		ifFalse: [ self handleInstaneousCardFrom: newPlay ]
+	(newPlay card) handle: self for: newPlay
 ]
 
 { #category : #accessing }
@@ -272,6 +270,11 @@ Board >> size [
 { #category : #action }
 Board >> updateLastApplied: effect [
 	lastAppliedEffect := effect
+]
+
+{ #category : #verification }
+Board >> verifyIsInGame: aName [
+		(players includes: aName) ifFalse: [ Error signal: 'The invoking player must be a participant of the game' ].
 ]
 
 { #category : #verification }

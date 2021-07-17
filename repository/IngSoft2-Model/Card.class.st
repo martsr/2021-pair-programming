@@ -15,7 +15,7 @@ Card >> asPlayAffecting: aTarget by: invokingPlayer [
 	
 ]
 
-{ #category : #accessing }
-Card >> isPermanent [
+{ #category : #action }
+Card >> handle: aBoard for: aPlay [
 	self subclassResponsibility.
 ]
