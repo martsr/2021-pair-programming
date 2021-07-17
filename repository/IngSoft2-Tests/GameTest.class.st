@@ -695,7 +695,7 @@ GameTest >> test30APlayerTargetedByASpeedCardMovesOneAdditionalSquareAfterThrowi
 	playerPositions := Dictionary newFrom: {'Fran' ->1 . 'Martu'->1 . 'Maia'->1}.
 	self assert: aGame playerPositions equals: playerPositions.
 	aSpeedCard := cards at: 2.
-	aPlay := aSpeedCard asPlayAffecting: (OrderedCollection newFrom: { 'Fran' }) by: (aGame currentPlayerThrowing).
+	aPlay := aSpeedCard asPlayAffecting: 'Fran' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 2 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 10 . 'Martu'-> 7 . 'Maia'-> 1}.
@@ -722,7 +722,7 @@ GameTest >> test31APlayerTargetedByAnOverloadCardMovesBackAdditionalSquareAfterT
 	playerPositions := Dictionary newFrom: {'Fran' ->1 . 'Martu'->1 . 'Maia'->1}.
 	self assert: aGame playerPositions equals: playerPositions.
 	anOverloadCard := cards at: 1.
-	aPlay := anOverloadCard asPlayAffecting: (OrderedCollection newFrom: { 'Martu' }) by: (aGame currentPlayerThrowing).
+	aPlay := anOverloadCard asPlayAffecting: 'Martu' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 3 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 9 . 'Martu'-> 9 . 'Maia'-> 3}.
@@ -751,11 +751,11 @@ GameTest >> test32APlayerIsTargetedByMultipleEffects [
 	playerPositions := Dictionary newFrom: {'Fran' ->1 . 'Martu'->1 . 'Maia'->1}.
 	self assert: aGame playerPositions equals: playerPositions.
 	aSpeedCard := cards at: 2.
-	aPlay := aSpeedCard asPlayAffecting: (OrderedCollection newFrom: { 'Maia' }) by: (aGame currentPlayerThrowing).
+	aPlay := aSpeedCard asPlayAffecting: 'Maia' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	anOverloadCard := cards at: 1.
-	aPlay := anOverloadCard asPlayAffecting: (OrderedCollection newFrom: { 'Maia' }) by:(aGame currentPlayerThrowing).
+	aPlay := anOverloadCard asPlayAffecting: 'Maia' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 2 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 9 . 'Martu'-> 7 . 'Maia'-> 2}.
@@ -807,7 +807,7 @@ GameTest >> test34APlayerIsTargetedByAnOverloadCardButPlaysTheCancellationCardOn
 	playerPositions := Dictionary newFrom: {'Fran' ->1 . 'Martu'->1 . 'Maia'->1}.
 	self assert: aGame playerPositions equals: playerPositions.
 	anOverloadCard := cards at: 1.
-	aPlay := anOverloadCard asPlayAffecting: (OrderedCollection newFrom: { 'Martu' }) by: (aGame currentPlayerThrowing).
+	aPlay := anOverloadCard asPlayAffecting: 'Martu' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self assert: (aGame activeCards) equals: (OrderedCollection newFrom: { cards at: 1 } ).
 	self throwDiceCupTimes: 1 in: aGame.
@@ -838,7 +838,7 @@ GameTest >> test35ACancellationCardCanNotBePlayedIfTheTargetedCardIsNotActive [
 	playerPositions := Dictionary newFrom: {'Fran' ->1 . 'Martu'->1 . 'Maia'->1}.
 	self assert: aGame playerPositions equals: playerPositions.
 	anOverloadCard := cards at: 1.
-	aPlay := anOverloadCard asPlayAffecting: (OrderedCollection newFrom: { 'Martu' }) by: (aGame currentPlayerThrowing).
+	aPlay := anOverloadCard asPlayAffecting: 'Martu' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	targetedPlay := Play madeBy: (cards at: 2) directedTo: (OrderedCollection newFrom: { 'Martu' }) calledBy: 'Fran'.
@@ -871,7 +871,7 @@ GameTest >> test36ACancellationCardCanOnlyBePlayedWhenThereAreActiveCards [
 	playerPositions := Dictionary newFrom: {'Fran' ->1 . 'Martu'->1 . 'Maia'->1}.
 	self assert: aGame playerPositions equals: playerPositions.
 	self throwDiceCupTimes: 1 in: aGame.
-	targetedPlay := Play madeBy: aSpeedCard directedTo: players calledBy: 'Maia'.
+	targetedPlay := Play madeBy: aSpeedCard directedTo: (OrderedCollection newFrom: {'Maia'}) calledBy: 'Maia'.
 	aCancellationCard := cards at: 4.
 	aPlay := aCancellationCard asPlayAffecting: targetedPlay by: (aGame currentPlayerThrowing).
 	self
@@ -903,7 +903,7 @@ GameTest >> test37APlayerThrowsAnAccelerationCardAndTheNextPlayerThrowsTheCancel
 	anAccelerationCard := cards at: 3.
 	aPlay := anAccelerationCard asPlayAffecting: aGame by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
-	targetedPlay := Play madeBy: anAccelerationCard directedTo: players calledBy: 'Martu'.
+	targetedPlay := Play madeBy: anAccelerationCard directedTo: (aGame players) calledBy: 'Martu'.
 	aCancellationCard := cards at: 5.
 	aPlay := aCancellationCard asPlayAffecting: targetedPlay by: 'Maia'.
 	aGame make: aPlay.
@@ -932,7 +932,7 @@ GameTest >> test38PlayerThrowsAnAccelerationCardAndThePreviousPlayerThrowsTheCan
 	anAccelerationCard := cards at: 3.
 	aPlay := anAccelerationCard asPlayAffecting: aGame by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
-	targetedPlay := Play madeBy: (cards at: 3) directedTo: players calledBy: 'Martu'.
+	targetedPlay := Play madeBy: (cards at: 3) directedTo: (aGame players) calledBy: 'Martu'.
 	aCancellationCard := cards at: 2.
 	aPlay := aCancellationCard asPlayAffecting: targetedPlay by: 'Fran'.
 	aGame make: aPlay.
@@ -957,7 +957,7 @@ GameTest >> test39APlayersThrowsARepeatCardAndTheSpeedUpEffectWasApplied [
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 2 in: aGame.
 	aRepeatCard := cards at: 6.
-	aPlay := aRepeatCard asPlayAffecting: (OrderedCollection newFrom: { 'Maia' }) by: (aGame currentPlayerThrowing).
+	aPlay := aRepeatCard asPlayAffecting: 'Maia' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	playerPositions := Dictionary newFrom: {'Fran' -> 13 . 'Martu'->11 . 'Maia'->5}.
 	self assert: aGame playerPositions equals: playerPositions.
@@ -983,7 +983,7 @@ GameTest >> test40ARepeatCardIsPlayedButSinceTheLastEffectAppliedWasNoEffectThen
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 2 in: aGame.
 	aRepeatCard := cards at: 6.
-	aPlay := aRepeatCard asPlayAffecting: (OrderedCollection newFrom: { 'Maia' }) by: (aGame currentPlayerThrowing).
+	aPlay := aRepeatCard asPlayAffecting: 'Maia' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	playerPositions := Dictionary newFrom: {'Fran' -> 9 . 'Martu'-> 7 . 'Maia'-> 1}.
 	self assert: aGame playerPositions equals: playerPositions.
@@ -1008,7 +1008,7 @@ GameTest >> test41ARepeatCardIsPlayedInAnotherPlayersTurnButSinceNoOneThrewTheDi
 	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	aRepeatCard := cards at: 6.
-	aPlay := aRepeatCard asPlayAffecting: (OrderedCollection newFrom: { 'Maia' }) by: 'Maia'.
+	aPlay := aRepeatCard asPlayAffecting: 'Maia' by: 'Maia'.
 	aGame make: aPlay.
 	playerPositions := Dictionary newFrom: {'Fran' -> 1 . 'Martu'-> 1 . 'Maia'->1}.
 	self assert: aGame playerPositions equals: playerPositions.
@@ -1030,7 +1030,7 @@ GameTest >> test42ARepeatCardIsAppliedAndSinceTheLastEffectWasSpeedUpItMovesFour
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 2 in: aGame.
 	aRepeatCard := cards at: 6.
-	aPlay := aRepeatCard asPlayAffecting: (OrderedCollection newFrom: { 'Maia' }) by: (aGame currentPlayerThrowing).
+	aPlay := aRepeatCard asPlayAffecting: 'Maia' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	playerPositions := Dictionary newFrom: {'Fran' -> 13 . 'Martu'->11 . 'Maia'->5}.
 	self assert: aGame playerPositions equals: playerPositions.
@@ -1056,7 +1056,7 @@ GameTest >> test43CardsCanNoLongerBePlayedOnceTheGameHasFinished [
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 2 in: aGame.
 	aRepeatCard := cards at: 6.
-	aPlay := aRepeatCard asPlayAffecting: (OrderedCollection newFrom: { 'Maia' }) by: (aGame currentPlayerThrowing).
+	aPlay := aRepeatCard asPlayAffecting: 'Maia' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	playerPositions := Dictionary newFrom: {'Fran' -> 13 . 'Martu'->11 . 'Maia'->5}.
 	self assert: aGame playerPositions equals: playerPositions.
@@ -1087,13 +1087,13 @@ GameTest >> test44ARedoCardIsAppliedAndSinceTheLastPlayedCardWasASpeedCardTheNew
 	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	aSpeedCard := cards at: 2.
-	aPlay := aSpeedCard asPlayAffecting: (OrderedCollection newFrom:{ 'Fran' }) by: (aGame currentPlayerThrowing).
+	aPlay := aSpeedCard asPlayAffecting: 'Fran' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 2 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 10 . 'Martu'-> 7 . 'Maia'-> 1}.
 	self assert: aGame playerPositions equals: playerPositions.
 	aRedoCard := cards at: 5.
-	aPlay := aRedoCard asPlayAffecting: (OrderedCollection newFrom:{ 'Maia' }) by: (aGame currentPlayerThrowing).
+	aPlay := aRedoCard asPlayAffecting: 'Maia' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 10 . 'Martu'-> 7 . 'Maia'-> 14}.
@@ -1115,11 +1115,11 @@ GameTest >> test45ARedoCardIsAppliedAndSinceTheLastPlayedCardWasAnOverloadCardTh
 	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	anOverloadCard := cards at: 1.
-	aPlay := anOverloadCard asPlayAffecting: (OrderedCollection newFrom:{ 'Martu' }) by: (aGame currentPlayerThrowing).
+	aPlay := anOverloadCard asPlayAffecting: 'Martu' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	aRedoCard := cards at: 3.
-	aPlay := aRedoCard asPlayAffecting: (OrderedCollection newFrom:{ 'Maia' }) by: (aGame currentPlayerThrowing).
+	aPlay := aRedoCard asPlayAffecting: 'Maia' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 2 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 9 . 'Martu'-> 5 . 'Maia'-> 11}.
@@ -1146,7 +1146,7 @@ GameTest >> test46ARedoCardIsAppliedAndSinceTheLastPlayedCardWasAnAccelerationCa
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	aRedoCard := cards at: 5.
-	aPlay := aRedoCard asPlayAffecting: players by: (aGame currentPlayerThrowing).
+	aPlay := aRedoCard asPlayAffecting: aGame by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 9 . 'Martu'-> 8 . 'Maia'-> 15}.
@@ -1169,11 +1169,11 @@ GameTest >> test47ARedoCardIsAppliedAndSinceTheLastPlayedCardWasARepeatCardAndTh
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
 	aRepeatCard := cards at: 4.
-	aPlay := aRepeatCard asPlayAffecting: (OrderedCollection newFrom:{ 'Martu' }) by: (aGame currentPlayerThrowing).
+	aPlay := aRepeatCard asPlayAffecting: 'Martu' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	aRedoCard := cards at: 5.
-	aPlay := aRedoCard asPlayAffecting: (OrderedCollection newFrom:{ 'Maia' }) by: (aGame currentPlayerThrowing).
+	aPlay := aRedoCard asPlayAffecting: 'Maia' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 13 . 'Martu'-> 15 . 'Maia'-> 21}.
@@ -1195,7 +1195,7 @@ GameTest >> test48ARedoCardIsAppliedAndSinceTheLastPlayedCardWasACancellationCar
 	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	aSpeedCard := cards at: 2.
-	aPlay := aSpeedCard asPlayAffecting: (OrderedCollection newFrom:{ 'Fran' }) by: (aGame currentPlayerThrowing).
+	aPlay := aSpeedCard asPlayAffecting: 'Fran' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	anAccelerationCard := cards at: 3.
@@ -1207,8 +1207,8 @@ GameTest >> test48ARedoCardIsAppliedAndSinceTheLastPlayedCardWasACancellationCar
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	aRedoCard := cards at: 5.
-	targetedPlay := Play madeBy: anAccelerationCard directedTo: players calledBy: 'Martu'.
-	aPlay := aRedoCard asPlayAffecting: targetedPlay  by: (aGame currentPlayerThrowing).
+	targetedPlay := Play madeBy: anAccelerationCard directedTo: (aGame players) calledBy: 'Martu'.
+	aPlay := aRedoCard asPlayAffecting: targetedPlay by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 10 . 'Martu'-> 8 . 'Maia'-> 13}.
@@ -1231,7 +1231,7 @@ GameTest >> test49ARedoCardCannotBeAppliedIfNoPreviousCardsWerePlayed [
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 2 in: aGame.
 	aRedoCard := cards at: 5.
-	aPlay := aRedoCard asPlayAffecting: players by: (aGame currentPlayerThrowing).
+	aPlay := aRedoCard asPlayAffecting: 'Maia' by: (aGame currentPlayerThrowing).
 	self
 		should: [ aGame make: aPlay ]
 		raise: Error
@@ -1256,15 +1256,15 @@ GameTest >> test50ARedoCardIsAppliedAndSinceTheLastCardAppliedWasRedoCardOfASpee
 	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	aSpeedCard := cards at: 2.
-	aPlay := aSpeedCard asPlayAffecting: (OrderedCollection newFrom:{ 'Fran' }) by: (aGame currentPlayerThrowing).
+	aPlay := aSpeedCard asPlayAffecting: 'Fran' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	aRedoCard := cards at: 4.
-	aPlay := aRedoCard asPlayAffecting: (OrderedCollection newFrom:{ 'Martu' }) by: (aGame currentPlayerThrowing).
+	aPlay := aRedoCard asPlayAffecting: 'Martu' by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	aRedoCard := cards at: 5.
-	aPlay := aRedoCard asPlayAffecting: (OrderedCollection newFrom:{ 'Maia' }) by:(aGame currentPlayerThrowing).
+	aPlay := aRedoCard asPlayAffecting: 'Maia' by:(aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 10 . 'Martu'-> 8 . 'Maia'-> 14}.
