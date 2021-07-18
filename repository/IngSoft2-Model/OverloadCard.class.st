@@ -18,6 +18,5 @@ OverloadCard >> asPlayAffecting: aPlayer by: invokingPlayer [
 
 { #category : #action }
 OverloadCard >> handle: aBoard for: aPlay [
-
-	aBoard handlePermanentCardFrom: aPlay.
+	aBoard handlePermanentCardFrom: aPlay
 ]

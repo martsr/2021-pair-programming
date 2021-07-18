@@ -19,6 +19,5 @@ RepeatCard >> asPlayAffecting: aPlayer by: invokingPlayer [
 
 { #category : #action }
 RepeatCard >> handle: aBoard for: aPlay [
-
 	aBoard handleInstantaeousCardFrom: aPlay.
 ]

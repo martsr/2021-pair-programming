@@ -11,6 +11,5 @@ CancellationCard >> applyTo: aBoard directedTo: aTarget [
 
 { #category : #action }
 CancellationCard >> handle: aBoard for: aPlay [
-
-	aBoard handleInstantaeousCardFrom: aPlay.
+	aBoard handleInstantaeousCardFrom: aPlay
 ]

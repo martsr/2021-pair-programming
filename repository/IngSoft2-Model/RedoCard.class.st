@@ -11,6 +11,5 @@ RedoCard >> applyTo: aBoard directedTo: aTarget [
 
 { #category : #action }
 RedoCard >> handle: aBoard for: aPlay [
-
-	aBoard handleInstantaeousCardFrom: aPlay.
+	aBoard handleInstantaeousCardFrom: aPlay
 ]

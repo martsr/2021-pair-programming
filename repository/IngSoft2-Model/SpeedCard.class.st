@@ -18,6 +18,5 @@ SpeedCard >> asPlayAffecting: aPlayer by: invokingPlayer [
 
 { #category : #action }
 SpeedCard >> handle: aBoard for: aPlay [
-
-	aBoard handlePermanentCardFrom: aPlay.
+	aBoard handlePermanentCardFrom: aPlay
 ]
