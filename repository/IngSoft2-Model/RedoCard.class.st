@@ -9,8 +9,7 @@ RedoCard >> applyTo: aBoard directedTo: aTarget [
 	aBoard applyRedoCardTo: (aTarget target) by: (aTarget invokingPlayer)
 ]
 
-{ #category : #accessing }
-RedoCard >> isPermanent [
-	^ false
-
+{ #category : #action }
+RedoCard >> handle: aBoard for: aPlay [
+	aBoard handleInstantaeousCardFrom: aPlay
 ]

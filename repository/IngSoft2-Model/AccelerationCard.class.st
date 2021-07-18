@@ -9,7 +9,15 @@ AccelerationCard >> applyTo: aBoard directedTo: aTarget [
 	aBoard move: aTarget by: 1
 ]
 
-{ #category : #accessing }
-AccelerationCard >> isPermanent [
-	^ true
+{ #category : #converting }
+AccelerationCard >> asPlayAffecting: aGame by: aPlayer [
+	| players |
+	players := aGame players. 
+	^ super asPlayAffecting: players by: aPlayer. 
+]
+
+{ #category : #action }
+AccelerationCard >> handle: aBoard for: aPlay [
+
+	aBoard handlePermanentCardFrom: aPlay.
 ]

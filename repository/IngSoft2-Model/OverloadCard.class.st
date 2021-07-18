@@ -9,7 +9,14 @@ OverloadCard >> applyTo: aBoard directedTo: aTarget [
 	aBoard move: aTarget by: -2
 ]
 
-{ #category : #accessing }
-OverloadCard >> isPermanent [
-	^ true
+{ #category : #'instance creation' }
+OverloadCard >> asPlayAffecting: aPlayer by: invokingPlayer [
+	| targetedPlayer |
+	targetedPlayer := OrderedCollection newFrom: { aPlayer }.
+	^ super asPlayAffecting: targetedPlayer by: invokingPlayer. 
+]
+
+{ #category : #action }
+OverloadCard >> handle: aBoard for: aPlay [
+	aBoard handlePermanentCardFrom: aPlay
 ]

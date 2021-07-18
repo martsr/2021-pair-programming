@@ -15,7 +15,7 @@ DeterministicDeckTest >> should: errorBlock raise: exceptionClass withMessage: e
 ]
 
 { #category : #tests }
-DeterministicDeckTest >> test02ADeckMustContainAtLeastOneCard [
+DeterministicDeckTest >> test01ADeckMustContainAtLeastOneCard [
 	
 	| cards |
 	
@@ -27,7 +27,7 @@ DeterministicDeckTest >> test02ADeckMustContainAtLeastOneCard [
 ]
 
 { #category : #tests }
-DeterministicDeckTest >> test03ADeckIsCreatedWithTheSixPossibleCardsAndTheOverloadCardIsDrawn [
+DeterministicDeckTest >> test02ADeckIsCreatedWithTheSixPossibleCardsAndTheOverloadCardIsDrawn [
 	
 	| cards deck overloadCard |
 	

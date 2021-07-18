@@ -9,7 +9,7 @@ CancellationCard >> applyTo: aBoard directedTo: aTarget [
 	aBoard applyCancellationCardTo: (aTarget target)
 ]
 
-{ #category : #accessing }
-CancellationCard >> isPermanent [
-	^ false
+{ #category : #action }
+CancellationCard >> handle: aBoard for: aPlay [
+	aBoard handleInstantaeousCardFrom: aPlay
 ]

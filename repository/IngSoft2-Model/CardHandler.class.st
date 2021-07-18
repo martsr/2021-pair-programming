@@ -107,13 +107,12 @@ CardHandler >> removeFromActivePlays: targetedPlay [
 { #category : #removing }
 CardHandler >> removeFromPlayerHandCardOf: aPlay [
 
-	| playedCard invokingPlayerHand |
+	| invokingPlayerHand |
 	
 	invokingPlayerHand := playerHands at: (aPlay invokingPlayer).
-	playedCard := invokingPlayerHand remove: (aPlay card) ifAbsent: [ Error signal:  'A card must be in the invoking player hand to be played' ].
+	invokingPlayerHand remove: (aPlay card) ifAbsent: [ Error signal:  'A card must be in the invoking player hand to be played' ].
 	playerHands at: (aPlay invokingPlayer) put: invokingPlayerHand.
 	playHistory add: aPlay.
-	^ playedCard
 ]
 
 { #category : #removing }

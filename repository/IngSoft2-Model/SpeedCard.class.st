@@ -9,7 +9,14 @@ SpeedCard >> applyTo: aBoard directedTo: aTarget [
 	aBoard move: aTarget by: 1
 ]
 
-{ #category : #accessing }
-SpeedCard >> isPermanent [ 
-	^ true
+{ #category : #'instance creation' }
+SpeedCard >> asPlayAffecting: aPlayer by: invokingPlayer [
+	| targetedPlayer |
+	targetedPlayer := OrderedCollection newFrom: { aPlayer }.
+	^ super asPlayAffecting: targetedPlayer by: invokingPlayer. 
+]
+
+{ #category : #action }
+SpeedCard >> handle: aBoard for: aPlay [
+	aBoard handlePermanentCardFrom: aPlay
 ]

@@ -10,7 +10,14 @@ RepeatCard >> applyTo: aBoard directedTo: aTarget [
 	
 ]
 
-{ #category : #accessing }
-RepeatCard >> isPermanent [
-	^ false
+{ #category : #'instance creation' }
+RepeatCard >> asPlayAffecting: aPlayer by: invokingPlayer [
+	| targetedPlayer |
+	targetedPlayer := OrderedCollection newFrom: { aPlayer }.
+	^ super asPlayAffecting: targetedPlayer by: invokingPlayer. 
+]
+
+{ #category : #action }
+RepeatCard >> handle: aBoard for: aPlay [
+	aBoard handleInstantaeousCardFrom: aPlay.
 ]

@@ -15,7 +15,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> having: squares requiring: aNumberOfLaps containing: aDeck usedBy: aGroupOfPlayers [
+Board class >> having: squares requiring: aNumberOfLaps playingWith: aDeck usedBy: aGroupOfPlayers [
 	self validateMoreThanEightSquares: squares.
 	self validatesItDoesntHavePlayersWithSameName: aGroupOfPlayers.
 	self validatesNamesMustHaveAtLeastOneLetter: aGroupOfPlayers.
@@ -102,7 +102,7 @@ Board >> applyRedoCardTo: aTarget by: invokingPlayer [
 	redoCard := reversedPlayHistory first card.
 	lastPlayApplied := reversedPlayHistory detect: [ :play | play card ~= redoCard ] 
 	ifNone: [Error signal: 'A Redo card can not be played if no previous cards were played'].
-	newPlay := lastPlayApplied card asPlayAffecting: aTarget  by: invokingPlayer .  
+	newPlay := lastPlayApplied card asPlayAffecting: aTarget by: invokingPlayer .  
 	cardHandler deal: lastPlayApplied card to: invokingPlayer.
 	self resolvePlayabilityOf: newPlay
 	
@@ -140,6 +140,20 @@ Board >> handOf: aPlayer [
 ]
 
 { #category : #action }
+Board >> handleInstantaeousCardFrom: newPlay [
+	cardHandler removeFromPlayerHandCardOf: newPlay.
+	newPlay card applyTo: self directedTo: newPlay
+]
+
+{ #category : #action }
+Board >> handlePermanentCardFrom: newPlay [
+	self currentPlayerThrowing ~= newPlay invokingPlayer
+		ifTrue: [ Error
+				signal: 'A permanent card can only played in the turn of the invoking player' ]
+		ifFalse: [ cardHandler activate: newPlay ]
+]
+
+{ #category : #action }
 Board >> incrementTurn [
 	turn := (turn rem: players size) + 1
 ]
@@ -159,7 +173,7 @@ Board >> initializeHaving: boardSquares requiring: aNumberOfLaps containing: aDe
 
 { #category : #action }
 Board >> makes: aPlay in: aGame [
-	
+	self verifyIsInGame: (aPlay invokingPlayer).
 	self resolvePlayabilityOf: aPlay.
 	self verifyThereIsAWinner ifTrue: [ aGame isNotifiedItHasFinished ]
 ]
@@ -234,19 +248,18 @@ Board >> playerRanking [
 ]
 
 { #category : #accessing }
+Board >> players [
+	^ players copy.
+]
+
+{ #category : #accessing }
 Board >> positionOf: aPlayer [
 	^ positionTracker boardPositionOf: aPlayer
 ]
 
 { #category : #action }
 Board >> resolvePlayabilityOf: newPlay [
-
-	(newPlay card)isPermanent
-		ifTrue: [ self currentPlayerThrowing ~= newPlay invokingPlayer
-				ifTrue: [ Error signal: 'A permanent card can only played in the turn of the invoking player' ]
-				ifFalse: [ cardHandler activate: newPlay ] ]
-		ifFalse: [ cardHandler removeFromPlayerHandCardOf: newPlay.
-					newPlay card applyTo: self directedTo: newPlay ]
+	(newPlay card) handle: self for: newPlay
 ]
 
 { #category : #accessing }
@@ -257,6 +270,11 @@ Board >> size [
 { #category : #action }
 Board >> updateLastApplied: effect [
 	lastAppliedEffect := effect
+]
+
+{ #category : #verification }
+Board >> verifyIsInGame: aName [
+		(players includes: aName) ifFalse: [ Error signal: 'The invoking player must be a participant of the game' ].
 ]
 
 { #category : #verification }

@@ -66,7 +66,7 @@ BoardTest >> test01ABoardMustContainAtLeast5SquareBoardsToBeGenerated [
 	effectShuffler := EffectShuffler ofSize: 4 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
 	self
-		should: [ Board having: squares requiring: 2 containing: deterministicDeck usedBy: players]
+		should: [ Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players]
 		raise: Error
 		withMessage: 'A board must contain at least 8 square boards to satisfy the effects distribution.'.
 ]
@@ -83,7 +83,7 @@ BoardTest >> test02ABoardMustHavePlayersWithDifferentNamesToBeGenerated [
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
 	self 
-		should: [ Board having: squares requiring: 1 containing: deterministicDeck usedBy: players ]
+		should: [ Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players ]
 		raise: Error
 		withMessage: 'A board cannot be created having players with repeated names.'
 ]
@@ -99,7 +99,7 @@ BoardTest >> test03ABoardMustHaveAtLeastOnePlayerToBeGenerated [
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
 	self 
-		should: [ Board having: squares requiring: 1 containing: deterministicDeck usedBy: players ]
+		should: [ Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players ]
 		raise: Error
 		withMessage: 'A board must have at least 1 player in order to be created.'
 ]
@@ -115,7 +115,7 @@ BoardTest >> test04ABoarOfSizeTwentyAnd1LapHasTwentySquares [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect goingBack: 3) with: 0.10}.
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 2 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
 	self assert: aBoard size equals: 20.
 
 ]
@@ -131,7 +131,7 @@ BoardTest >> test05ABoardRequiresAtLeast1LapToBeGenerated [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect goingBack: 3) with: 0.10}.
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	self should: [ Board having: squares requiring: 0 containing: deterministicDeck usedBy: players]
+	self should: [ Board having: squares requiring: 0 playingWith: deterministicDeck usedBy: players]
 		raise: Error
 		withMessage: 'A board requires at least one lap to be created.'.
 ]
@@ -147,7 +147,7 @@ BoardTest >> test06ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePlayers [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect goingBack: 3) with: 0.10}.
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 1 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
 	self assert: (aBoard size) equals: 20.
 	self assert: (aBoard amountOfPlayers) equals: 3.
 ]
@@ -163,7 +163,7 @@ BoardTest >> test07ABoardOfSizeTwentyAndThreeLapsIsPlayedByThreePlayersAndADeter
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect goingBack: 3) with: 0.10}.
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 3 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 3 playingWith: deterministicDeck usedBy: players.
 	self assert: (aBoard size) equals: 20.
 	self assert: (aBoard amountOfPlayers) equals: 3.
 	self assert: (aBoard amountOfLaps) equals: 3.
@@ -180,7 +180,7 @@ BoardTest >> test08ABoardOfSizeTwentyAndThreeLapHasTwentySquaresAnd3Laps [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect goingBack: 3) with: 0.10}.
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 3 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 3 playingWith: deterministicDeck usedBy: players.
 	self assert: (aBoard size) equals: 20.
 	self assert: (aBoard amountOfLaps) equals: 3.
 ]
@@ -196,7 +196,7 @@ BoardTest >> test09GenerateABoardOfSizeTwentyWithAGivenProbabilityDistribution [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect goingBack: 3) with: 0.10}.
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 2 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
 	self assert: (aBoard size) equals: 20.
 	self assertDistributionOf: squares using: effectsDistribution.
 	
@@ -214,7 +214,7 @@ BoardTest >> test10ABoardWithNoEffectsIsGenerated [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 1}.
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 2 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
 	self assert: aBoard size equals: 20.
 	self assertDistributionOf: squares using: effectsDistribution.
 
@@ -231,7 +231,7 @@ BoardTest >> test11ABoardWithSpeedUpEffectsIsGenerated [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: SpeedUpEffect new with: 1}.
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 2 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
 	self assert: aBoard size equals: 20.
 	self assertDistributionOf: squares using: effectsDistribution.
 	
@@ -249,7 +249,7 @@ BoardTest >> test12ABoardWithWormHoleEffectsIsGenerated [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: WormHoleEffect new with: 1}.
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 2 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
 	self assert: aBoard size equals: 20.
 	self assertDistributionOf: squares using: effectsDistribution.
 	
@@ -267,7 +267,7 @@ BoardTest >> test13ABoardWithAtomicBombEffectsIsGenerated [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: AtomicBombEffect  new with: 1}.
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 2 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
 	self assert: aBoard size equals: 20.
 	self assertDistributionOf: squares using: effectsDistribution.
 	
@@ -284,7 +284,7 @@ BoardTest >> test14ABoardWithMoonWalkEffectsIsGenerated [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (MoonWalkEffect goingBack: 3) with: 1}.
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 2 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
 	self assert: aBoard size equals: 20.
 	self assertDistributionOf: squares using: effectsDistribution.
 	
@@ -301,7 +301,7 @@ BoardTest >> test15ABoardIsGeneratedWithSizeFive [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 . EffectProbability of: SpeedUpEffect new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect goingBack: 3) with: 0.10}.
 	effectShuffler := EffectShuffler ofSize: 8 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 2 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
 	self assert: aBoard size equals: 8.
 	self assertDistributionOf: squares using: effectsDistribution.
 	
@@ -321,7 +321,7 @@ BoardTest >> test16ABoardIsGeneratedWithSizeHundred [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 0.48.EffectProbability of: WormHoleEffect  new with: 0.20 	.EffectProbability of: SpeedUpEffect  new with: 0.20 .EffectProbability of: AtomicBombEffect  new with: 0.02. EffectProbability of: (MoonWalkEffect goingBack: 3) with: 0.10}.
 	effectShuffler := EffectShuffler ofSize: 100 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 2 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
 	self assert: aBoard size equals: 100.
 	self assertDistributionOf: squares using: effectsDistribution.
 	
@@ -329,7 +329,7 @@ BoardTest >> test16ABoardIsGeneratedWithSizeHundred [
 ]
 
 { #category : #tests }
-BoardTest >> test17DrawCardEffectBoard [
+BoardTest >> test17ABoardContainingOnlyDrawEffectsItsGenerated [
 
 	| aBoard  cards effectShuffler squares effectsDistribution |
 	
@@ -339,14 +339,14 @@ BoardTest >> test17DrawCardEffectBoard [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: DrawCardEffect new with: 1}.
 	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 2 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
 	self assert: aBoard size equals: 20.
 	self assertDistributionOf: squares using: effectsDistribution.
 	
 ]
 
 { #category : #tests }
-BoardTest >> test18AllTheEffects25 [
+BoardTest >> test18ABoardWith25SqauresWithAllTheEffectsIsCreated [
 
 	| aBoard cards effectsDistribution effectShuffler squares |
 	
@@ -356,23 +356,7 @@ BoardTest >> test18AllTheEffects25 [
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (DrawCardEffect new) with: 0.10 . EffectProbability of: (NoEffect new) with: 0.38 . EffectProbability of: (WormHoleEffect new) with: 0.20 . EffectProbability of: (SpeedUpEffect new) with: 0.20 . EffectProbability of: (AtomicBombEffect new) with: 0.02. EffectProbability of: (MoonWalkEffect goingBack: 3) with: 0.10}.
 	effectShuffler := EffectShuffler ofSize: 25 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 2 containing: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
 	self assert: aBoard size equals: 25.
-	self assertDistributionOf: squares using: effectsDistribution.
-]
-
-{ #category : #tests }
-BoardTest >> test19AllTheEffects100 [
-
-	| aBoard cards effectsDistribution effectShuffler squares |
-	
-	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
-	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
-	self generateDeterministicDeckWith: cards.
-	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (DrawCardEffect new) with: 0.10 . EffectProbability of: (NoEffect new) with: 0.38 . EffectProbability of: (WormHoleEffect new) with: 0.20 . EffectProbability of: (SpeedUpEffect new) with: 0.20 . EffectProbability of: (AtomicBombEffect new) with: 0.02. EffectProbability of: (MoonWalkEffect goingBack: 3) with: 0.10}.
-	effectShuffler := EffectShuffler ofSize: 100 withGiven: (effectsDistribution copy).
-	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 2 containing: deterministicDeck usedBy: players.
-	self assert: aBoard size equals: 100.
 	self assertDistributionOf: squares using: effectsDistribution.
 ]
