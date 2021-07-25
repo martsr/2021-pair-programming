@@ -573,19 +573,19 @@ GameTest >> test25MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayers
 	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
-	playerPositions := Dictionary newFrom: {'Fran' ->9 . 'Martu'->1 . 'Maia'->1}.
+	playerPositions := Dictionary newFrom: {'Fran' ->6 . 'Martu'->1 . 'Maia'->1}.
 	self assert: aGame playerPositions equals: playerPositions.
 	playerPositions := aGame playerPositions.
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := aGame playerPositions.
 	self assert: ((playerPositions at: (players at: 1)) between: 1 and: 8). 
-	self assert: (playerPositions  at: (players at: 2)) equals: 7.
+	self assert: (playerPositions  at: (players at: 2)) equals: 4.
 	self assert: (playerPositions  at: (players at: 3)) equals: 1.
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := aGame playerPositions.
 	self assert: ((playerPositions  at: (players at: 1)) between: 1 and: 7). 
 	self assert: ((playerPositions  at: (players at: 2)) between: 1 and: 6).
-	self assert: (playerPositions  at: (players at: 3)) equals: 3.
+	self assert: (playerPositions  at: (players at: 3)) equals: 1.
 	
 ]
 
@@ -1291,6 +1291,50 @@ GameTest >> test51ARedoCardIsAppliedAndSinceTheLastCardAppliedWasRedoCardOfASpee
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := Dictionary newFrom: {'Fran' -> 10 . 'Martu'-> 8 . 'Maia'-> 14}.
 	self assert: aGame playerPositions equals: playerPositions.
+]
+
+{ #category : #tests }
+GameTest >> test52AReverseCardIsInaPlayerHand [
+
+	| cards effectsDistribution effectShuffler squares aBoard aGame |
+	self generatePlayerNames: #('Fran' 'Mango' 'Maia' 'Martu').
+	self generateDeterministicDiceCupWithSequences: #(#(5 1 1) #(5 1 1)).
+	cards := OrderedCollection newFrom: { OverloadCard new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new . ReverseCard new }.
+	self generateDeterministicDeckWith: cards.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: NoEffect new with: 1}.
+	effectShuffler := EffectShuffler ofSize: 20 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	self assert: (aGame handOf: 'Martu') equals: (OrderedCollection newFrom: { cards at: 7 . cards at: 1 }).
+	
+	
+]
+
+{ #category : #tests }
+GameTest >> test53MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayersReturnARandomNumberOfspacesBetweenOneandHalfTheBoardSize [
+	
+	| aBoard aGame playerPositions cards effectsDistribution effectShuffler squares aReverseCard aPlay |
+	
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
+	self generateDeterministicDiceCupWithSequences: #(#(4 3 1) #(4 3 1)).
+	cards := OrderedCollection newFrom: { ReverseCard  new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeterministicDeckWith: cards.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (MoonWalkEffect goingBack: 3) with: 1}.
+	effectShuffler := EffectShuffler ofSize: 10 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	aReverseCard := cards at: 1. 
+	aPlay := aReverseCard asPlayAffecting: 7 by: (aGame currentPlayerThrowing).
+	aGame make: aPlay.
+	self throwDiceCupTimes: 1 in: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->6. 'Martu'->1 . 'Maia'->1}.
+	self assert: aGame playerPositions equals: playerPositions.
+	self throwDiceCupTimes: 1 in: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->9. 'Martu'->7 . 'Maia'->4}.
+	self assert: aGame playerPositions equals: playerPositions.
+	
 ]
 
 { #category : #iteration }

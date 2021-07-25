@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'effect',
-		'applyEffect'
+		'applyEffect',
+		'reversed'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -31,6 +32,7 @@ BoardSquare >> effect [
 { #category : #initialization }
 BoardSquare >> initializeApplying: anEffect [
 	effect := anEffect.
+	reversed:= false. 
 	applyEffect := true
 ]
 
@@ -39,6 +41,13 @@ BoardSquare >> place: player on: aBoard [
 
 	applyEffect ifTrue:[ 
 		aBoard disableEffectsDuring: [ 
-			effect applyOn: aBoard activatedBy: player. 
+			effect applyOn: aBoard activatedBy: player withReversedMode: reversed. 
 			aBoard updateLastApplied: effect ]. ]
+]
+
+{ #category : #'as yet unclassified' }
+BoardSquare >> reverseEffect [
+	reversed := reversed
+		ifTrue: [ false ]
+		ifFalse: [ true ]
 ]

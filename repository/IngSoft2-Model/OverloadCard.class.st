@@ -20,3 +20,12 @@ OverloadCard >> asPlayAffecting: aPlayer by: invokingPlayer [
 OverloadCard >> handle: aBoard for: aPlay [
 	aBoard handlePermanentCardFrom: aPlay
 ]
+
+{ #category : #'as yet unclassified' }
+OverloadCard >> handleActivationOf: aPlay on: aBoard [ 
+aBoard addToActivePlays: aPlay
+]
+
+{ #category : #'as yet unclassified' }
+OverloadCard >> handleRemovalOf: aPlay on:aBoard [ 
+]

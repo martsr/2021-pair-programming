@@ -67,6 +67,18 @@ Board >> activeCards [
 	^ cardHandler activeCards
 ]
 
+{ #category : #adding }
+Board >> addToActivePlays: aPlay [ 
+	cardHandler addToActivePlays: aPlay.
+	
+]
+
+{ #category : #adding }
+Board >> addToReverseCards: aPlay [ 
+cardHandler addToReverseCards: aPlay .
+	(aPlay card) applyTo: self directedTo: (aPlay target) 
+]
+
 { #category : #accessing }
 Board >> amountOfLaps [
 	^ laps
@@ -90,7 +102,9 @@ Board >> applyActiveCards [
 
 { #category : #action }
 Board >> applyCancellationCardTo: aPlay [ 
-	cardHandler removeFromActivePlays: aPlay
+	
+	cardHandler removeFromActivePlays: aPlay.
+	(aPlay card) handleRemovalOf: aPlay on: self
 ]
 
 { #category : #action }
@@ -98,7 +112,7 @@ Board >> applyRedoCardTo: aTarget by: invokingPlayer [
 	
 	| reversedPlayHistory redoCard lastPlayApplied newPlay |
 	
-	reversedPlayHistory := cardHandler playHistory reverse.
+	reversedPlayHistory := cardHandler playHistory reverseEffect.
 	redoCard := reversedPlayHistory first card.
 	lastPlayApplied := reversedPlayHistory detect: [ :play | play card ~= redoCard ] 
 	ifNone: [Error signal: 'A Redo card can not be played if no previous cards were played'].
@@ -115,6 +129,11 @@ Board >> applyRepeatCardTo: aTarget [
 	
 	targetedPlayer := aTarget first.
 	self disableEffectsDuring: [ lastAppliedEffect applyOn: self activatedBy: targetedPlayer ]
+]
+
+{ #category : #'as yet unclassified' }
+Board >> applyReverseCardTo: squareNumber [
+	(squares at: squareNumber) reverseEffect 
 ]
 
 { #category : #accessing }
@@ -150,7 +169,7 @@ Board >> handlePermanentCardFrom: newPlay [
 	self currentPlayerThrowing ~= newPlay invokingPlayer
 		ifTrue: [ Error
 				signal: 'A permanent card can only played in the turn of the invoking player' ]
-		ifFalse: [ cardHandler activate: newPlay ]
+		ifFalse: [ cardHandler activate: newPlay on: self  ]
 ]
 
 { #category : #action }
@@ -206,8 +225,8 @@ Board >> moveAllPlayersToFirstSquareOfTheirLap [
 Board >> movePlayersBack: aNumberOfSpaces except: aPlayer [
 	
 	| affectedPlayers |
-	
-	affectedPlayers := players reject: [ :player | player = aPlayer ].
+
+	affectedPlayers := players reject: [ :player | aPlayer includes: aPlayer].
 	affectedPlayers do: [ :player | self move: player by: (-1) * aNumberOfSpaces ]
 ]
 

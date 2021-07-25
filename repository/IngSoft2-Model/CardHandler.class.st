@@ -6,7 +6,8 @@ Class {
 		'gamePlayers',
 		'playerHands',
 		'activePlays',
-		'playHistory'
+		'playHistory',
+		'reverseCards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,7 +21,17 @@ CardHandler class >> using: aDeck dealsTo: aGroupOfPlayers [
 CardHandler >> activate: aPlay [ 
 	
 	self removeFromPlayerHandCardOf: aPlay.  
-	activePlays add: aPlay
+	(aPlay card) handleActivationOf: aPlay on: self. 
+	"activePlays add: aPlay"
+	
+]
+
+{ #category : #'as yet unclassified' }
+CardHandler >> activate: aPlay on: aBoard [ 
+	
+	self removeFromPlayerHandCardOf: aPlay.  
+	(aPlay card) handleActivationOf: aPlay on: aBoard. 
+	"activePlays add: aPlay"
 	
 ]
 
@@ -36,6 +47,16 @@ CardHandler >> activeCards [
 { #category : #accessing }
 CardHandler >> activePlays [
 	^ activePlays copy
+]
+
+{ #category : #adding }
+CardHandler >> addToActivePlays: aPlay [ 
+activePlays add: aPlay
+]
+
+{ #category : #adding }
+CardHandler >> addToReverseCards: aPlay [ 
+	reverseCards add: aPlay. 
 ]
 
 { #category : #action }
@@ -85,6 +106,7 @@ CardHandler >> initializeUsing: aDeck dealsTo: players [
 	gamePlayers := players.
 	playerHands := Dictionary new.
 	activePlays := OrderedCollection new.
+	reverseCards := OrderedCollection new.
 	playHistory := OrderedCollection new.
 	self dealStartingCards
 ]
