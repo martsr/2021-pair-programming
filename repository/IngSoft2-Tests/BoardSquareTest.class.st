@@ -20,6 +20,6 @@ BoardSquareTest >> test01ABoardSquareHasAnEffect [
 	| aBoardSquare effect |
 	
 	effect := NoEffect new.
-	aBoardSquare := BoardSquare applying: effect.
+	aBoardSquare := BoardSquare applying: effect withReverseMode: false.
 	self assert:(aBoardSquare effect) equals: effect.
 ]
