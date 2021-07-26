@@ -139,10 +139,12 @@ CardHandler >> removeFromPlayerHandCardOf: aPlay [
 
 { #category : #removing }
 CardHandler >> removeFromReversePlays: targetedPlay [
-| foundPlay |
+	| foundPlay |
 	self verfiyThereAreActiveReverseCards.
-	foundPlay := activeReversePlays  detect: [ :aPlay | (aPlay target) = (targetedPlay target)] ifNone: [ Error signal: 'The targeted card by the cancellation card is not active' ]. 
-	activeReversePlays:= activeReversePlays reject:[:reverseCard | (reverseCard target)= (foundPlay target) ]
+	foundPlay := activeReversePlays
+		detect: [ :aPlay | aPlay target = targetedPlay target ]
+		ifNone: [ Error signal: 'The targeted card by the cancellation card is not active' ].
+	activeReversePlays := activeReversePlays reject: [ :reverseCard | reverseCard target = foundPlay target ]
 ]
 
 { #category : #removing }

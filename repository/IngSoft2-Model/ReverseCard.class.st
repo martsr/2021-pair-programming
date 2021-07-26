@@ -6,8 +6,6 @@ Class {
 
 { #category : #action }
 ReverseCard >> applyTo: aBoard directedTo: aTarget [
-
-	"validar el valor del casillero sea posible, negativo, entre el tamaño del board"
 	aBoard applyReverseCardTo: aTarget
 ]
 

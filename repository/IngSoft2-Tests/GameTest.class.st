@@ -1461,7 +1461,7 @@ GameTest >> test57AReverseCardTargetMustBeGreaterThanZeroAndLessOrEqualTheBoardS
 ]
 
 { #category : #tests }
-GameTest >> test58ACancellationCardOverAReverseCardCanOnlyBeAppliedIfTheTargetedCardIsActive [
+GameTest >> test58ACancellationCardCanOnlyBeAppliedToAnExistingReverseCard [
 	
 	| aBoard aGame playerPositions cards effectsDistribution effectShuffler squares aPlay targetedPlay aCancellationCard aReverseCard |
 	
