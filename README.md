@@ -1,6 +1,6 @@
 # Ingenieria del Software II - Template
 
-[![Build Status](https://travis-ci.com/uca-is2/2021-pair-programming.svg?branch=master)](https://travis-ci.com/uca-is2/2021-pair-programming)
+![GHA Status](https://github.com/uca-is2/2021-pair-programming/actions/workflows/GHA.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/uca-is2/2021-pair-programming/badge.svg?branch=master)](https://coveralls.io/github/uca-is2/2021-pair-programming?branch=master)
 
 ## Metacello
