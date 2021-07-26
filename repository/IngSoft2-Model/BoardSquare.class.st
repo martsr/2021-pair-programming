@@ -46,13 +46,6 @@ BoardSquare >> place: player on: aBoard [
 ]
 
 { #category : #action }
-BoardSquare >> reverseEffect [
-	reversed := reversed
-		ifTrue: [ false ]
-		ifFalse: [ true ]
-]
-
-{ #category : #action }
 BoardSquare >> reverseEffectOn: aBoard [
 	| reversedMode |
 	reversedMode := reversed
