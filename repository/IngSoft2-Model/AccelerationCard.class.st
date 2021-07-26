@@ -18,8 +18,7 @@ AccelerationCard >> asPlayAffecting: aGame by: aPlayer [
 
 { #category : #action }
 AccelerationCard >> handle: aBoard for: aPlay [
-
-	aBoard handlePermanentCardFrom: aPlay.
+	aBoard handlePermanentCardFrom: aPlay
 ]
 
 { #category : #action }
