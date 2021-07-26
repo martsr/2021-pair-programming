@@ -573,19 +573,19 @@ GameTest >> test25MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayers
 	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	self throwDiceCupTimes: 1 in: aGame.
-	playerPositions := Dictionary newFrom: {'Fran' ->6 . 'Martu'->1 . 'Maia'->1}.
+	playerPositions := Dictionary newFrom: {'Fran' ->9 . 'Martu'->1 . 'Maia'->1}.
 	self assert: aGame playerPositions equals: playerPositions.
 	playerPositions := aGame playerPositions.
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := aGame playerPositions.
 	self assert: ((playerPositions at: (players at: 1)) between: 1 and: 8). 
-	self assert: (playerPositions  at: (players at: 2)) equals: 4.
+	self assert: (playerPositions  at: (players at: 2)) equals: 7.
 	self assert: (playerPositions  at: (players at: 3)) equals: 1.
 	self throwDiceCupTimes: 1 in: aGame.
 	playerPositions := aGame playerPositions.
 	self assert: ((playerPositions  at: (players at: 1)) between: 1 and: 7). 
 	self assert: ((playerPositions  at: (players at: 2)) between: 1 and: 6).
-	self assert: (playerPositions  at: (players at: 3)) equals: 1.
+	self assert: (playerPositions  at: (players at: 3)) equals: 3.
 	
 ]
 
@@ -1312,9 +1312,9 @@ GameTest >> test52AReverseCardIsInaPlayerHand [
 ]
 
 { #category : #tests }
-GameTest >> test53MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayersReturnARandomNumberOfspacesBetweenOneandHalfTheBoardSize [
+GameTest >> test53APlayerLandsOnAMoonWalkEffectSquareBoardThatHasTheReverseCardAppliedMakingAllThePlayerButHimMoveThreeSquaresForward [
 	
-	| aBoard aGame playerPositions cards effectsDistribution effectShuffler squares aReverseCard aPlay |
+	| aBoard aGame playerPositions cards effectsDistribution effectShuffler squares aReverseCard aPlay playerLaps |
 	
 	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
 	self generateDeterministicDiceCupWithSequences: #(#(4 3 1) #(4 3 1)).
@@ -1323,18 +1323,197 @@ GameTest >> test53MoreThanOnePlayerLandsOnASquareWithMoonWalkEffectAndAllPlayers
 	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (MoonWalkEffect goingBack: 3) with: 1}.
 	effectShuffler := EffectShuffler ofSize: 10 withGiven: (effectsDistribution copy).
 	squares := effectShuffler generate.
-	aBoard := Board having: squares requiring: 1 playingWith: deterministicDeck usedBy: players.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
 	aGame := GameMandM playedOn: aBoard using: diceCup.
 	aReverseCard := cards at: 1. 
 	aPlay := aReverseCard asPlayAffecting: 7 by: (aGame currentPlayerThrowing).
 	aGame make: aPlay.
 	self throwDiceCupTimes: 1 in: aGame.
-	playerPositions := Dictionary newFrom: {'Fran' ->6. 'Martu'->1 . 'Maia'->1}.
+	playerPositions := Dictionary newFrom: {'Fran' ->9. 'Martu'->1 . 'Maia'->1}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 0. 'Martu'->0 . 'Maia'->0}.
+	self assert: aGame playerLaps equals: playerLaps.
 	self assert: aGame playerPositions equals: playerPositions.
 	self throwDiceCupTimes: 1 in: aGame.
-	playerPositions := Dictionary newFrom: {'Fran' ->9. 'Martu'->7 . 'Maia'->4}.
+	playerPositions := Dictionary newFrom: {'Fran' ->2. 'Martu'->7 . 'Maia'->4}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 1. 'Martu'->0 . 'Maia'->0}.
+	self assert: aGame playerLaps equals: playerLaps.
 	self assert: aGame playerPositions equals: playerPositions.
 	
+]
+
+{ #category : #tests }
+GameTest >> test54APlayerLandsOnASpeedUpEffectSquareBoardThatHasTheReverseCardAppliedMakingHimMoveFourSquaresBack [
+	
+	| aBoard aGame playerPositions cards effectsDistribution effectShuffler squares aReverseCard aPlay playerLaps |
+	
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
+	self generateDeterministicDiceCupWithSequences: #(#(4 3 1) #(4 3 1)).
+	cards := OrderedCollection newFrom: { ReverseCard  new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeterministicDeckWith: cards.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (SpeedUpEffect new) with: 1}.
+	effectShuffler := EffectShuffler ofSize: 10 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	aReverseCard := cards at: 1. 
+	aPlay := aReverseCard asPlayAffecting: 7 by: (aGame currentPlayerThrowing).
+	aGame make: aPlay.
+	self throwDiceCupTimes: 1 in: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->3. 'Martu'->1 . 'Maia'->1}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 1. 'Martu'->0 . 'Maia'->0}.
+	self assert: aGame playerLaps equals: playerLaps.
+	self assert: aGame playerPositions equals: playerPositions.
+	self throwDiceCupTimes: 1 in: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->3. 'Martu'->3 . 'Maia'->1}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 1. 'Martu'->0 . 'Maia'->0}.
+	self assert: aGame playerLaps equals: playerLaps.
+	self assert: aGame playerPositions equals: playerPositions.
+	
+]
+
+{ #category : #tests }
+GameTest >> test55APlayerLandsOnaWormHoleEffectSquareBoardThatHasTheReverseCardAppliedMakingHimMoveFourSquaresForward [
+	
+	| aBoard aGame playerPositions cards effectsDistribution effectShuffler squares aReverseCard aPlay playerLaps |
+	
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
+	self generateDeterministicDiceCupWithSequences: #(#(4 3 1) #(4 3 1)).
+	cards := OrderedCollection newFrom: { ReverseCard  new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeterministicDeckWith: cards.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (WormHoleEffect new) with: 1}.
+	effectShuffler := EffectShuffler ofSize: 10 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	aReverseCard := cards at: 1. 
+	aPlay := aReverseCard asPlayAffecting: 7 by: (aGame currentPlayerThrowing).
+	aGame make: aPlay.
+	self throwDiceCupTimes: 1 in: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->5. 'Martu'->1 . 'Maia'->1}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 0. 'Martu'->0 . 'Maia'->0}.
+	self assert: aGame playerLaps equals: playerLaps.
+	self assert: aGame playerPositions equals: playerPositions.
+	self throwDiceCupTimes: 1 in: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' ->5. 'Martu'->1 . 'Maia'->1}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 0. 'Martu'->1 . 'Maia'->0}.
+	self assert: aGame playerLaps equals: playerLaps.
+	self assert: aGame playerPositions equals: playerPositions.
+	
+]
+
+{ #category : #tests }
+GameTest >> test56ReverseCardIsPlayedButImmediatelyAfterAnotherPlayerCancellsIt [
+	
+	| aBoard aGame playerPositions cards effectsDistribution effectShuffler squares aPlay targetedPlay aCancellationCard aReverseCard playerLaps |
+	
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
+	self generateDeterministicDiceCupWithSequences: #(#(4 3 1) #(4 3 1)).
+	cards := OrderedCollection newFrom: { ReverseCard  new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeterministicDeckWith: cards.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (SpeedUpEffect new) with: 1}.
+	effectShuffler := EffectShuffler ofSize: 10 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	playerPositions := Dictionary newFrom: {'Fran' ->1 . 'Martu'->1 . 'Maia'->1}.
+	self assert: aGame playerPositions equals: playerPositions.
+	aReverseCard := cards at: 1.
+	aPlay := aReverseCard asPlayAffecting: 7 by: (aGame currentPlayerThrowing).
+	aGame make: aPlay.
+	self assert: (aGame activeReversePlays) equals: (OrderedCollection newFrom: { cards at: 1 } ).
+	self throwDiceCupTimes: 1 in: aGame.
+	targetedPlay := Play madeBy: (cards at: 1) directedTo: 7 calledBy: 'Fran'.
+	aCancellationCard := cards at: 4.
+	aPlay := aCancellationCard asPlayAffecting: targetedPlay by: (aGame currentPlayerThrowing).
+	aGame make: aPlay.
+	self assert: (aGame activeReversePlays) equals: (OrderedCollection new ).
+	self throwDiceCupTimes: 1 in: aGame.
+	playerPositions := Dictionary newFrom: {'Fran' -> 3 . 'Martu'-> 1 . 'Maia'-> 1}.
+	playerLaps := Dictionary newFrom: {'Fran' -> 1. 'Martu'->1 . 'Maia'->0}.
+	self assert: aGame playerLaps equals: playerLaps.
+	self assert: aGame playerPositions equals: playerPositions.
+	
+]
+
+{ #category : #tests }
+GameTest >> test57AReverseCardTargetMustBeGreaterThanZeroAndLessOrEqualTheBoardSize [
+	
+	| aBoard aGame cards effectsDistribution effectShuffler squares aReverseCard aPlay  |
+	
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
+	self generateDeterministicDiceCupWithSequences: #(#(4 3 1) #(4 3 1)).
+	cards := OrderedCollection newFrom: { ReverseCard  new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeterministicDeckWith: cards.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (NoEffect new) with: 1}.
+	effectShuffler := EffectShuffler ofSize: 10 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	aReverseCard := cards at: 1. 
+	aPlay := aReverseCard asPlayAffecting: 11 by: (aGame currentPlayerThrowing).
+	self
+		should: [ aGame make: aPlay ]
+		raise: Error
+		withMessage: 'The square number value must be greater than zero and less or equal the board size.'. 
+	
+
+
+]
+
+{ #category : #tests }
+GameTest >> test58ACancellationCardOverAReverseCardCanOnlyBeAppliedIfTheTargetedCardIsActive [
+	
+	| aBoard aGame playerPositions cards effectsDistribution effectShuffler squares aPlay targetedPlay aCancellationCard aReverseCard |
+	
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
+	self generateDeterministicDiceCupWithSequences: #(#(4 3 1) #(4 3 1)).
+	cards := OrderedCollection newFrom: { ReverseCard  new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeterministicDeckWith: cards.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (SpeedUpEffect new) with: 1}.
+	effectShuffler := EffectShuffler ofSize: 10 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	playerPositions := Dictionary newFrom: {'Fran' ->1 . 'Martu'->1 . 'Maia'->1}.
+	self assert: aGame playerPositions equals: playerPositions.
+	aReverseCard := cards at: 1.
+	aPlay := aReverseCard asPlayAffecting: 7 by: (aGame currentPlayerThrowing).
+	aGame make: aPlay.
+	self assert: (aGame activeReversePlays) equals: (OrderedCollection newFrom: { cards at: 1 } ).
+	self throwDiceCupTimes: 1 in: aGame.
+	targetedPlay := Play madeBy: (cards at: 1) directedTo: 8 calledBy: 'Fran'.
+	aCancellationCard := cards at: 4.
+	aPlay := aCancellationCard asPlayAffecting: targetedPlay by: (aGame currentPlayerThrowing).
+	self
+		should: [ aGame make: aPlay ]
+		raise: Error
+		withMessage: 'The targeted card by the cancellation card is not active'. 
+]
+
+{ #category : #tests }
+GameTest >> test59ACancellationCardCanOnlyBeAppliedToActiveReveseCards [
+	
+	| aBoard aGame playerPositions cards effectsDistribution effectShuffler squares aPlay targetedPlay aCancellationCard |
+	
+	self generatePlayerNames: #('Fran' 'Martu' 'Maia').
+	self generateDeterministicDiceCupWithSequences: #(#(4 3 1) #(4 3 1)).
+	cards := OrderedCollection newFrom: { ReverseCard  new . SpeedCard new . AccelerationCard new . CancellationCard new . RedoCard new . RepeatCard new }.
+	self generateDeterministicDeckWith: cards.
+	effectsDistribution := OrderedCollection newFrom: { EffectProbability of: (SpeedUpEffect new) with: 1}.
+	effectShuffler := EffectShuffler ofSize: 10 withGiven: (effectsDistribution copy).
+	squares := effectShuffler generate.
+	aBoard := Board having: squares requiring: 2 playingWith: deterministicDeck usedBy: players.
+	aGame := GameMandM playedOn: aBoard using: diceCup.
+	playerPositions := Dictionary newFrom: {'Fran' ->1 . 'Martu'->1 . 'Maia'->1}.
+	self assert: aGame playerPositions equals: playerPositions.
+	self throwDiceCupTimes: 1 in: aGame.
+	targetedPlay := Play madeBy: (cards at: 1) directedTo: 8 calledBy: 'Fran'.
+	aCancellationCard := cards at: 4.
+	aPlay := aCancellationCard asPlayAffecting: targetedPlay by: (aGame currentPlayerThrowing).
+	self
+		should: [ aGame make: aPlay ]
+		raise: Error
+		withMessage: 'Cancellation card cannot be applied when there are no active reverse cards.'. 
 ]
 
 { #category : #iteration }

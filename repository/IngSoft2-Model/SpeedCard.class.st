@@ -21,11 +21,12 @@ SpeedCard >> handle: aBoard for: aPlay [
 	aBoard handlePermanentCardFrom: aPlay
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 SpeedCard >> handleActivationOf: aPlay on: aBoard [
 aBoard addToActivePlays: aPlay
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 SpeedCard >> handleRemovalOf: aPlay on:aBoard [ 
+aBoard removeFromActivePlays: aPlay.
 ]

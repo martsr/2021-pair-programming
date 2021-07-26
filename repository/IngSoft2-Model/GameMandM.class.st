@@ -20,6 +20,11 @@ GameMandM >> activeCards [
 ]
 
 { #category : #accessing }
+GameMandM >> activeReversePlays [
+	^ board activeReversePlays
+]
+
+{ #category : #accessing }
 GameMandM >> currentPlayerThrowing [
  ^ board currentPlayerThrowing 
 ]

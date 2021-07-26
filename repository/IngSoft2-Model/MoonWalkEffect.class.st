@@ -13,12 +13,6 @@ MoonWalkEffect class >> goingBack: aNumberOfSpaces [
 ]
 
 { #category : #action }
-MoonWalkEffect >> applyOn: aBoard activatedBy: aPlayer [
-	
-	aBoard movePlayersBack: spaces except: aPlayer
-]
-
-{ #category : #'as yet unclassified' }
 MoonWalkEffect >> applyOn: aBoard activatedBy: aPlayer withReversedMode: reversed [
 reversed ifTrue: [ aBoard movePlayersBack: (spaces * (-1)) except: aPlayer]
 	ifFalse: [aBoard movePlayersBack: spaces except: aPlayer]

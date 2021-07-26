@@ -9,7 +9,8 @@ Class {
 		'positionTracker',
 		'laps',
 		'lastAppliedEffect',
-		'cardHandler'
+		'cardHandler',
+		'lastReverseMode'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -67,6 +68,11 @@ Board >> activeCards [
 	^ cardHandler activeCards
 ]
 
+{ #category : #accessing }
+Board >> activeReversePlays [ 
+	^ cardHandler activeReversePlays
+]
+
 { #category : #adding }
 Board >> addToActivePlays: aPlay [ 
 	cardHandler addToActivePlays: aPlay.
@@ -74,8 +80,8 @@ Board >> addToActivePlays: aPlay [
 ]
 
 { #category : #adding }
-Board >> addToReverseCards: aPlay [ 
-cardHandler addToReverseCards: aPlay .
+Board >> addToReversePlays: aPlay [ 
+cardHandler addToReversePlays: aPlay .
 	(aPlay card) applyTo: self directedTo: (aPlay target) 
 ]
 
@@ -102,8 +108,6 @@ Board >> applyActiveCards [
 
 { #category : #action }
 Board >> applyCancellationCardTo: aPlay [ 
-	
-	cardHandler removeFromActivePlays: aPlay.
 	(aPlay card) handleRemovalOf: aPlay on: self
 ]
 
@@ -128,12 +132,14 @@ Board >> applyRepeatCardTo: aTarget [
 	| targetedPlayer |
 	
 	targetedPlayer := aTarget first.
-	self disableEffectsDuring: [ lastAppliedEffect applyOn: self activatedBy: targetedPlayer ]
+	self disableEffectsDuring: [ lastAppliedEffect applyOn: self activatedBy: targetedPlayer withReversedMode: lastReverseMode  ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Board >> applyReverseCardTo: squareNumber [
-	(squares at: squareNumber) reverseEffect 
+	| reverseSquare |
+	reverseSquare:= (squares at: squareNumber) reverseEffectOn: self. 
+	squares at: squareNumber  put: reverseSquare. 
 ]
 
 { #category : #accessing }
@@ -226,7 +232,7 @@ Board >> movePlayersBack: aNumberOfSpaces except: aPlayer [
 	
 	| affectedPlayers |
 
-	affectedPlayers := players reject: [ :player | aPlayer includes: aPlayer].
+	affectedPlayers := players reject: [ :player | player =aPlayer].
 	affectedPlayers do: [ :player | self move: player by: (-1) * aNumberOfSpaces ]
 ]
 
@@ -276,6 +282,16 @@ Board >> positionOf: aPlayer [
 	^ positionTracker boardPositionOf: aPlayer
 ]
 
+{ #category : #removing }
+Board >> removeFromActivePlays: aPlay [ 
+	cardHandler removeFromActivePlays: aPlay
+]
+
+{ #category : #removing }
+Board >> removeFromReversePlays: aPlay [
+cardHandler removeFromReversePlays: aPlay
+]
+
 { #category : #action }
 Board >> resolvePlayabilityOf: newPlay [
 	(newPlay card) handle: self for: newPlay
@@ -287,8 +303,9 @@ Board >> size [
 ]
 
 { #category : #action }
-Board >> updateLastApplied: effect [
-	lastAppliedEffect := effect
+Board >> updateLastApplied: effect with: reversedMode [
+	lastAppliedEffect := effect.
+	lastReverseMode:= reversedMode 
 ]
 
 { #category : #verification }

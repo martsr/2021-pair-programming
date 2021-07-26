@@ -7,7 +7,7 @@ Class {
 		'playerHands',
 		'activePlays',
 		'playHistory',
-		'reverseCards'
+		'activeReversePlays'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -18,20 +18,11 @@ CardHandler class >> using: aDeck dealsTo: aGroupOfPlayers [
 ]
 
 { #category : #action }
-CardHandler >> activate: aPlay [ 
-	
-	self removeFromPlayerHandCardOf: aPlay.  
-	(aPlay card) handleActivationOf: aPlay on: self. 
-	"activePlays add: aPlay"
-	
-]
-
-{ #category : #'as yet unclassified' }
 CardHandler >> activate: aPlay on: aBoard [ 
 	
 	self removeFromPlayerHandCardOf: aPlay.  
 	(aPlay card) handleActivationOf: aPlay on: aBoard. 
-	"activePlays add: aPlay"
+
 	
 ]
 
@@ -49,14 +40,23 @@ CardHandler >> activePlays [
 	^ activePlays copy
 ]
 
+{ #category : #accessing }
+CardHandler >> activeReversePlays [
+	
+	| activeReverseCards |
+	
+	activeReverseCards := activeReversePlays collect: [ :play | play card ].
+	^ activeReverseCards copy
+]
+
 { #category : #adding }
 CardHandler >> addToActivePlays: aPlay [ 
 activePlays add: aPlay
 ]
 
 { #category : #adding }
-CardHandler >> addToReverseCards: aPlay [ 
-	reverseCards add: aPlay. 
+CardHandler >> addToReversePlays: aPlay [ 
+	activeReversePlays add: aPlay. 
 ]
 
 { #category : #action }
@@ -106,7 +106,7 @@ CardHandler >> initializeUsing: aDeck dealsTo: players [
 	gamePlayers := players.
 	playerHands := Dictionary new.
 	activePlays := OrderedCollection new.
-	reverseCards := OrderedCollection new.
+	activeReversePlays := OrderedCollection new.
 	playHistory := OrderedCollection new.
 	self dealStartingCards
 ]
@@ -138,6 +138,19 @@ CardHandler >> removeFromPlayerHandCardOf: aPlay [
 ]
 
 { #category : #removing }
+CardHandler >> removeFromReversePlays: targetedPlay [
+| foundPlay |
+	self verfiyThereAreActiveReverseCards.
+	foundPlay := activeReversePlays  detect: [ :aPlay | (aPlay target) = (targetedPlay target)] ifNone: [ Error signal: 'The targeted card by the cancellation card is not active' ]. 
+	activeReversePlays:= activeReversePlays reject:[:reverseCard | (reverseCard target)= (foundPlay target) ]
+]
+
+{ #category : #removing }
 CardHandler >> verfiyThereAreActivePermanentCards [
 	activePlays size < 1 ifTrue: [ Error signal: 'Cancellation cannot be applied when there are no active permanent cards' ]
+]
+
+{ #category : #removing }
+CardHandler >> verfiyThereAreActiveReverseCards [
+activeReversePlays  size < 1 ifTrue: [ Error signal: 'Cancellation card cannot be applied when there are no active reverse cards.' ]
 ]

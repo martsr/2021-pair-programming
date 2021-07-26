@@ -22,11 +22,12 @@ AccelerationCard >> handle: aBoard for: aPlay [
 	aBoard handlePermanentCardFrom: aPlay.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 AccelerationCard >> handleActivationOf: aPlay on:  aBoard [
  aBoard addToActivePlays: aPlay
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 AccelerationCard >> handleRemovalOf: aPlay on:aBoard [ 
+aBoard removeFromActivePlays: aPlay.
 ]

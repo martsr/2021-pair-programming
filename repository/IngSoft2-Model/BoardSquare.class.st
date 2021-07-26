@@ -9,9 +9,9 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-BoardSquare class >> applying: anEffect [
-	^self new initializeApplying: anEffect. 
+{ #category : #'as yet unclassified' }
+BoardSquare class >> applying: anEffect withReverseMode: aReversedMode [
+	^self new initializeApplying: anEffect withReverseMode: aReversedMode. 
 ]
 
 { #category : #action }
@@ -30,9 +30,9 @@ BoardSquare >> effect [
 ]
 
 { #category : #initialization }
-BoardSquare >> initializeApplying: anEffect [
+BoardSquare >> initializeApplying: anEffect withReverseMode: reversedMode [
 	effect := anEffect.
-	reversed:= false. 
+	reversed:= reversedMode . 
 	applyEffect := true
 ]
 
@@ -42,12 +42,21 @@ BoardSquare >> place: player on: aBoard [
 	applyEffect ifTrue:[ 
 		aBoard disableEffectsDuring: [ 
 			effect applyOn: aBoard activatedBy: player withReversedMode: reversed. 
-			aBoard updateLastApplied: effect ]. ]
+			aBoard updateLastApplied: effect with: reversed ]. ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 BoardSquare >> reverseEffect [
 	reversed := reversed
 		ifTrue: [ false ]
 		ifFalse: [ true ]
+]
+
+{ #category : #action }
+BoardSquare >> reverseEffectOn: aBoard [
+	| reversedMode |
+	reversedMode := reversed
+		ifTrue: [ false ]
+		ifFalse: [ true ].
+	^ BoardSquare applying: effect withReverseMode: reversedMode 
 ]
